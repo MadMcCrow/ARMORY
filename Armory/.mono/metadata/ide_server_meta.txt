@@ -1,0 +1,2 @@
+﻿39061
+/home/perard/Documents/Projets/godotProjects/godot/bin/godot.x11.tools.64.llvm.mono
