@@ -13,3 +13,9 @@ godot.bin
 
 # build it yourself, I'm not gonna give you output files
 build/
+*.o
+*.a
+
+# nor shared object
+*.dll
+*.so
