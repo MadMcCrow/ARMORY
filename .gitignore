@@ -19,3 +19,7 @@ build/
 # nor shared object
 *.dll
 *.so
+
+# python cache
+__pycache__
+*.pyc
