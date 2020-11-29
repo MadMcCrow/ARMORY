@@ -1,0 +1,54 @@
+#!/usr/bin/env python
+# SCsub
+#
+# Copyright © Noé Perard-Gayot 2020.                                                                                        #
+# Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
+#
+
+Import('env')
+
+
+# Find all sources in path
+def find_sources(path : str)  -> list:
+    glob_sources = []
+    from os import walk
+    for cur, _dirs, files in walk(path):
+        glob_sources = glob_sources + ['/'.join([cur,itr]) for itr in files if itr.endswith('cpp')]
+    print(glob_sources)
+    return glob_sources
+	
+
+# we need our register type source :
+sources = [  "register_types.cpp"]
+
+# First, create a custom env for the shared library.
+module_env = env.Clone()
+
+# Don't inject Godot's dependencies into our shared library.
+module_env['LIBS'] = []
+
+# reference our headers in 'inc'
+module_env.Append(CPPPATH=['inc' ])
+# add sources in 'src'
+sources.append(find_sources('./src'))
+
+module_env.Append(CCFLAGS=['-O3'])
+module_env.Append(CXXFLAGS=['-std=c++20'])
+
+#if ARGUMENTS.get('use_llvm', 'no') == 'yes' :
+#    module_env.Append(CXXFLAGS=['-std=c++20', '-Wpadded'])
+
+# avoid building in the same path to avoid complication
+VariantDir('../build/armory', './src', duplicate=0)
+
+if ARGUMENTS.get('armory_shared', 'no') == 'yes':
+    # Shared lib compilation
+    module_env.Append(CCFLAGS=['-fPIC'])
+    module_env['LIBS'] = []
+    shared_lib = module_env.SharedLibrary(target='#bin/armory', source=sources)
+    shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
+    env.Append(LIBS=[shared_lib_shim])
+    env.Append(LIBPATH=['#bin'])
+else:
+    # Static compilation
+    module_env.add_source_files(env.modules_sources, sources)

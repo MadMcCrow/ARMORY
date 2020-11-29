@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+# SConstruct
+#
+# Copyright © Noé Perard-Gayot 2020.                                                                                        #
+# Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
+# 
+
+import os
+import sys
+
+# important paths :
+project_path = os.path.relpath(os.getcwd())
+godot_path   = os.path.relpath("../Godot")
+
+# build environment
+env = Environment()
+
+
+# set profile as custom.y and more if need be
+customs = [os.path.abspath(os.path.join(project_path, "custom.py" ))]
+profile = ARGUMENTS.get("profile", False)
+if profile:
+    if os.path.isfile(profile):
+        customs.append(profile)
+    elif os.path.isfile(profile + ".py"):
+        customs.append(profile + ".py")
+
+# add customs to the options for ARGUMENT profile
+opts = Variables(customs, ARGUMENTS)
+
+# Update the environment 
+opts.Update(env)
+
+
+env.fs.pathTop = godot_path
+env.fs.Top = Dir(env.fs.pathTop)
+env.fs.SConstruct_dir = Dir(godot_path)
+env.fs.chdir(Dir(godot_path))
+sys.path.insert(0, godot_path)
+
+
+env.SConscript("/SConstruct")
