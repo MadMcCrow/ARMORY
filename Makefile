@@ -4,7 +4,7 @@
 # config variables, edit to fit your config
 BINARY_PATH = bin/godot*tools*
 EDITOR_BIN = godot.bin
-THREADS = -j12
+THREADS = -j$(shell nproc)
 GODOT_PATH = ../Godot
 CUSTOM_PATH = ../$(notdir $(CURDIR))/custom.py
 
