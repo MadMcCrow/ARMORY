@@ -4,42 +4,51 @@
 #include "map/map_grid.h"
 #include "grid/grid_2D.h"
 
+#define GRID_MAX 2048
+
 using namespace Armory;
 
 
 MapGrid::MapGrid()
 {
-
+    grid.instance();
 }
 
 MapGrid::~MapGrid()
 {
-    if(grid)
-        delete grid;
+    grid.unref();
 }
 
 void MapGrid::set_grid_size(const Point2i& new_grid_size)
 {
-    GridSize<2> new_size = point_to_grid_size_2d(new_grid_size);
-    if(!grid)
+    if(!grid.is_valid())
     {
-        grid = new MapGridData(new_size);
+        grid.instance();
+    }
 
-    }
-    else
-    {
-        grid->resize(new_size);
-    }
+    // avoid zero and negative sizes as well as atrociously big sizes
+    grid_size.x = MIN(GRID_MAX,MAX(1, new_grid_size.x));
+    grid_size.y = MIN(GRID_MAX,MAX(1, new_grid_size.y));
+
+    // save new grid size
+    grid_size = new_grid_size;
+    
+    // apply
+    /// TODO: make this async
+    grid.ptr()->resize(grid_size);
 }
 
 void MapGrid::ready()
 {
-    
+    set_grid_size(grid_size);
 }
 
 void MapGrid::_bind_methods() 
 {
     // recreation of GDScript/ GDNative functions 
     ClassDB::bind_method(D_METHOD("ready"), &MapGrid::ready);
+
+    ADD_GROUP("Grid", "Grid_");
+	BIND_PROPERTY_GETSET(MapGrid, Variant::VECTOR2I,     grid_size, PROPERTY_HINT_NONE, "Array size");
 
 }

@@ -54,13 +54,14 @@ public:
     Point2i grid_size;
     GET(Point2i, grid_size)
     void set_grid_size(const Point2i& new_grid_size);
-
+    
+private:
     /**
      *  Grid
      *  @brief actual grid info
      * 
      */
-    MapGridData * grid;
+    Ref<MapGridData> grid;
 
 };
 

@@ -52,6 +52,8 @@ def find_folder(path : str, foldername : str)  -> str:
 extra_suffix = "armory"
 custom_modules = find_folder("../Armory", "sources")
 
+# make Armory a shared library
+armory_shared = True
 
 
 # target is  (debug|release_debug|release) 

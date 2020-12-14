@@ -10,18 +10,28 @@
 #include "core/math/vector2.h"     // for Point2i
 
 
+// STL includes
+#include <vector> // std vector, more flexible than Godot Vector
+#include <memory> // weak and shared pointer, easier than godot references
+#include <optional>
+
 namespace Armory
 {
- /** forward declaration */
-template <typename T>
-class SubGrid2D;
 
-/** GridSize2D alias for Point2i  */
-using GridSize2D = Point2i;
+/** Armory alias */
+template <typename T>
+using GridVector = std::vector<T>;
 
 /** PrivateGrid2D alias for vector of vector  */
 template <typename T>
-using PrivateGrid2D = Vector<Vector<T>> ; 
+using PrivateGrid2D  = GridVector<GridVector<T>>;
+
+/** Armory alias , with "reference" aspect*/
+template <typename T>
+using SharedGrid2D = std::weak_ptr<PrivateGrid2D<T>>;
+
+/** GridSize2D alias for Point2i */
+using  GridSize2D = Point2i;
 
 /**
  *  Grid 
@@ -31,12 +41,36 @@ using PrivateGrid2D = Vector<Vector<T>> ;
 template <typename T>
 class Grid2D : public Reference
 {
-friend class SubGrid2D<T>;
 
 private:
 
-    /** pointer to the actual data */
-    PrivateGrid2D<T> *  data;
+    /** 
+     * the actual grid data, shared between grids and subgrids 
+     */
+    SharedGrid2D<T>  data;
+
+
+    /** whether this grid has been created by us */
+    bool is_data_owner;
+
+
+    /** grid start (offset first element) compared to actual data */
+    GridSize2D          start;
+
+    /** dimesion of our part of the data */
+    GridSize2D          dimension;
+
+    std::optional<std::shared_ptr<PrivateGrid2D<T>>> get_data_shared()  const
+    {
+        if (auto sp = data.lock())
+            return sp;
+        return  std::nullopt;
+    }
+
+    bool data_valid() const
+    {
+        return  data.lock() ? true : false;
+    }
 
  protected:
 
@@ -46,16 +80,17 @@ private:
      */
     virtual T* at(const GridSize2D & coord)
     {
-        if(data == nullptr)
-            return nullptr;
-        
-        const auto sz = size();
+         if (auto sp = get_data_shared())
+        {
+            PrivateGrid2D<T> * grid = sp.value().get();
+            const auto sz = size();
 
-        // maybe we can merge those statement ?
-        const int x = coord.x % sz.x;
-        const int y = coord.y % sz.y;
+            const int x = (coord.x + start.x) % sz.x;
+            const int y = (coord.y + start.y) % sz.y;
 
-        return (data[y])[x];
+            return &(((*grid)[y])[x]);
+        }
+        return nullptr;
     }
 public:
 
@@ -63,12 +98,23 @@ public:
     // CTR
     Grid2D(GridSize2D size = GridSize2D(1,1))
     {
-        data = new PrivateGrid2D<T>();
+       start = GridSize2D(0,0);
+       data = std::make_shared<PrivateGrid2D<T>>(PrivateGrid2D<T>());
+       is_data_owner = true;
+       resize(size);
+    }
 
+    // CTR
+    Grid2D(Grid2D<T> *parent_grid ,const GridSize2D &sub_start =  GridSize2D(0,0),const GridSize2D &sub_end =  GridSize2D(0,0)  )
+    : start(sub_start)
+    {
+        data = parent_grid->data;
+        is_data_owner = false;
+        dimension = parent_grid->distance2d_to(sub_start, sub_end);
     }
 
     //DSTR
-    ~Grid2D()
+    virtual ~Grid2D()
     {
 
     }
@@ -78,7 +124,7 @@ public:
     T& operator[] (const GridSize2D & coord)
     {
         return *at(coord);
-    }
+    } 
 
     /** const subscript operator */
     T operator[] (const GridSize2D & coord) const
@@ -89,80 +135,68 @@ public:
     /** size gets the size of this subgrid if a subgrid, of the whole grid otherwise */
     virtual GridSize2D size() const
     {
-        int x = data->operator[](0).size();
-        int y = data->size() ;
-        return GridSize2D(x,y);
+        if (auto sp = get_data_shared())
+        {
+            PrivateGrid2D<T> * grid = sp.value().get();
+            const int x = (*grid)[0].size();
+            const int y = grid->size() ;
+            const auto real_size = GridSize2D(x,y);
+
+            if (dimension != real_size)
+            {
+                return dimension;
+            }
+            return real_size;
+        }
+        return GridSize2D(0,0);
     }
 
-    /**resize the subgrid if a subgrid, the whole data if the original grid */
+    /**resize the dimension if a subgrid, the whole data if the original grid */
     virtual void resize(const GridSize2D & new_size)
     {
-        // assert(data)
-        const constexpr auto max = [](size_t a, size_t b) -> size_t {return a > b ? a : b; };
-        const size_t x = max(1, new_size.x);
-        const size_t y = max(1, new_size.y);
-
-        // resize Y first, then resize X
-        data->resize(y);
-        for ( int idx = 0; idx < data->size(); idx++)
+        if (is_data_owner)
         {
-            data[idx]->resize(y);
+            if (auto sp = get_data_shared())
+            {
+                PrivateGrid2D<T> * p_grid = sp.value().get();
+                const constexpr auto max = [](size_t a, size_t b) -> size_t {return a > b ? a : b; };
+                const size_t x = max(1, new_size.x);
+                const size_t y = max(1, new_size.y);
+
+                // resize Y first, then resize X
+                p_grid->resize(y);
+                for ( int idx = 0; idx < p_grid->size(); idx++)
+                {
+                    (*p_grid)[idx].resize(x);
+                }
+            }
+        }
+        else // not the creator of the data
+        {
+            dimension = new_size % Grid2D<T>::size();
         }
     }
 
-
-};
-
-
-template <typename T>
-class SubGrid2D : Grid2D<T>
-{
-
-friend class Grid2D<T>;
-
-protected:
-
-    SubGrid2D(PrivateGrid2D<T> *parent) : 
+    /** Distance between two point onm the grid */
+    virtual GridSize2D distance2d_to( const GridSize2D & a, const GridSize2D & b)
     {
-        data = parent;
-    }
+        auto sz = size();
+        int dist_x, dist_y;
+        {
+            int b_x = b.x % sz.x;
+            int a_x = a.x % sz.x;
+            dist_x  = b_x > a_x ?  b_x - a_x : (sz.x + b_x ) - a_x;
+        }
+        {
+            int b_y = b.y % sz.y;
+            int a_y = a.y % sz.y;
+            dist_y  = b_y > a_y ?  b_y - a_y : (sz.y + b_y ) - a_y;
+        }
 
-private:
-
-    /** grid start (offset first element) */
-    GridSize2D          start;
-
-    /** dimesion (max value of the array) */
-    GridSize2D          dimension;
-
-public :
-
-    /** 
-     * at @note, this is y first
-     * @todo : make data check debug only
-     */
-    virtual T* at(const GridSize2D & coord)
-    {
-        if(data == nullptr)
-            return nullptr;
-            
-        const int x = (coord.x % dimension.x) + (start.x% dimension.x);
-        const int y = (coord.y % dimension.y) + (start.y% dimension.y);
-
-        return (data[y])[x];
-    }
-
-    virtual GridSize2D size() const override
-    {   
-        return dimension - start;
+        return GridSize2D(dist_x, dist_y);
     }
 
 
-    /**resize only the subgrid */
-    virtual void resize(const GridSize2D & new_size) override
-    {
-        dimension = new_size % Grid2D<T>::size();
-    }
 };
 
 
