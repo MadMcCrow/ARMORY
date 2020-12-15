@@ -53,7 +53,7 @@ public:
      */
     Point2i grid_size;
     GET(Point2i, grid_size)
-    void set_grid_size(const Point2i& new_grid_size);
+    void set_grid_size(Point2i new_grid_size);
     
 private:
     /**

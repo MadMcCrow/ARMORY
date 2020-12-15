@@ -19,7 +19,7 @@ MapGrid::~MapGrid()
     grid.unref();
 }
 
-void MapGrid::set_grid_size(const Point2i& new_grid_size)
+void MapGrid::set_grid_size(Point2i new_grid_size)
 {
     if(!grid.is_valid())
     {
@@ -46,9 +46,10 @@ void MapGrid::ready()
 void MapGrid::_bind_methods() 
 {
     // recreation of GDScript/ GDNative functions 
-    ClassDB::bind_method(D_METHOD("ready"), &MapGrid::ready);
+    //ClassDB::bind_method(D_METHOD("ready"), &MapGrid::ready);
+    //BIND_GETSET( grid_size, MapGrid)
 
-    ADD_GROUP("Grid", "Grid_");
-	BIND_PROPERTY_GETSET(MapGrid, Variant::VECTOR2I,     grid_size, PROPERTY_HINT_NONE, "Array size");
+    //ADD_GROUP("Grid", "Grid_");
+	//BIND_PROPERTY_GETSET(MapGrid, Variant::VECTOR2I, grid_size, PROPERTY_HINT_NONE, "Array size");
 
 }

@@ -134,9 +134,9 @@ vsproj =  isWindows(platform)
 # CFLAGS
 # CXXFLAGS
 # LINKFLAGS
-use_llvm    =  isLinux(platform)
-use_lld     =  isLinux(platform)
-use_thinlto =  isLinux(platform)  # https://clang.llvm.org/docs/ThinLTO.html
+use_llvm    =  False
+use_lld     =  use_llvm
+use_thinlto =  use_llvm  # https://clang.llvm.org/docs/ThinLTO.html
 use_static_cpp =  isWindows(platform)
 #use_coverage: Test Godot coverage (yes|no)
 #use_ubsan: Use LLVM/GCC compiler undefined behavior sanitizer (UBSAN) (yes|no)
