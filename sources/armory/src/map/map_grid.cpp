@@ -38,18 +38,19 @@ void MapGrid::set_grid_size(Point2i new_grid_size)
     grid.ptr()->resize(grid_size);
 }
 
+
 void MapGrid::ready()
 {
     set_grid_size(grid_size);
 }
 
+
 void MapGrid::_bind_methods() 
 {
-    // recreation of GDScript/ GDNative functions 
-    //ClassDB::bind_method(D_METHOD("ready"), &MapGrid::ready);
-    //BIND_GETSET( grid_size, MapGrid)
-
-    //ADD_GROUP("Grid", "Grid_");
-	//BIND_PROPERTY_GETSET(MapGrid, Variant::VECTOR2I, grid_size, PROPERTY_HINT_NONE, "Array size");
+    // recreation of GDScript/ GDNative functions : 
+    ClassDB::bind_method(D_METHOD("ready"), &MapGrid::ready);
+    BIND_GETSET( grid_size, MapGrid)
+    ADD_GROUP("Grid", "Grid_");
+	BIND_PROPERTY_GETSET(MapGrid, Variant::VECTOR2I, grid_size, PROPERTY_HINT_NONE, "Array size");
 
 }

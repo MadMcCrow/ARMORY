@@ -134,7 +134,7 @@ vsproj =  isWindows(platform)
 # CFLAGS
 # CXXFLAGS
 # LINKFLAGS
-use_llvm    =  False
+use_llvm    =  True
 use_lld     =  use_llvm
 use_thinlto =  use_llvm  # https://clang.llvm.org/docs/ThinLTO.html
 use_static_cpp =  isWindows(platform)
@@ -166,8 +166,10 @@ module_regex_enabled            = True
 
 module_bullet_enabled           = False # no physics in Armory
 module_camera_enabled           = False # no camera video feed
-module_gdnavigation_enabled     = False # No navigation system requiered
 module_gridmap_enabled          = False # tilemap for 3d Meshes -> we're doing our own system
+
+# TODO : file a bug : will crash with this option
+module_gdnavigation_enabled     = True  # No navigation system requiered
 
 # Mobile
 module_gamecenter_enabled       = False # iOS gamecenter

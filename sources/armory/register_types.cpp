@@ -6,7 +6,7 @@
 #include "map/map_grid.h"
 
 void register_armory_types() {
-  ClassDB::register_class<Armory::MapGrid>();
+  //ClassDB::register_class<Armory::MapGrid>();
  
 }
 
