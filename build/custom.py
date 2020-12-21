@@ -1,60 +1,36 @@
-# custom.py
+#!/usr/bin/env python
+#
+# Custom.py : 
+#             custom.py file for building godot for this project
+#
+# Copyright © Noé Perard-Gayot 2020.                                                                                        #
+# Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
+#
+
+# try to get globals
+from info import *
+
+# import functions: 
+from functions import findFolder
+from functions import getPlatform
+from functions import isLinux
+from functions import isWindows
+from functions import isArm
+from functions import isMacOs
 
 
-# TODO: make godot path a variable
-from sys import path
+
+extra_suffix = str(ProjectName).lower()
+custom_modules = findFolder("../", "sources")
+
+
 # insert at 1, 0 is the script path (or '' in REPL)
-path.insert(1, '../Godot')
+from sys import path
+path.insert(1, GodotPath)
 
-
-def getPlatform() :
-    from sys      import maxsize
-    from platform import system
-    from version  import major
-    from os       import uname
-    bits = 64 if maxsize > 2**32 else 32
-    arch  = uname()[4][:3] 
-    if "arm" in arch :
-        arch = "arm" + str(bits)
-    elif "x86" in arch : 
-        arch = "x" + str(bits)
-    platform =  system()
-    if platform.lower() in ["linux", "freebsd7", "freebsd8", "freebsdN", "openbsd6"] : 
-        return bits, ("linuxbsd" if major == 4 else "x11"), arch
-    elif platform.lower() in ["win32", "cygwin", "msys"] : 
-        return bits, "windows", arch
-    elif platform.lower() in ["darwin", "os2", "os2emx"] : 
-        return bits, "osx", arch
-    else: #riscos or atheos
-        return bits, platform, arch
-
-
-def isWindows(build_os : str) -> bool:
-    return "windows" in build_os
-
-def isMacOs(build_os : str) -> bool:
-    return "osx" in build_os
-
-def isLinux(build_os : str) -> bool:
-    return  "linuxbsd" in build_os  or "x11" in build_os
-
-def  isArm(arch : str) -> bool:
-    return "arm" in arch
-
-# Find all sources in path
-def find_folder(path : str, foldername : str)  -> str:
-    from os import walk
-    for cur, dirs, _files in walk(path):
-        if foldername in dirs :
-            return '/'.join([cur,foldername]) 
-
-
-extra_suffix = "armory"
-custom_modules = find_folder("../Armory", "sources")
-
-# make Armory a shared library
-armory_shared = True
-
+# make project a shared library
+module_shared_var_name = "module_" + extra_suffix + "_shared"
+globals()[module_shared_var_name] = "yes"
 
 # target is  (debug|release_debug|release) 
 target = "debug"
@@ -68,7 +44,7 @@ optimize = "speed"
 
 # Build the tools (a.k.a. the Godot editor) (yes|no)
 tools = True
- 
+
 # tests: Build the unit tests (yes|no)
 tests = False
 
@@ -81,10 +57,9 @@ use_precise_math_checks = False
 # disable deprecated options : fails instead to keep this project updated
 deprecated = False
 minizip = True
-xaudio2 =  isWindows(platform)
+xaudio2 =  isWindows()
 
 ## [ built-in option ]
-
 #builtin_bullet: Use the built-in Bullet library (yes|no)
 #builtin_certs: Use the built-in SSL certificates bundles (yes|no)
 #builtin_enet: Use the built-in ENet library (yes|no)
@@ -112,13 +87,12 @@ xaudio2 =  isWindows(platform)
 
 
 ## [ general compilation option ]
-vsproj =  isWindows(platform)
-# verbose  = False 
-# progress = True
+vsproj =  isWindows()  # vsproj: Generate a Visual Studio solution (yes|no)
+verbose  = False 
+progress = True
 # warnings: Level of compilation warnings (extra|[all]|moderate|no)
 # werror: Treat compiler warnings as errors (yes|[no]) 
 # dev: If yes, alias for verbose=yes warnings=extra werror=yes (yes|no)
-# vsproj: Generate a Visual Studio solution (yes|no)
 # macports_clang: Build using Clang from MacPorts ([no]|5.0|devel)
 # disable_3d: Disable 3D nodes for a smaller executable (yes|[no])
 # disable_advanced_gui: Disable advanced GUI nodes and behaviors (yes|no)
@@ -137,15 +111,15 @@ vsproj =  isWindows(platform)
 use_llvm    =  True
 use_lld     =  use_llvm
 use_thinlto =  use_llvm  # https://clang.llvm.org/docs/ThinLTO.html
-use_static_cpp =  isWindows(platform)
+use_static_cpp =  isWindows()
 #use_coverage: Test Godot coverage (yes|no)
 #use_ubsan: Use LLVM/GCC compiler undefined behavior sanitizer (UBSAN) (yes|no)
 #use_asan: Use LLVM/GCC compiler address sanitizer (ASAN)) (yes|no)
 #use_lsan: Use LLVM/GCC compiler leak sanitizer (LSAN)) (yes|no)
 #use_tsan: Use LLVM/GCC compiler thread sanitizer (TSAN)) (yes|no)
-pulseaudio =  isLinux(platform)
-udev =  isLinux(platform)
-execinfo =  isWindows(platform)
+pulseaudio =  isLinux()
+udev       =  isLinux()
+execinfo   =  isWindows()
 
 debug_symbols = 'yes' if "debug" in str(target) else 'no'
 separate_debug_symbols = False
@@ -163,13 +137,12 @@ module_glslang_enabled          = True # Reference compiler front end for the Op
 module_hdr_enabled              = True
 module_lightmapper_rd_enabled   = True
 module_regex_enabled            = True
+module_gdnavigation_enabled     = True  # TODO/FIXME :Godot will not load without this module
 
 module_bullet_enabled           = False # no physics in Armory
 module_camera_enabled           = False # no camera video feed
 module_gridmap_enabled          = False # tilemap for 3d Meshes -> we're doing our own system
 
-# TODO : file a bug : will crash with this option
-module_gdnavigation_enabled     = True  # No navigation system requiered
 
 # Mobile
 module_gamecenter_enabled       = False # iOS gamecenter
@@ -191,6 +164,7 @@ module_vorbis_enabled = False
 module_webm_enabled   = False
 module_webp_enabled   = False
 module_theora_enabled = False
+
 # Audio Codecs Support
 module_stb_vorbis_enabled   = True
 module_ogg_enabled          = True
@@ -207,15 +181,13 @@ module_jpg_enabled    = True
 module_squish_enabled           = True  
 module_basis_universal_enabled  = True  # Basis Universal is a "supercompressed" GPU texture compression system
 module_cvtt_enabled             = True
-module_dds_enabled              =  isWindows(platform)  # DirectDraw Surface
+module_dds_enabled              =  isWindows()  # DirectDraw Surface
 
 # OpenEXR
 module_tinyexr_enabled = False
 
 # The V-HACD library decomposes a 3D surface into a set of "near" convex parts.
 module_vhacd_enabled = False
-
-
 
 
 # Network protocols
