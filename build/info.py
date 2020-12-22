@@ -16,7 +16,7 @@ GODOT_PATH   = "godot"
 CUSTOM_PATH  = "../Armory/build/custom.py"
 PLATFORM     = getPlatform()
 DESCRIPTION  = "Armory is a RTS inspired by abandonware _Arsenal : Taste The Power_"
-
+TARGET       = "debug" # target is  (debug|release_debug|release) 
 
 # Storing important infos as global :
 globals()["ProjectName"]  = PROJECT_NAME
@@ -24,3 +24,4 @@ globals()["Platform"]     = getPlatform()
 globals()["GodotPath"]    = path.realpath(GODOT_PATH)
 globals()["CustomPath"]   = path.realpath(CUSTOM_PATH)
 globals()["Description"]  = DESCRIPTION
+globals()["Target"]       = TARGET

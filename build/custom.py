@@ -12,11 +12,13 @@ from info import *
 
 # import functions: 
 from functions import findFolder
+from functions import getGitFolders
 from functions import getPlatform
 from functions import isLinux
 from functions import isWindows
 from functions import isArm
 from functions import isMacOs
+
 
 
 
@@ -29,17 +31,20 @@ from sys import path
 path.insert(1, GodotPath)
 
 # make project a shared library
-module_shared_var_name = "module_" + extra_suffix + "_shared"
-globals()[module_shared_var_name] = "yes"
+# TODO/FIXME this does not work, sadly
+module_list = getGitFolders(custom_modules)
+for module in module_list :
+    module_shared_var_name ='_'.join(['module',module.split('/', 1)[1],'shared'])
+    globals()[module_shared_var_name] = True
 
-# target is  (debug|release_debug|release) 
-target = "debug"
+
+target = Target
 
 bits     = getPlatform()[0]
 arch     = getPlatform()[2]
 platform = getPlatform()[1]
  
- # optimize is  (speed|size) 
+# optimize is  (speed|size) 
 optimize = "speed"
 
 # Build the tools (a.k.a. the Godot editor) (yes|no)
@@ -200,3 +205,4 @@ module_jsonrpc_enabled   = False
 
 # Xatlas
 module_xatlas_unwrap_enabled: False
+

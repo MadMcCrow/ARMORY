@@ -82,10 +82,71 @@ def  isArm(arch : str) -> bool:
 # Find a folder based on its name
 def findFolder(path : str, foldername : str)  -> str:
     from os import walk
+    from os.path import relpath
     for cur, dirs, _files in walk(path):
         if foldername in dirs :
-            return '/'.join([cur,foldername]) 
+            return relpath( str('/'.join([cur,foldername])) )
 
+#get git Rep out of a path
+def getGitRepo(path : str):
+    import os.path
+    path = os.path.realpath(path)
+    repo = None
+    try:
+        from git import Repo
+        try :
+            repo = Repo(path)
+        except:
+            parent_path = None
+            is_git = False
+            while not is_git : 
+                parent_path = os.path.abspath(os.path.join(path, os.pardir))
+                is_git = ".git" in getFolders(parent_path)
+            if not is_git : 
+                raise Exception
+            repo = Repo(parent_path)
+    except:
+        return None
+    finally:
+        return repo
+
+
+# look for path in tree
+def _gitRecursiveLookForPath(path, trees, found = None) :
+    if  not isinstance(found, list) :
+        found = []
+    import os.path
+    try:
+        for tree in trees :
+            try :
+                if str(os.path.basename(path)) in str(os.path.basename(tree.path))  :
+                    found = [str(p.path) for p in tree.trees]
+                else:
+                    _gitRecursiveLookForPath(path, tree.trees, found)
+            except:
+                continue
+    except:
+        pass
+    return found
+    
+
+
+# get names of git tracked folders in path
+def getGitFolders(path : str) -> list :
+    dirs = []
+    try:
+        import os.path 
+        repo = getGitRepo(path)
+        dirs = _gitRecursiveLookForPath(path, repo.tree())
+    except:
+        raise
+    finally:
+        return dirs
+
+# get names of subfolders in folder
+def getFolders(path : str)  -> list:
+    from os import walk
+    return next(walk(path))[1]
 
 # Find files based on substring
 def findFiles(path : str, sub :str)  -> list:

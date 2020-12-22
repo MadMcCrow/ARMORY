@@ -5,8 +5,31 @@
 # Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
 #
 
+# Get environment
 Import('env')
 
+
+# generate module name
+try:
+    from os.path import basename
+    ModuleName = basename(__file__)
+except :
+    from os import getcwd
+    ModuleName = basename(getcwd())
+
+src_folder = 'src'
+inc_folder = 'inc'
+
+# get info about current data
+module_shared_name = ("_".join(["module",ModuleName,"shared"]))
+module_llvm_name   = "use_llvm"
+
+module_shared = globals()[module_shared_name] if module_shared_name in globals() else (ARGUMENTS.get('module_armory_shared', 'no')!= 'no')
+module_llvm   = globals()[module_llvm_name]   if module_llvm_name   in globals() else (ARGUMENTS.get('use_llvm', 'no') != 'no')
+
+
+print(module_shared)
+print(module_llvm)
 
 # Find all sources in path
 def find_sources(path : str)  -> list:
@@ -18,8 +41,12 @@ def find_sources(path : str)  -> list:
     return glob_sources
 	
 
+
+
+
+
 # we need our register type source :
-sources = [  "register_types.cpp"]
+sources = ["register_types.cpp"]
 
 # First, create a custom env for the shared library.
 module_env = env.Clone()
@@ -28,27 +55,36 @@ module_env = env.Clone()
 module_env['LIBS'] = []
 
 # reference our headers in 'inc'
-module_env.Append(CPPPATH=['inc' ])
+module_env.Append(CPPPATH=[inc_folder ])
 # add sources in 'src'
-sources.append(find_sources('./src'))
+sources.append(find_sources(src_folder))
 
-module_env.Append(CCFLAGS=['-O3'])
-module_env.Append(CXXFLAGS=['-std=c++20'])
 
-#if ARGUMENTS.get('use_llvm', 'no') == 'yes' :
-#    module_env.Append(CXXFLAGS=['-std=c++20', '-Wpadded'])
+if module_llvm :
+    module_env.Append(CXXFLAGS=['-std=c++20', '-Wpadded'])
+else :
+    module_env.Append(CCFLAGS=['-O3'])
+    module_env.Append(CXXFLAGS=['-std=c++20'])
+
+
 
 # avoid building in the same path to avoid complication
 VariantDir('../build/armory', './src', duplicate=0)
 
-if ARGUMENTS.get('armory_shared', 'no') == 'yes':
-    # Shared lib compilation
-    module_env.Append(CCFLAGS=['-fPIC'])
-    module_env['LIBS'] = []
-    shared_lib = module_env.SharedLibrary(target='#bin/armory', source=sources)
-    shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
-    env.Append(LIBS=[shared_lib_shim])
-    env.Append(LIBPATH=['#bin'])
+
+
+
+try:
+    if module_shared:
+        # Shared lib compilation
+        module_env.Append(CCFLAGS=['-fPIC'])
+        module_env['LIBS'] = []
+        shared_lib = module_env.SharedLibrary(target='#bin/armory', source=sources)
+        shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
+        env.Append(LIBS=[shared_lib_shim])
+        env.Append(LIBPATH=['#bin'])
+except:
+    pass
 else:
     # Static compilation
     module_env.add_source_files(env.modules_sources, sources)
