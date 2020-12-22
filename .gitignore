@@ -8,9 +8,9 @@
 #
 
 
-# vscode unique folder and workspace (you don't need it)
-.vscode
-*.code-workspace
+# vscode is given via vs-code branch
+#.vscode
+#*.code-workspace
 
 # godot mono (unused)
 godot/modules/mono/*
