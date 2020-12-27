@@ -2,13 +2,15 @@
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
 #include "register_types.h"
-//#include "core/class_db.h"
-#include "map/map_grid.h"
+#include "map/grid_node.h"
+#include "map/tile_manager.h"
 
-void register_armory_types() {
-  ClassDB::register_class<Armory::MapGrid>();
- 
+void register_armory_types() 
+{
+  ClassDB::register_class<Armory::GridNode>();
+  ClassDB::register_class<Armory::TileManager>();
 }
 
-void unregister_armory_types() {
+void unregister_armory_types() 
+{
 }

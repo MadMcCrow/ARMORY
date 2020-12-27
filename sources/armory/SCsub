@@ -8,6 +8,8 @@
 # Get environment
 Import('env')
 
+# First, create a custom env for the shared library.
+module_env = env.Clone()
 
 # generate module name
 try:
@@ -27,9 +29,10 @@ module_llvm_name   = "use_llvm"
 module_shared = globals()[module_shared_name] if module_shared_name in globals() else (ARGUMENTS.get('module_armory_shared', 'no')!= 'no')
 module_llvm   = globals()[module_llvm_name]   if module_llvm_name   in globals() else (ARGUMENTS.get('use_llvm', 'no') != 'no')
 
+print()
 
-print(module_shared)
-print(module_llvm)
+print( "module {} is shared : {}".format(ModuleName, module_shared))
+print( "module {} is build with llvm : {}".format(ModuleName, module_llvm))
 
 # Find all sources in path
 def find_sources(path : str)  -> list:
@@ -41,15 +44,22 @@ def find_sources(path : str)  -> list:
     return glob_sources
 	
 
-
-
+try :
+    value = None
+    for k,v in module_env._dict.items():
+        print('\x1b[2;34;40m' + str(k) + '\x1b[0m')
+        if k == module_shared_name:
+            value = v
+except:
+    pass
+else:
+    print('\x1b[6;30;42m' + str(value) + '\x1b[0m')
 
 
 # we need our register type source :
 sources = ["register_types.cpp"]
 
-# First, create a custom env for the shared library.
-module_env = env.Clone()
+
 
 # Don't inject Godot's dependencies into our shared library.
 module_env['LIBS'] = []
@@ -69,9 +79,8 @@ else :
 
 
 # avoid building in the same path to avoid complication
-VariantDir('../build/armory', './src', duplicate=0)
-
-
+#VariantDir('../build/armory', './src', duplicate=0)
+VariantDir('build', 'src')
 
 
 try:

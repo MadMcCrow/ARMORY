@@ -17,19 +17,19 @@ namespace Armory {
 using MapGridData = Grid2D<Map::Data>;
 
 /**
- *  MapGrid 
+ *  GridNode 
  *  @brief  
  */
-class MapGrid : public Node  {
-    GDCLASS(MapGrid, Node);
+class GridNode : public Node  {
+    GDCLASS(GridNode, Node);
 
 public:
 
     // ctr
-    MapGrid();
+    GridNode();
 
     // dstr
-    ~MapGrid();
+    ~GridNode();
 
 
     /**

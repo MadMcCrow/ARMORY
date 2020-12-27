@@ -1,7 +1,7 @@
 /* Copyright © Noé Perard-Gayot 2020. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#include "map/map_grid.h"
+#include "map/grid_node.h"
 #include "grid/grid_2D.h"
 
 #define GRID_MAX 2048
@@ -9,17 +9,17 @@
 using namespace Armory;
 
 
-MapGrid::MapGrid()
+GridNode::GridNode()
 {
     grid.instance();
 }
 
-MapGrid::~MapGrid()
+GridNode::~GridNode()
 {
     grid.unref();
 }
 
-void MapGrid::set_grid_size(Point2i new_grid_size)
+void GridNode::set_grid_size(Point2i new_grid_size)
 {
     if(!grid.is_valid())
     {
@@ -39,18 +39,18 @@ void MapGrid::set_grid_size(Point2i new_grid_size)
 }
 
 
-void MapGrid::ready()
+void GridNode::ready()
 {
     set_grid_size(grid_size);
 }
 
 
-void MapGrid::_bind_methods() 
+void GridNode::_bind_methods() 
 {
     // recreation of GDScript/ GDNative functions : 
-    ClassDB::bind_method(D_METHOD("ready"), &MapGrid::ready);
-    BIND_GETSET( grid_size, MapGrid)
+    ClassDB::bind_method(D_METHOD("ready"), &GridNode::ready);
+    BIND_GETSET( grid_size, GridNode)
     ADD_GROUP("Grid", "Grid_");
-	BIND_PROPERTY_GETSET(MapGrid, Variant::VECTOR2I, grid_size, PROPERTY_HINT_NONE, "Array size");
+	BIND_PROPERTY_GETSET(GridNode, Variant::VECTOR2I, grid_size, PROPERTY_HINT_NONE, "Array size");
 
 }
