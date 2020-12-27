@@ -20,15 +20,13 @@ from functions import isArm
 from functions import isMacOs
 
 
-
-
 extra_suffix = str(ProjectName).lower()
-custom_modules = findFolder("../", "sources")
+custom_modules = findFolder("../", Sources)
 
 
 # insert at 1, 0 is the script path (or '' in REPL)
-from sys import path
-path.insert(1, GodotPath)
+# from sys import path
+# path.insert(1, GodotPath)
 
 # make project a shared library
 # TODO/FIXME this does not work, sadly
@@ -114,7 +112,7 @@ progress = True
 # CFLAGS
 # CXXFLAGS
 # LINKFLAGS
-use_llvm    =  True
+use_llvm    =  False
 use_lld     =  use_llvm
 use_thinlto =  use_llvm  # https://clang.llvm.org/docs/ThinLTO.html
 use_static_cpp =  isWindows()

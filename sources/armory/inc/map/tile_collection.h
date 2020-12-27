@@ -9,7 +9,8 @@
 #include "static_helper.h" // add GETSET_SUPPORT
 
 /** Armory namespace */
-namespace Armory {
+namespace Armory 
+{
 
 
 /**

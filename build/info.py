@@ -8,12 +8,15 @@
 #
 from os import path
 from functions import getPlatform
+from functions import findFolder
 
 # Set project name here
 #PROJECTNAME = os.path.basename(path.dirname(path.realpath(__file__)))
 PROJECT_NAME = "Armory"
 GODOT_PATH   = "godot"
 CUSTOM_PATH  = "../Armory/build/custom.py"
+SOURCES      = "sources"
+SOURCES_PATH = findFolder("./", "sources")
 PLATFORM     = getPlatform()
 DESCRIPTION  = "Armory is a RTS inspired by abandonware _Arsenal : Taste The Power_"
 TARGET       = "debug" # target is  (debug|release_debug|release) 
@@ -25,3 +28,5 @@ globals()["GodotPath"]    = path.realpath(GODOT_PATH)
 globals()["CustomPath"]   = path.realpath(CUSTOM_PATH)
 globals()["Description"]  = DESCRIPTION
 globals()["Target"]       = TARGET
+globals()["Sources"]      = SOURCES
+globals()["SourcesPath"]  = SOURCES_PATH

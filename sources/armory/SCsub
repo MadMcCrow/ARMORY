@@ -44,17 +44,6 @@ def find_sources(path : str)  -> list:
     return glob_sources
 	
 
-try :
-    value = None
-    for k,v in module_env._dict.items():
-        print('\x1b[2;34;40m' + str(k) + '\x1b[0m')
-        if k == module_shared_name:
-            value = v
-except:
-    pass
-else:
-    print('\x1b[6;30;42m' + str(value) + '\x1b[0m')
-
 
 # we need our register type source :
 sources = ["register_types.cpp"]
@@ -69,12 +58,13 @@ module_env.Append(CPPPATH=[inc_folder ])
 # add sources in 'src'
 sources.append(find_sources(src_folder))
 
+# godot is not yet fully compatible with '-std=c++20' so we stay at sooner
 
 if module_llvm :
-    module_env.Append(CXXFLAGS=['-std=c++20', '-Wpadded'])
+    module_env.Append(CXXFLAGS=['-std=c++17','-Wpadded'])
 else :
     module_env.Append(CCFLAGS=['-O3'])
-    module_env.Append(CXXFLAGS=['-std=c++20'])
+    module_env.Append(CXXFLAGS=['-std=c++17'])
 
 
 

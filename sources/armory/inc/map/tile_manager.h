@@ -1,13 +1,15 @@
 /* Copyright © Noé Perard-Gayot 2020. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#ifndef GRID_NODE_3D_H
-#define GRID_NODE_3D_H
+#ifndef TILE_MANAGER_H
+#define TILE_MANAGER_H
 
-
-#include "grid_node.h"
-#include "scene/3d/node_3d.h"
+#include "map/grid_node.h"
+#include "map/tile_collection.h"
 #include "static_helper.h" // add GETSET_SUPPORT
+
+#include "core/object/reference.h"
+#include "scene/3d/node_3d.h"
 
 /** Armory namespace */
 namespace Armory {
@@ -18,11 +20,20 @@ namespace Armory {
  */
 class TileManager : public Node3D  {
     GDCLASS(TileManager, Node3D);
+protected:
+
+    Ref<TileCollection> collection;
+    GETSET( Ref<TileCollection> , collection)
+
+public:
+
+    virtual String get_configuration_warning() const override;
 
 public:
     static void _bind_methods();
+
 };
 
 } // namespace Armory
 
-#endif //GRID_NODE_3D_H
+#endif //TILE_MANAGER_H

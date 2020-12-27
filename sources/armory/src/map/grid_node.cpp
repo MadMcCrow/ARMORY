@@ -49,7 +49,6 @@ void GridNode::_bind_methods()
 {
     // recreation of GDScript/ GDNative functions : 
     ClassDB::bind_method(D_METHOD("ready"), &GridNode::ready);
-    BIND_GETSET( grid_size, GridNode)
     ADD_GROUP("Grid", "Grid_");
 	BIND_PROPERTY_GETSET(GridNode, Variant::VECTOR2I, grid_size, PROPERTY_HINT_NONE, "Array size");
 

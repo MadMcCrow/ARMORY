@@ -15,7 +15,7 @@
 /** Generate getter for a property */
 #define GET(type, var) inline type GETTER(var)() const { return  var ; }
 /** Generate setter for a property */
-#define SET(type, var) const inline void SETTER(var)(const type &val) { var = val; }
+#define SET(type, var) inline void SETTER(var)(const type &val) { var = val; }
 /** Generate setter and getter for a property */
 #define GETSET(type, var)   GET(type, var) SET(type, var)
 
@@ -31,6 +31,7 @@
 
 /**  Generate the correct ADD_PROPERTY compliant with GETSET */
 #define BIND_PROPERTY_GETSET(class, variant, var, property_hint_type, hint) BIND_GETSET(var, class) ADD_PROPERTY_GETSET(variant, var, property_hint_type, hint);
+
 
 class Object;
 class String;
