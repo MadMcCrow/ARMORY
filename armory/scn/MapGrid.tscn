@@ -1,0 +1,8 @@
+[gd_scene format=2]
+
+[node name="Node3D" type="Node3D"]
+script = null
+
+[node name="GridNode3D" type="GridNode3D" parent="."]
+grid_size = Vector2i( 64, 64 )
+script = null

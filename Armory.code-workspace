@@ -41,11 +41,7 @@
 			"utility": "cpp",
 			"compare": "cpp",
 			"ostream": "cpp",
-			"ratio": "cpp","files.exclude": {
-				"**/__pycache__/**": true,
-				"**/**.pyc": true,
-				"**/**.o": 	true,
-				"**/**.a": 	true
+			"ratio": "cpp",
 			"initializer_list": "cpp",
 			"iosfwd": "cpp",
 			"new": "cpp",
@@ -94,18 +90,6 @@
 			"thread": "cpp",
 			"typeindex": "cpp",
 			"typeinfo": "cpp"
-		},	
-		"files.watcherExclude": {
-			"**/.git/objects/**": true,
-			"**/.git/subtree-cache/**": true,
-			"**/node_modules/**": true,
-			"**/.hg/store/**": true
-		},
-		"files.exclude": {
-			"**/__pycache__/**": true,
-			"**/**.pyc": true,
-			"**/**.o": 	true,
-			"**/**.a": 	true
 		}
 	}
 }

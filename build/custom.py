@@ -32,11 +32,12 @@ path.insert(1, GodotPath)
 
 # make project a shared library
 # TODO/FIXME this does not work, sadly
-module_list = getGitFolders(custom_modules)
-for module in module_list :
-    module_shared_var_name ='_'.join(['module',module.split('/', 1)[1],'shared'])
-    globals()[module_shared_var_name] = True
-
+# module_list = getGitFolders(custom_modules)
+#    # for module in module_list :
+#    #    module_shared_var_name ='_'.join(['module',module.split('/', 1)[1],'shared'])
+#    #    globals()[module_shared_var_name] = True
+# it does not work with this either :
+#    # module_armory_shared = True
 
 target = Target
 
