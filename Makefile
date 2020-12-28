@@ -9,8 +9,8 @@
 
 # `make all` builds the editor
 all:
-	python ./build/setup.py --build
+	@python ./build/setup.py --build
 
 # `make launch` calls launch script
 launch:
-	./launch.sh
+	@./launch.sh

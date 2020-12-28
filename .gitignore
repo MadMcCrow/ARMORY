@@ -7,8 +7,7 @@
 # Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
 #
 
-
-# vscode unique folder and workspace (you don't need it)
+# vscode is given via vs-code branch
 .vscode
 *.code-workspace
 
@@ -24,6 +23,7 @@ godot.bin
 # build it yourself, I'm not gonna give you output files
 *.o
 *.a
+*.os
 
 # nor shared object
 *.dll

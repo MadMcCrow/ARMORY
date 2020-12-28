@@ -7,9 +7,6 @@
 # Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
 #
 
-# try to get globals
-from info import *
-
 # import functions: 
 from functions import findFolder
 from functions import getGitFolders
@@ -20,30 +17,13 @@ from functions import isArm
 from functions import isMacOs
 
 
-
-
-extra_suffix = str(ProjectName).lower()
+extra_suffix = "armory"
 custom_modules = findFolder("../", "sources")
-
-
-# insert at 1, 0 is the script path (or '' in REPL)
-from sys import path
-path.insert(1, GodotPath)
-
-# make project a shared library
-# TODO/FIXME this does not work, sadly
-module_list = getGitFolders(custom_modules)
-for module in module_list :
-    module_shared_var_name ='_'.join(['module',module.split('/', 1)[1],'shared'])
-    globals()[module_shared_var_name] = True
-
-
-target = Target
 
 bits     = getPlatform()[0]
 arch     = getPlatform()[2]
 platform = getPlatform()[1]
- 
+
 # optimize is  (speed|size) 
 optimize = "speed"
 
@@ -54,7 +34,7 @@ tools = True
 tests = False
 
 # use_lto: Use link-time optimization (yes|no)
-use_lto = "release" in str(target) # disable in debug
+# use_lto = "release" in str(target) # disable in debug
 
 # use_precise_math_checks: Math checks use very precise epsilon (debug option) (yes|no)
 use_precise_math_checks = False
@@ -126,8 +106,8 @@ pulseaudio =  isLinux()
 udev       =  isLinux()
 execinfo   =  isWindows()
 
-debug_symbols = 'yes' if "debug" in str(target) else 'no'
-separate_debug_symbols = False
+#debug_symbols = 'yes' if "debug" in str(target) else 'no'
+#separate_debug_symbols = False
 
 # disable touch input events
 touch = False
@@ -146,8 +126,8 @@ module_gdnavigation_enabled     = True  # TODO/FIXME :Godot will not load withou
 
 module_bullet_enabled           = False # no physics in Armory
 module_camera_enabled           = False # no camera video feed
-module_gridmap_enabled          = False # tilemap for 3d Meshes -> we're doing our own system
-
+module_gridmap_enabled          = True  #
+module_gltf_enabled             = False #
 
 # Mobile
 module_gamecenter_enabled       = False # iOS gamecenter
