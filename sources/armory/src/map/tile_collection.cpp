@@ -7,5 +7,5 @@ using namespace Armory;
 
 void TileCollection::_bind_methods()
 {
-
+    BIND_PROPERTY_GETSET(TileCollection, Variant::ARRAY, tileset, PROPERTY_HINT_ARRAY_TYPE, "Tiles")
 }

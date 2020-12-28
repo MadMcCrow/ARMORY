@@ -5,7 +5,7 @@
 #define TILE_MESH_H
 
 
-#include "core/variant/binder_common.h"  // VARIANT_ENUM_CAST
+//#include "core/variant/binder_common.h"  // VARIANT_ENUM_CAST
 #include "scene/resources/mesh.h"        // Mesh resource
 
 #include "static_helper.h"               // add GETSET_SUPPORT
@@ -23,7 +23,9 @@ class TileMesh : public Resource  {
 
 public:
 
-    // simple enum to describe type
+    /**
+     *  Geometry describe how this tile interact with others 
+     */
     enum Geometry  {
         flat,
         straight,
@@ -35,19 +37,12 @@ public:
         all_sides
     };
 
-    
-    // simple enum to describe height
-    enum Height {
-        sea,
-        plain,
-        hill_0,
-        hill_1,
-        hill_2,
-        mountain
-    };
-
-
-    static void _bind_methods();
+    /**
+     *  is_land is true for land tiles,
+     *  false for sea
+     */
+    bool is_land = true;
+    GETSET(bool, is_land)
 
     /**
      *  mesh is the real ressource we'll load
@@ -56,16 +51,19 @@ public:
     GETSET(Ref<Mesh>, mesh)
 
     /**
-     *  height represent the height to use
+     *  height {0,1,2,3}
      */
-    Height height;
-    GETSET(Height, height)
+    unsigned int height : 2;
+    GET(unsigned int, height);
+    void set_height(unsigned int h);
  
     /**
-     *  variant represent the transition shape we can have
+     *  type of geometry this tile has
      */
-    Geometry geometry;
-    GETSET(Geometry, geometry)
+    Geometry type;
+    GETSET_COPY(Geometry, type)
+
+    static void _bind_methods();
 
 };
 
@@ -73,7 +71,6 @@ public:
 
 // declare enums
 VARIANT_ENUM_CAST(Armory::TileMesh::Geometry);
-VARIANT_ENUM_CAST(Armory::TileMesh::Height);
 
 
 #endif //TILE_MESH_H

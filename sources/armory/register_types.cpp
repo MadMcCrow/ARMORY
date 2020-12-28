@@ -7,7 +7,6 @@
 #include "map/tile_mesh.h"        // tile mesh
 #include "map/tile_manager.h"     // TileManager
 #include "map/tile_collection.h"  // TileCollection
-
 #include "register_types.h"
 
 

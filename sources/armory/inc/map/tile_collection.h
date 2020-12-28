@@ -24,7 +24,8 @@ public:
 
 protected:
     
-    //Vector<TileMesh> tileset;
+    Vector<TileMesh> tileset;
+    GETSET(Vector<TileMesh>, tileset)
 
 };
 

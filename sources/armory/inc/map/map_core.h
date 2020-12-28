@@ -11,46 +11,31 @@ namespace Armory {
 namespace Map {
     
     /** 
-     * TypeMask
-     * @brief Type mask for tiles 
-     * 1st bit is Land/Sea 
-     * 2nd is modifier,
-     *  3 lasts are for height/depth 
-     */
-    enum class TypeMask : char
-    {
-        Land_0  = 0b0000000,
-        Land_0M = 0b0100000,
-        Land_1  = 0b0000001,
-        Land_1M = 0b0100001,
-        Land_2  = 0b0000010,
-        Land_2M = 0b0100010,
-        Land_3  = 0b0000011,
-        Land_3M = 0b0100011,
-        Land_4  = 0b0000100,
-        Land_4M = 0b0100100,
-        Sea_0   = 0b1000000,
-        Sea_0M  = 0b1100000,
-        Sea_1   = 0b1000001,
-        Sea_1M  = 0b1100001,
-        Sea_2   = 0b1000010,
-        Sea_2M  = 0b1100010,
-        Sea_3   = 0b1000011,
-        Sea_3M  = 0b1100011,
-        Sea_4   = 0b1000100,
-        Sea_4M  = 0b1100100,
-
-    };
-    /** 
      * Data
      * @brief contains all info about a tile
      */
     struct Data
     {
+        /**
+         *  sign:  0 is sea, 1 is land 
+         */
+        unsigned int sign     : 1;
 
-        /** type of tile */
-        TypeMask type;
+        /**
+         *  Absolute Height/Depth, can be 0,1,2,3 
+         */
+        unsigned int height   : 2;
+
+        /**
+         *  Modifier is River  on 0
+         *  Modifier is trees  on 1
+         *  Modifier is rocks  on 2
+         *  Modifier is canyon on 3
+         */
+        unsigned int modifier : 1;
+
     };
+    
 } // namespace Map
 
 
