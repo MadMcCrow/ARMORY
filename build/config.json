@@ -14,6 +14,6 @@
     {
         "_targets" : ["debug","release_debug","release"],
         "target" : "debug",  
-        "shared" : true
+        "shared" : false
     }
 }

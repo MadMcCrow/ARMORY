@@ -98,7 +98,6 @@ def _buildCommand(custom_path: str, shared=False, extra=""):
     buildcommand = "scons -j{threads}  profile={custom} {extra}"
     import multiprocessing
     cpu = multiprocessing.cpu_count()
-    _buildPrint("ERROR",shared)
     Extra = (_sharedLib() if shared else " ") + extra
     return buildcommand.format(threads=cpu, custom=custom_path, extra=Extra)
 
