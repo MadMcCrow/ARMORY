@@ -8,38 +8,54 @@
 # Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
 #
 
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+# color output
+def _buildPrint(mode, txt) :
+    from functions import color
+    if "HEADER" in mode :
+        color.print(color.HEADER, txt)
+    if "BUILD" in mode :
+        color.print(color.LESS, txt)
+    if "INFO" in mode :
+        color.print(color.OKBLUE, txt)
+    if "ERROR" in mode :
+        color.print(color.ERROR, txt)
+    if "WARNING" in mode :
+        color.print(color.WARNING, txt)
+
+#
+#   Strings scons might output, to be then parsed by us
+#
+class BuildStr:
+    _init_str  = "[initial build] {init_info}"
+    _def_str   = "[{percent}] {info}"
+    _error_str = "{err_a} error {err_b}"
+    strs = [_init_str, _def_str, _error_str]
+
+#
+#   Exception class for when things go south
+#
+class BuildError(Exception):
+    pass
 
 
-def buildPrint(text: str):
-    print(bcolors.WARNING + text + bcolors.ENDC)
-
-
-def buildTime():
+#
+#  measure time
+#
+def _buildTime():
     time = 0
     try:
         from time import perf_counter_ns as nsec
-        time = nsec() / 1000.0
+        time = nsec() / 1e9
     finally:
         return time
 
 
-def sharedLib():
+def _sharedLib():
     shared_modules = ""
     try:
         from functions import getGitFolders
-        from info      import SOURCES_PATH
+        from info import SOURCES_PATH
         custom_modules = SOURCES_PATH
-        print(custom_modules)
         module_list = getGitFolders(custom_modules)
         for module in module_list:
             module_shared_var_name = '_'.join(
@@ -51,38 +67,66 @@ def sharedLib():
         return shared_modules
 
 
-def buildCommand(custom_path : str , shared=False, extra=""):
+
+
+#
+#	generate correct build command
+#
+def _buildCommand(custom_path: str, shared=False, extra=""):
     buildcommand = "scons -j{threads}  profile={custom} {extra}"
     import multiprocessing
     cpu = multiprocessing.cpu_count()
-    Extra = (sharedLib() if shared else " ") + extra
+    Extra = (_sharedLib() if shared else " ") + extra
     return buildcommand.format(threads=cpu, custom=custom_path, extra=Extra)
+
+
+#
+#	analyse output text and scan for error
+#
+def _parseBuildOutput(line :str):
+    out = line.replace('\n', '')
+    for err_str in ["error", "Error", "ERROR"] :
+        if err_str in line:
+            _buildPrint("ERROR", out)
+            return False
+    print( '\r' + out, end='\x1b[1K' )
+    return True
+
+       
+
+    
+
+
+def _runScons(cmd : str, godot_path : str ) :
+    import subprocess
+    import shlex
+    scons = subprocess.Popen(cmd, cwd=godot_path, stdout=subprocess.PIPE, shell=True, encoding="utf-8")
+    while True:
+        line = scons.stdout.readline()
+        if not line:
+            break
+        if not _parseBuildOutput(line):
+            if scons != None:
+                scons.terminate()
+            raise BuildError
+    print('\x1b[1K ') # clean terminal
+
+
 
 #
 #	build godot with custom profile
 #
-
-
-def build(godot_path : str, custom_path : str, shared: bool = False):
-    start_time = buildTime()
-    print("--- build started at {} ---".format(start_time))
+def build(godot_path: str, custom_path: str, shared: bool = False):
+    start_time = _buildTime()
+    _buildPrint("HEADER", "--- build started  ---")
     try:
-        import subprocess
-        import shlex
-        cmd = buildCommand(custom_path, shared, "")
-        print("building godot with command : \n{}".format(cmd))
-        rc = subprocess.run(shlex.split(cmd), cwd=godot_path, shell=True, encoding="utf-8")
-        # while True:
-        #	line = rc.stdout.readline()
-        #	if "error" in str(line) :
-        #		print("{}"str(line))
-        #		rc.terminate()
-        #	if not line: break
+      
+        cmd = _buildCommand(custom_path, shared, "")
+        _buildPrint("INFO", "building godot with command : \n{}".format(cmd))
+        _runScons(cmd, godot_path)
     except:
-        print("Failed to buid {} with {}".format(godot_path, custom_path))
-        # if rc != None:
-        #    rc.terminate()
+        _buildPrint("ERROR" , "Failed to buid {} with {}".format(godot_path, custom_path))
         raise
     else:
-        buildtime = buildTime() - start_time
-        print("--- build finished in {} seconds ---".format(buildtime))
+        buildtime = _buildTime() - start_time
+        _buildPrint("HEADER", "--- build finished in {:.3f} seconds ---".format(buildtime))

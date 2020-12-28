@@ -143,6 +143,8 @@ module_lightmapper_rd_enabled   = True
 module_regex_enabled            = True
 module_gdnavigation_enabled     = True  # TODO/FIXME :Godot will not load without this module
 
+module_gltf_enabled             = False # this module cause errors
+
 module_bullet_enabled           = False # no physics in Armory
 module_camera_enabled           = False # no camera video feed
 module_gridmap_enabled          = False # tilemap for 3d Meshes -> we're doing our own system

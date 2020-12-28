@@ -7,6 +7,28 @@
 # Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
 #
 
+
+#
+#  colors for formating text
+#
+class color:
+    HEADER  = '\033[1;35;68m'
+    OKBLUE  = '\033[0;7;34m' 
+    OKGREEN = '\033[0;39;32m'
+    WARNING = '\033[0;93;14m'
+    ERROR   = '\033[6;41;62m'
+    LESS    = '\033[2;9;11m'
+    ENDC    = '\033[0m'  
+
+
+    @classmethod
+    def print(cls, color, text, end = '\n'):
+        '''
+        adapt output to a color
+        '''
+        print( color + text + cls.ENDC, end = end)
+
+
 #
 #   getGodotVersion()
 #   get version as tuple int,int : major, minor
