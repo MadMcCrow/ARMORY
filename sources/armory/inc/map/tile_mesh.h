@@ -4,10 +4,16 @@
 #ifndef TILE_MESH_H
 #define TILE_MESH_H
 
-#include "scene/resources/mesh.h"
 
-#include "static_helper.h" // add GETSET_SUPPORT
+#include "core/variant/binder_common.h"  // VARIANT_ENUM_CAST
+#include "scene/resources/mesh.h"        // Mesh resource
 
+#include "static_helper.h"               // add GETSET_SUPPORT
+
+
+
+namespace Armory
+{
 
 /**
  *  GridNode3D implements gridNode with 3D 
@@ -17,7 +23,7 @@ class TileMesh : public Resource  {
 
 public:
 
-      // simple enum to describe type
+    // simple enum to describe type
     enum Geometry  {
         flat,
         straight,
@@ -29,6 +35,8 @@ public:
         all_sides
     };
 
+    
+    // simple enum to describe height
     enum Height {
         sea,
         plain,
@@ -61,9 +69,11 @@ public:
 
 };
 
+} // namespace Armory
 
 // declare enums
-VARIANT_ENUM_CAST(TileMesh::Geometry);
-VARIANT_ENUM_CAST(TileMesh::Height);
+VARIANT_ENUM_CAST(Armory::TileMesh::Geometry);
+VARIANT_ENUM_CAST(Armory::TileMesh::Height);
+
 
 #endif //TILE_MESH_H
