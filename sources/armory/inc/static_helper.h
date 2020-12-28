@@ -4,24 +4,34 @@
 #ifndef STATIC_HELPER_H
 #define STATIC_HELPER_H
 
-#define STRING(s) #s
+#include "core/object/object.h" // for cast
+
+#define STR(str) #str
+#define XSTR(str) STR(str)
 
 #define SETTER(var) set_##var
 #define GETTER(var) get_##var
 
-
-
 /** Generate getter for a property */
-#define GET(type, var) inline type GETTER(var)() { return  var ; }
+#define GET(type, var) inline type GETTER(var)() const { return  var ; }
 /** Generate setter for a property */
-#define SET(type, var) const inline void SETTER(var)(type val) { var = val; }
+#define SET(type, var) inline void SETTER(var)(const type &val) { var = val; }
 /** Generate setter and getter for a property */
-#define GETSET(type, var)     inline type GETTER(var)() { return  var ; } const inline void SETTER(var)(type val) { var = val; }
+#define GETSET(type, var)   GET(type, var) SET(type, var)
 
-/**
- *  Generate the correct ADD_PROPERTY compliant with GETSET
- */
-#define ADD_PROPERTY_GETSET(variant, var, property_hint_type, hint) ADD_PROPERTY(PropertyInfo( variant, #var, property_hint_type, hint), STRING(SETTER(var)), STRING(GETTER(var)));
+/** Bind setter for a property */
+#define BIND_SET(var, class) ClassDB::bind_method(D_METHOD( XSTR(SETTER(var)), STR(var)), &class::SETTER(var));
+/** Bind Getter for a property */
+#define BIND_GET(var, class) ClassDB::bind_method(D_METHOD( XSTR(GETTER(var))), &class::GETTER(var));
+/** Generate setter and getter for a property */
+#define BIND_GETSET(var, class) BIND_SET(var, class) BIND_GET(var, class)
+
+/**  Generate the correct ADD_PROPERTY compliant with GETSET */
+#define ADD_PROPERTY_GETSET(variant, var, property_hint_type, hint) ADD_PROPERTY(PropertyInfo( variant, #var, property_hint_type, hint), XSTR(SETTER(var)), XSTR(GETTER(var)) );
+
+/**  Generate the correct ADD_PROPERTY compliant with GETSET */
+#define BIND_PROPERTY_GETSET(class, variant, var, property_hint_type, hint) BIND_GETSET(var, class) ADD_PROPERTY_GETSET(variant, var, property_hint_type, hint);
+
 
 class Object;
 class String;
@@ -67,6 +77,13 @@ namespace Armory
   	    return X * X * (3 - 2 * X);
     }
 
-}
+    // Dynamically cast an object type-safely.
+    template <typename To, typename From>
+    inline To* Cast(From* Src)
+    {
+        return Object::cast_to<To>(Src);
 
+    }
+
+}
 #endif //STATIC_HELPER_H

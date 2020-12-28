@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="GridNode" inherits="Node3D" version="4.0">
+	<brief_description>
+		Node for 3D tile-based maps.
+	</brief_description>
+	<description>
+		GridNode is a simple wrapper for 2d grids
+	</description>
+	<methods>
+		<method name="set_grid_size">
+			<return type="void"></return>
+			<argument index="0" name="new_grid_size" type="Point2i"></argument>
+			<description>
+				Change array dimension
+			</description>
+		</method>
+	</methods>
+	<members>
+	</members>
+	<signals>
+	</signals>
+	<constants>
+	</constants>
+</class>

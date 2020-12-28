@@ -1,4 +1,13 @@
-# vscode unique folder and workspace (you don't need it)
+#!/usr/bin/git
+#
+# gitignore : 
+#             What files and extension we mustn't submit to github
+#
+# Copyright © Noé Perard-Gayot 2020.                                                                                        #
+# Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
+#
+
+# vscode is given via vs-code branch
 .vscode
 *.code-workspace
 
@@ -12,9 +21,9 @@ godot-cpp/api.json
 godot.bin
 
 # build it yourself, I'm not gonna give you output files
-build/
 *.o
 *.a
+*.os
 
 # nor shared object
 *.dll
@@ -23,3 +32,9 @@ build/
 # python cache
 __pycache__
 *.pyc
+
+# Godot
+## import data
+*/.import/*
+## mono objects
+*/.mono/*

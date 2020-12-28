@@ -1,6 +1,11 @@
 /* Copyright © Noé Perard-Gayot 2020. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#include "grid/grid_2D.h"
+#include "map/tile_collection.h"
 
-//using namespace Armory;
+using namespace Armory;
+
+void TileCollection::_bind_methods()
+{
+
+}

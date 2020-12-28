@@ -19,6 +19,8 @@ The game will be (almost) entirely in C++. the code is added to modules in the s
 
 Any push request will be treated, and merged if it's any kind of improvement. 
 
-## Licence
+## License
 
-This project is under MIT, and will always be, you should find a copy of the licence in this repository.
+Copyright © Noé Perard-Gayot 2020.    
+Licensed under the [MIT License](LICENSE.txt)
+You may also obtain a copy of the License at https://opensource.org/licenses/mit-license.php 

@@ -1,0 +1,19 @@
+{
+    "project" :
+    {
+        "name"     :   "Armory",
+        "custom.py":   "../build/custom.py",
+        "sources"  :   "sources",
+        "description" :"Armory is a RTS inspired by abandonware _Arsenal : Taste The Power_"
+    },
+    "godot" :
+    {
+        "path" : "godot"
+    },
+    "build" :
+    {
+        "_targets" : ["debug","release_debug","release"],
+        "target" : "debug",  
+        "shared" : false
+    }
+}
