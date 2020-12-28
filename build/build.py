@@ -40,19 +40,18 @@ def _sources():
 
 
 # color output
-def _buildPrint(mode, txt) :
-    from functions import colorine loop and triangle fan are not supported and need to be converted to lines and triangles [-Wcpp]
- 2398 | #warning line loop and triangle fan are not supported and need to be converted to lines and triangles
+def _buildPrint(mode, txt, end='\n') :
+    from functions import color
     if "HEADER" in mode :
-        color.print(color.HEADER, str(txt))
+        color.print(color.HEADER, str(txt), end = end)
     if "BUILD" in mode :
-        color.print(color.LESS, str(txt))
+        color.print(color.LESS, str(txt), end = end)
     if "INFO" in mode :
-        color.print(color.OKBLUE, str(txt))
+        color.print(color.OKBLUE, str(txt), end = end)
     if "ERROR" in mode :
-        color.print(color.ERROR, str(txt))
+        color.print(color.ERROR, str(txt), end = end)
     if "WARNING" in mode :
-        color.print(color.WARNING,str(txt))
+        color.print(color.WARNING,str(txt), end = end)
 
 
 #
@@ -112,25 +111,21 @@ def _parseBuildOutput(line :str):
     error = False
     try: 
         import re
-        error = bool(re.match(r'[\w\W]*\serror(.*)$', str(line) ))
+        error   = bool(re.match(r'[\w\W]*\serror(.*)$', str(line) ))
+        warning = bool(re.match(r'[\w\W]*\swarning(.*)$', str(line) ))
     except:
         pass
     finally:
         if error :
             _buildPrint("ERROR", out)
             return False
-        print( '\r' + out, end='\x1b[1K' )
+        _buildPrint( "WARNING" if warning else "BUILD" ,'\r' + out, end='\x1b[1K' )
         return True
    
-
-       
-
-    
 
 
 def _runScons(cmd : str, godot_path : str ) :
     import subprocess
-    import shlex
     scons = subprocess.Popen(cmd, cwd=godot_path, stdout=subprocess.PIPE, shell=True, encoding="utf-8")
     while True:
         line = scons.stdout.readline()

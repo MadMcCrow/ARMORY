@@ -50,7 +50,6 @@ def importJsonConfig(path = './', override_globals = False) ->dict :
         pass
     finally:
         f.close()
-    print(json_dict)
     return json_dict
 
 
