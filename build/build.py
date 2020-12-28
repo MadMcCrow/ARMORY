@@ -8,28 +8,52 @@
 # Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
 #
 
+# config is in json form now
+from functions import importJsonConfig
+_JsonConfig = importJsonConfig("build/config.json")
+
+
+def _godotPath():
+    d = _JsonConfig['godot']
+    return d['path']
+
+def _customPath():
+    d = _JsonConfig['project']
+    return d['custom.py']
+
+def _projectName():
+    d = _JsonConfig['project']
+    return d['name']
+
+def _description():
+    d = _JsonConfig['project']
+    return d['description']
+
+def _shared():
+    d = _JsonConfig['build']
+    return d['shared']
+
+def _sources():
+    d = _JsonConfig['project']
+    return d['sources']
+
+
+
 # color output
 def _buildPrint(mode, txt) :
-    from functions import color
+    from functions import colorine loop and triangle fan are not supported and need to be converted to lines and triangles [-Wcpp]
+ 2398 | #warning line loop and triangle fan are not supported and need to be converted to lines and triangles
     if "HEADER" in mode :
-        color.print(color.HEADER, txt)
+        color.print(color.HEADER, str(txt))
     if "BUILD" in mode :
-        color.print(color.LESS, txt)
+        color.print(color.LESS, str(txt))
     if "INFO" in mode :
-        color.print(color.OKBLUE, txt)
+        color.print(color.OKBLUE, str(txt))
     if "ERROR" in mode :
-        color.print(color.ERROR, txt)
+        color.print(color.ERROR, str(txt))
     if "WARNING" in mode :
-        color.print(color.WARNING, txt)
+        color.print(color.WARNING,str(txt))
 
-#
-#   Strings scons might output, to be then parsed by us
-#
-class BuildStr:
-    _init_str  = "[initial build] {init_info}"
-    _def_str   = "[{percent}] {info}"
-    _error_str = "{err_a} error {err_b}"
-    strs = [_init_str, _def_str, _error_str]
 
 #
 #   Exception class for when things go south
@@ -54,15 +78,14 @@ def _sharedLib():
     shared_modules = ""
     try:
         from functions import getGitFolders
-        from info import SOURCES_PATH
-        custom_modules = SOURCES_PATH
-        module_list = getGitFolders(custom_modules)
+        from functions import importJsonConfig
+        module_list = getGitFolders(_sources())
         for module in module_list:
             module_shared_var_name = '_'.join(
                 ['module', module.split('/', 1)[1], 'shared'])
             shared_modules += '='.join([module_shared_var_name, "yes"]) + ' '
     except:
-        pass
+        raise
     finally:
         return shared_modules
 
@@ -76,6 +99,7 @@ def _buildCommand(custom_path: str, shared=False, extra=""):
     buildcommand = "scons -j{threads}  profile={custom} {extra}"
     import multiprocessing
     cpu = multiprocessing.cpu_count()
+    _buildPrint("ERROR",shared)
     Extra = (_sharedLib() if shared else " ") + extra
     return buildcommand.format(threads=cpu, custom=custom_path, extra=Extra)
 
@@ -85,12 +109,19 @@ def _buildCommand(custom_path: str, shared=False, extra=""):
 #
 def _parseBuildOutput(line :str):
     out = line.replace('\n', '')
-    for err_str in ["error", "Error", "ERROR"] :
-        if err_str in line:
+    error = False
+    try: 
+        import re
+        error = bool(re.match(r'[\w\W]*\serror(.*)$', str(line) ))
+    except:
+        pass
+    finally:
+        if error :
             _buildPrint("ERROR", out)
             return False
-    print( '\r' + out, end='\x1b[1K' )
-    return True
+        print( '\r' + out, end='\x1b[1K' )
+        return True
+   
 
        
 
@@ -116,16 +147,15 @@ def _runScons(cmd : str, godot_path : str ) :
 #
 #	build godot with custom profile
 #
-def build(godot_path: str, custom_path: str, shared: bool = False):
+def build():
     start_time = _buildTime()
     _buildPrint("HEADER", "--- build started  ---")
     try:
-      
-        cmd = _buildCommand(custom_path, shared, "")
+        cmd = _buildCommand(_customPath(), _shared(), "")
         _buildPrint("INFO", "building godot with command : \n{}".format(cmd))
-        _runScons(cmd, godot_path)
+        _runScons(cmd, _godotPath())
     except:
-        _buildPrint("ERROR" , "Failed to buid {} with {}".format(godot_path, custom_path))
+        _buildPrint("ERROR" , "Failed to buid {} with {}".format(_godotPath(), _customPath()))
         raise
     else:
         buildtime = _buildTime() - start_time

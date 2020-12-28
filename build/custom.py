@@ -7,9 +7,6 @@
 # Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
 #
 
-# try to get globals
-from info import *
-
 # import functions: 
 from functions import findFolder
 from functions import getGitFolders
@@ -20,8 +17,8 @@ from functions import isArm
 from functions import isMacOs
 
 
-extra_suffix = str(ProjectName).lower()
-custom_modules = findFolder("../", Sources)
+extra_suffix = "armory"
+custom_modules = findFolder("../", "sources")
 
 
 # insert at 1, 0 is the script path (or '' in REPL)
@@ -112,7 +109,7 @@ progress = True
 # CFLAGS
 # CXXFLAGS
 # LINKFLAGS
-use_llvm    =  False
+use_llvm    =  True
 use_lld     =  use_llvm
 use_thinlto =  use_llvm  # https://clang.llvm.org/docs/ThinLTO.html
 use_static_cpp =  isWindows()

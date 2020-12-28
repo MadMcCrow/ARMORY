@@ -8,15 +8,6 @@
 # Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
 #
 
-# VERY IMPORTANT : allows accessing global variables
-from info import *
-
-
-#
-#	Function to determine if we should build the solution
-#
-def shouldRebuild():
-    return True
 
 #
 #   Desktop file generation
@@ -32,9 +23,9 @@ def generateDesktopFile(path):
         from functions import findFiles
         from functions import findFilesList
         bin_path = findFilesList(
-            GodotPath + "/bin", [str(ProjectName).lower(), ".tools.", "bin"])[0]
-        project_path = findFiles(str(ProjectName), ".godot")[0]
-        icon_path = findFiles(str(ProjectName), "icon")[0]
+            _godotPath() + "/bin", [str(_projectName()).lower(), ".tools.", "bin"])[0]
+        project_path = findFiles(str(_projectName()), ".godot")[0]
+        icon_path = findFiles(str(_projectName()), "icon")[0]
     except:
         raise
     # create desktop file
@@ -42,7 +33,7 @@ def generateDesktopFile(path):
         # \see import config
         arguments = "${path_to_project} --editor --upwards".format(
             path_to_project=project_path)
-        d = text.format(Name=ProjectName, Comment=Description,
+        d = text.format(Name=_projectName(), Comment=_description(),
                         bin=bin_path, args=arguments, icon=icon_path, bterm="true")
 
         d_file = open(path, "w")
@@ -75,7 +66,7 @@ def shortcut():
         from os import getcwd
         from functions import isLinux
         if isLinux():
-            generateDesktopFile(getcwd() + "/" + ProjectName + ".desktop")
+            generateDesktopFile(getcwd() + "/" + _projectName() + ".desktop")
         else:
             raise NotImplementedError
     except:
@@ -99,12 +90,10 @@ def main():
             return
 
         if arg_condition(arg, ["--build", "-b", "-b", "build"]):
-            print("building solution")
             from build import build
-            build(GodotPath, CustomPath, shared=True)
+            build()
 
         if arg_condition(arg, ["--shortcut", "-s", "s", "shortcut"]):
-            print("generating shortcut")
             shortcut()
 
 
