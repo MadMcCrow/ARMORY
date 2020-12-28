@@ -28,6 +28,18 @@ The game will be (almost) entirely in C++. the code is added to modules in the s
 Any push request will be treated, and merged if it's any kind of improvement or bug fix.
 You can also fork this project and make a game of your own.
 
+## git emoji table used : 
+
+| emoji             | commit contains               |
+| ------------------|:-----------------------------:|
+| :zap:             | improvement                   |
+| :construction:    | WIP                           |
+| :art:             | graphical asset               |
+| :wrench:          | update build system           |
+| :no_entry_sign:   | does not compile / launch     |
+| :page_facing_up:  | update of doc, licence, etc.  |
+
+
 ## Big thanks to :
 
 - @Zylann and the whole [godot discord](https://discord.com/invite/4JBkykG) for their help
