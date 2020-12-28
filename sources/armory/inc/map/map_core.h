@@ -51,10 +51,8 @@ namespace Map {
         /** type of tile */
         TypeMask type;
     };
-
-
-
 } // namespace Map
+
 
 } // namespace Armory
 

@@ -5,6 +5,7 @@
 #include "map/tile_collection.h"
 #include "grid/grid_2D.h"
 
+
 using namespace Armory;
 
 
@@ -15,13 +16,16 @@ String TileManager::get_configuration_warning() const
     {
         warning += TTR("No collection set, cannot generate tiles");
     }
+    if(!Cast<GridNode>(get_owner()))
+    {
+        warning += TTR("this node requieres to be a child of a GridNode");
+    }
     return warning;
 }
 
 
 void TileManager::_bind_methods()
 {
-
     ADD_GROUP("Grid", "Grid_");
 	BIND_PROPERTY_GETSET(TileManager, Variant::OBJECT, collection, PROPERTY_HINT_RESOURCE_TYPE, "collection");
 }

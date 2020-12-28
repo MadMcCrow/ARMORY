@@ -2,7 +2,7 @@
 	"folders": [
 		{
 			"name": "Armory",
-			"path": "./Armory"
+			"path": "./armory"
 		},
 		{
 			"name": "Godot",
@@ -13,12 +13,7 @@
 			"path": "./sources"
 		},
 		{
-			"name": "Build",
-			"path": "./build"
-		}
-		,
-		{
-			"name": "Root",
+			"name": "Workspace",
 			"path": "./"
 	}
 	],
@@ -89,7 +84,20 @@
 			"stop_token": "cpp",
 			"thread": "cpp",
 			"typeindex": "cpp",
-			"typeinfo": "cpp"
+			"typeinfo": "cpp",
+			"type_traits": "cpp"
+		},
+		"files.exclude": {
+			"**/__pycache__/**": true,
+			"**/**.pyc": true,
+			"**/**.o": 	true,
+			"**/**.a": 	true
+		},
+		"files.watcherExclude": {
+			"**/.git/objects/**": true,
+			"**/.git/subtree-cache/**": true,
+			"**/node_modules/**": true,
+			"**/.hg/store/**": true
 		}
 	}
 }

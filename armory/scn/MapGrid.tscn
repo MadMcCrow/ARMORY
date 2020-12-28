@@ -3,6 +3,17 @@
 [node name="Node3D" type="Node3D"]
 script = null
 
-[node name="GridNode3D" type="GridNode3D" parent="."]
-grid_size = Vector2i( 64, 64 )
+[node name="GridMap" type="GridMap" parent="."]
+data = {
+"cells": PackedInt32Array(  )
+}
+script = null
+__meta__ = {
+"_editor_clip_": 0
+}
+
+[node name="GridNode" type="GridNode" parent="GridMap"]
+script = null
+
+[node name="TileManager" type="TileManager" parent="GridMap/GridNode"]
 script = null

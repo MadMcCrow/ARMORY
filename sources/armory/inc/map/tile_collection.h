@@ -8,10 +8,10 @@
 #include "core/io/resource.h"
 #include "static_helper.h" // add GETSET_SUPPORT
 
+
 /** Armory namespace */
 namespace Armory 
 {
-
 
 /**
  *  GridNode3D implements gridNode with 3D 
@@ -22,6 +22,9 @@ class TileCollection : public Resource  {
 public:
     static void _bind_methods();
 
+protected:
+    
+    //Vector<TileMesh> tileset;
 
 };
 

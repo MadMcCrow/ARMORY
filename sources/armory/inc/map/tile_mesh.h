@@ -4,19 +4,21 @@
 #ifndef TILE_MESH_H
 #define TILE_MESH_H
 
-#include "map/map_core.h"
 #include "scene/resources/mesh.h"
+
 #include "static_helper.h" // add GETSET_SUPPORT
 
-/** Armory namespace */
-namespace Armory 
-{
 
-namespace Tile 
-{   
-    // simple enum to describe type
-    enum class Variant : char
-    {
+/**
+ *  GridNode3D implements gridNode with 3D 
+ */
+class TileMesh : public Resource  {
+    GDCLASS(TileMesh, Resource);
+
+public:
+
+      // simple enum to describe type
+    enum Geometry  {
         flat,
         straight,
         cross,
@@ -27,8 +29,7 @@ namespace Tile
         all_sides
     };
 
-    enum class Height : char
-    {
+    enum Height {
         sea,
         plain,
         hill_0,
@@ -37,20 +38,32 @@ namespace Tile
         mountain
     };
 
-} // namespace Tile
 
-/**
- *  GridNode3D implements gridNode with 3D 
- */
-class TileMesh : public Mesh  {
-    GDCLASS(TileMesh, Mesh);
+    static void _bind_methods();
 
-public:
-    //static void _bind_methods();
+    /**
+     *  mesh is the real ressource we'll load
+     */
+    Ref<Mesh> mesh;
+    GETSET(Ref<Mesh>, mesh)
 
+    /**
+     *  height represent the height to use
+     */
+    Height height;
+    GETSET(Height, height)
+ 
+    /**
+     *  variant represent the transition shape we can have
+     */
+    Geometry geometry;
+    GETSET(Geometry, geometry)
 
 };
 
-} // namespace Armory
 
-#endif //TILE_COLLECTION_H
+// declare enums
+VARIANT_ENUM_CAST(TileMesh::Geometry);
+VARIANT_ENUM_CAST(TileMesh::Height);
+
+#endif //TILE_MESH_H

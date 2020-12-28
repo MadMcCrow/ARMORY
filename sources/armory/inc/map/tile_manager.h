@@ -4,12 +4,13 @@
 #ifndef TILE_MANAGER_H
 #define TILE_MANAGER_H
 
+#include "scene/3d/node_3d.h"
+#include "core/object/reference.h"
 #include "map/grid_node.h"
 #include "map/tile_collection.h"
 #include "static_helper.h" // add GETSET_SUPPORT
 
-#include "core/object/reference.h"
-#include "scene/3d/node_3d.h"
+
 
 /** Armory namespace */
 namespace Armory {
