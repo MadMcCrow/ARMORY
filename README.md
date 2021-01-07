@@ -30,6 +30,8 @@ You can also fork this project and make a game of your own.
 
 ## git emoji table used : 
 
+we try to use emojis to make changes more meaningful and easily identify them
+
 | emoji             | commit contains               |
 | ------------------|:-----------------------------:|
 | :zap:             | improvement                   |
@@ -38,6 +40,9 @@ You can also fork this project and make a game of your own.
 | :wrench:          | update build system           |
 | :no_entry_sign:   | does not compile / launch     |
 | :page_facing_up:  | update of doc, licence, etc.  |
+| :bug:             | bug fix                       |
+| :leaves:          | scene update                  |
+| :up:              | tool / godot upgrade          |
 
 
 ## Big thanks to :
