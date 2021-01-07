@@ -33,9 +33,6 @@ tools = True
 # tests: Build the unit tests (yes|no)
 tests = False
 
-# use_lto: Use link-time optimization (yes|no)
-# use_lto = "release" in str(target) # disable in debug
-
 # use_precise_math_checks: Math checks use very precise epsilon (debug option) (yes|no)
 use_precise_math_checks = False
 
@@ -74,7 +71,8 @@ xaudio2 =  isWindows()
 ## [ general compilation option ]
 vsproj =  isWindows()  # vsproj: Generate a Visual Studio solution (yes|no)
 verbose  = False 
-progress = True
+progress = False
+
 # warnings: Level of compilation warnings (extra|[all]|moderate|no)
 # werror: Treat compiler warnings as errors (yes|[no]) 
 # dev: If yes, alias for verbose=yes warnings=extra werror=yes (yes|no)
@@ -95,7 +93,7 @@ progress = True
 # LINKFLAGS
 use_llvm    =  True
 use_lld     =  use_llvm
-use_thinlto =  use_llvm  # https://clang.llvm.org/docs/ThinLTO.html
+use_thinlto =  False  # https://clang.llvm.org/docs/ThinLTO.html Link time optimisation
 use_static_cpp =  isWindows()
 #use_coverage: Test Godot coverage (yes|no)
 #use_ubsan: Use LLVM/GCC compiler undefined behavior sanitizer (UBSAN) (yes|no)
@@ -124,10 +122,16 @@ module_lightmapper_rd_enabled   = True
 module_regex_enabled            = True
 module_gdnavigation_enabled     = True  # TODO/FIXME :Godot will not load without this module
 
+# Godot scripting
+module_visual_script_enabled  = False
+module_gdnative_enabled       = False
+module_gdscript_enabled       = True    # GDScript is used to try stuff
+module_mono_enabled           = False
+
 module_bullet_enabled           = False # no physics in Armory
 module_camera_enabled           = False # no camera video feed
-module_gridmap_enabled          = True  #
-module_gltf_enabled             = False #
+module_gridmap_enabled          = False # we use our custom system ours is simpler
+module_gltf_enabled             = False # no gltf for now.
 
 # Mobile
 module_gamecenter_enabled       = False # iOS gamecenter
@@ -138,11 +142,6 @@ module_mobile_vr_enabled        = False
 module_arkit_enabled            = False
 module_mbedtls_enabled          =  isArm(arch)
 
-# Godot scripting
-module_visual_script_enabled  = False
-module_gdnative_enabled       = False
-module_gdscript_enabled       = False 
-module_mono_enabled           = False
 
 # Video Codecs Support
 module_vorbis_enabled = False
