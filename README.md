@@ -43,6 +43,7 @@ we try to use emojis to make changes more meaningful and easily identify them
 | :bug:             | bug fix                       |
 | :leaves:          | scene update                  |
 | :up:              | tool / godot upgrade          |
+| :vs:              | vs code specific changes      |
 
 
 ## Big thanks to :
