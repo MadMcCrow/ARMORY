@@ -1,8 +1,8 @@
 /* Copyright © Noé Perard-Gayot 2020. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#ifndef STATIC_HELPER_H
-#define STATIC_HELPER_H
+#ifndef ARMORY_STATIC_HELPER_H
+#define ARMORY_STATIC_HELPER_H
 
 #include "core/object/object.h" // for cast
 
@@ -94,4 +94,4 @@ namespace Armory
     }
 
 }
-#endif //STATIC_HELPER_H
+#endif //ARMORY_STATIC_HELPER_H

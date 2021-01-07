@@ -1,8 +1,8 @@
 /* Copyright © Noé Perard-Gayot 2020. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#ifndef TILE_MESH_H
-#define TILE_MESH_H
+#ifndef ARMORY_TILE_MESH_H
+#define ARMORY_TILE_MESH_H
 
 
 //#include "core/variant/binder_common.h"  // VARIANT_ENUM_CAST
@@ -45,12 +45,6 @@ public:
     GETSET(bool, is_land)
 
     /**
-     *  mesh is the real ressource we'll load
-     */
-    Ref<Mesh> mesh;
-    GETSET(Ref<Mesh>, mesh)
-
-    /**
      *  height {0,1,2,3}
      */
     unsigned int height : 2;
@@ -62,6 +56,13 @@ public:
      */
     Geometry type;
     GETSET_COPY(Geometry, type)
+
+     
+    /**
+     *  type of geometry this tile has
+     */
+    Ref<Mesh> mesh;
+    GETSET_COPY(Ref<Mesh>, mesh)
 
     static void _bind_methods();
 

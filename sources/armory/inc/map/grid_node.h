@@ -1,8 +1,8 @@
 /* Copyright © Noé Perard-Gayot 2020. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#ifndef MAP_GRID_H
-#define MAP_GRID_H
+#ifndef ARMORY_GRID_NODE_H
+#define ARMORY_GRID_NODE_H
 
 #include "scene/main/node.h" // Node godot class
 #include "static_helper.h" // add GETSET_SUPPORT
@@ -67,4 +67,4 @@ private:
 
 } // namespace Armory
 
-#endif //MAP_GRID_H
+#endif //ARMORY_GRID_NODE_H

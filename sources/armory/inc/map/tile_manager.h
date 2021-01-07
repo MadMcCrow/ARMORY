@@ -1,16 +1,22 @@
 /* Copyright © Noé Perard-Gayot 2020. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#ifndef TILE_MANAGER_H
-#define TILE_MANAGER_H
+#ifndef ARMORY_TILE_MANAGER_H
+#define ARMORY_TILE_MANAGER_H
 
-#include "scene/3d/node_3d.h"
+// godot includes
+#include "core/templates/map.h"
 #include "core/object/reference.h"
+
+// Armory includes
+#include "nodes/actor_3d.h"
 #include "map/grid_node.h"
 #include "map/tile_collection.h"
 #include "static_helper.h" // add GETSET_SUPPORT
 
 
+// forward declaration
+class MultiMesh;
 
 /** Armory namespace */
 namespace Armory {
@@ -19,12 +25,43 @@ namespace Armory {
 /**
  *  TileManager handles the tiles for the Grid map
  */
-class TileManager : public Node3D  {
-    GDCLASS(TileManager, Node3D);
+class TileManager : public Actor3D  {
+    GDCLASS(TileManager, Actor3D);
+
+public:
+
+    virtual void _ready() override;
+
 protected:
 
+    /**
+     *  the collection to use
+     */
     Ref<TileCollection> collection;
     GETSET( Ref<TileCollection> , collection)
+
+
+    /**
+     *  for each TileMesh, we have a MultiMesh to have instances in the world
+     */
+    //Map<int, Mesh*> mesh_instance_map;
+
+
+    /**
+     *  update the instances to match collection
+     */
+    virtual void updateInstanceMap();
+
+
+private:
+
+    /**
+     *  allows creating and setting up properly a multimesh
+     */
+    static MultiMesh* createMultimeshInstance(TileMesh * input);
+
+
+
 
 public:
 
@@ -32,9 +69,8 @@ public:
 
 public:
     static void _bind_methods();
-
 };
 
 } // namespace Armory
 
-#endif //TILE_MANAGER_H
+#endif //ARMORY_TILE_MANAGER_H

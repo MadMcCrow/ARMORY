@@ -1,8 +1,8 @@
 /* Copyright © Noé Perard-Gayot 2020. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#ifndef GRID_2D_H
-#define GRID_2D_H
+#ifndef ARMORY_GRID_2D_H
+#define ARMORY_GRID_2D_H
 
 // Godot Includes
 #include "core/templates/vector.h" // for vector container
@@ -203,4 +203,4 @@ public:
 } // namespace Armory
 
 
-#endif //GRID_2D_H
+#endif //ARMORY_GRID_2D_H

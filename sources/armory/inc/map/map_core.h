@@ -1,8 +1,8 @@
 /* Copyright © Noé Perard-Gayot 2020. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#ifndef MAP_CORE_H
-#define MAP_CORE_H
+#ifndef ARMORY_MAP_CORE_H
+#define ARMORY_MAP_CORE_H
 
 /** Armory namespace */
 namespace Armory {
@@ -41,4 +41,4 @@ namespace Map {
 
 } // namespace Armory
 
-#endif // MAP_CORE_H
+#endif // ARMORY_MAP_CORE_H

@@ -12,7 +12,7 @@
    width="16"
    version="1.1"
    id="svg58"
-   sodipodi:docname="GridNode.svg"
+   sodipodi:docname="Actor3D.svg"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
   <metadata
      id="metadata64">
@@ -41,19 +41,25 @@
      inkscape:window-height="995"
      id="namedview60"
      showgrid="false"
-     inkscape:zoom="25.28125"
-     inkscape:cx="12.872094"
-     inkscape:cy="13.681158"
+     inkscape:zoom="50.5625"
+     inkscape:cx="7.3021146"
+     inkscape:cy="8.2001791"
      inkscape:window-x="26"
      inkscape:window-y="23"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg58"
+     inkscape:current-layer="g844"
      inkscape:document-rotation="0" />
-  <path
-     d="M 4.5562423,1.1124846 V 4.5562423 H 8 V 1.1124846 Z M 8,4.5562423 V 8 h 3.443758 v 2.196513 1.247245 h 3.443757 V 8 H 11.443758 V 4.5562423 h 3.443757 V 1.1124846 H 11.443758 V 4.5562423 Z M 8,8 H 4.5562423 V 4.5562423 H 1.1124846 V 8 h 3.4437577 v 3.443758 H 8 v 3.443757 h 3.443758 V 11.443758 H 8 Z"
-     fill="#e0e0e0"
-     fill-opacity="0.99608"
-     id="path56"
-     sodipodi:nodetypes="cccccccccccccccccccccccccccccccc"
-     style="stroke-width:1.72188" />
+  <g
+     id="g844"
+     transform="matrix(1.2281477,0,0,1.2281477,-3.460358,-1.1352776)">
+    <path
+       id="rect846"
+       style="fill:#e0e0e0;stroke-width:2.02971"
+       d="M 5.9667969 5.9199219 L 3.0429688 14.691406 L 12.957031 14.691406 L 10.033203 5.9199219 C 9.5372451 6.4904977 8.8152856 6.8590031 8 6.859375 C 7.1847149 6.8590028 6.4627547 6.4904977 5.9667969 5.9199219 z "
+       transform="matrix(0.81423431,0,0,0.81423431,2.8175422,0.92438198)" />
+    <path
+       id="path832-3"
+       style="fill:#e0e0e0;stroke-width:1.65005"
+       d="m 9.2817311,1.6042682 a 2.2037206,2.2037206 0 0 0 -2.153029,2.2027141 2.2037206,2.2037206 0 0 0 2.202714,2.2027142 2.2037206,2.2037206 0 0 0 2.2027149,-2.2027142 2.2037206,2.2037206 0 0 0 -2.2027149,-2.2027141 2.2037206,2.2037206 0 0 0 -0.04969,0 z m 0.04969,0.632107 A 1.5712627,1.5712627 0 0 1 10.902023,3.8069823 1.5712627,1.5712627 0 0 1 9.3314161,5.3775891 1.5712627,1.5712627 0 0 1 7.7608091,3.8069823 1.5712627,1.5712627 0 0 1 9.3314161,2.2363752 Z" />
+  </g>
 </svg>
