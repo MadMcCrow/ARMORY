@@ -25,7 +25,5 @@ const TileMesh * TileCollection::get_tile(int index) const
 
 void TileCollection::_bind_methods()
 {
-    BIND_GETSET(tileset,TileCollection )
-    ADD_PROPERTY(PropertyInfo( Variant::ARRAY, "tileset", PROPERTY_HINT_ARRAY_TYPE, "Object"), XSTR(SETTER(tileset)), XSTR(GETTER(tileset)) );
-    //BIND_PROPERTY_GETSET(TileCollection, , tileset, )
+    BIND_PROPERTY_GETSET(TileCollection, Variant::ARRAY, tileset, PROPERTY_HINT_ARRAY_TYPE, "Object" );
 }

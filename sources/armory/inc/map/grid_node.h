@@ -14,7 +14,7 @@
 namespace Armory {
 
 // redefine type
-using MapGridData = Grid2D<Map::Data>;
+using MapGridData = Grid2D<MapData>;
 
 /**
  *  GridNode 

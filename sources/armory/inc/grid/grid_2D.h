@@ -165,7 +165,7 @@ public:
 
                 // resize Y first, then resize X
                 p_grid->resize(y);
-                for ( int idx = 0; idx < p_grid->size(); idx++)
+                for (unsigned int idx = 0; idx < p_grid->size(); idx++)
                 {
                     (*p_grid)[idx].resize(x);
                 }

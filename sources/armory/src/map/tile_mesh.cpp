@@ -25,6 +25,5 @@ void TileMesh::_bind_methods()
     BIND_PROPERTY_ENUM(TileMesh, type, "flat, straight, cross, angle_convex, angle_concave, T_convex, T_concave, all_sides")
 
     BIND_PROPERTY_GETSET(TileMesh, Variant::INT,    height,  PROPERTY_HINT_RANGE, "0,3,1;");
-    BIND_PROPERTY_GETSET(TileMesh, Variant::BOOL,   is_land, PROPERTY_HINT_NONE, "Land")
-    BIND_PROPERTY_GETSET(TileMesh, Variant::OBJECT, mesh,    PROPERTY_HINT_RESOURCE_TYPE, "Mesh")
+    BIND_PROPERTY_GETSET(TileMesh, Variant::BOOL,   is_land, PROPERTY_HINT_NONE, "Land");
 }

@@ -111,6 +111,7 @@ execinfo   =  isWindows()
 touch = False
 
 ## [Modules ]
+
 module_opensimplex_enabled      = True
 module_denoise_enabled          = True  # ligtmap denoiser
 module_assimp_enabled           = True # Open Asset Import Library
@@ -184,4 +185,3 @@ module_jsonrpc_enabled   = False
 
 # Xatlas
 module_xatlas_unwrap_enabled: False
-

@@ -135,7 +135,7 @@ def _runScons(cmd : str, godot_path : str ) :
             if scons != None:
                 scons.terminate()
             raise BuildError
-    print('\x1b[1K ') # clean terminal
+    print('\r', end = '\x1b[1K') # clean terminal
 
 
 

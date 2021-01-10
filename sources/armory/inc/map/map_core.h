@@ -7,14 +7,12 @@
 /** Armory namespace */
 namespace Armory {
 
-
-namespace Map {
     
     /** 
      * Data
      * @brief contains all info about a tile
      */
-    struct Data
+    struct MapData
     {
         /**
          *  sign:  0 is sea, 1 is land 
@@ -36,7 +34,6 @@ namespace Map {
 
     };
     
-} // namespace Map
 
 
 } // namespace Armory

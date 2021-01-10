@@ -18,8 +18,8 @@ namespace Armory
 /**
  *  GridNode3D implements gridNode with 3D 
  */
-class TileMesh : public Resource  {
-    GDCLASS(TileMesh, Resource);
+class TileMesh : public ArrayMesh  {
+    GDCLASS(TileMesh, ArrayMesh);
 
 public:
 
@@ -34,7 +34,8 @@ public:
         angle_concave,
         T_convex,
         T_concave,
-        all_sides
+        all_sides,
+        max = all_sides
     };
 
     /**
@@ -57,12 +58,7 @@ public:
     Geometry type;
     GETSET_COPY(Geometry, type)
 
-     
-    /**
-     *  type of geometry this tile has
-     */
-    Ref<Mesh> mesh;
-    GETSET_COPY(Ref<Mesh>, mesh)
+    void set_geometry(int type) {type = static_cast<Geometry>(type % (static_cast<int>(Geometry::max) + 1));}
 
     static void _bind_methods();
 

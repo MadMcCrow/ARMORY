@@ -23,7 +23,7 @@ class TileCollection : public Resource  {
 
 protected:
     Array tileset;
-    GETSET_COPY(Array, tileset)
+    GETSET(Array, tileset)
 
 public:
 
