@@ -5,8 +5,7 @@
 #define ARMORY_TILE_MESH_H
 
 //#include "core/variant/binder_common.h"  // VARIANT_ENUM_CAST
-#include "scene/resources/mesh.h" // Mesh resource
-
+#include "scene/resources/multimesh.h"
 #include "static_helper.h" // add GETSET_SUPPORT
 
 namespace Armory
@@ -14,9 +13,9 @@ namespace Armory
     /**
      *  GridNode3D implements gridNode with 3D 
      */
-    class TileMesh : public Resource
+    class TileMesh : public MultiMesh
     {
-        GDCLASS(TileMesh, Resource);
+        GDCLASS(TileMesh, MultiMesh);
         RES_BASE_EXTENSION("tilemesh");
 
     public:
@@ -26,6 +25,7 @@ namespace Armory
          */
         enum Geometry
         {
+            none,
             flat,
             straight,
             cross,
@@ -34,8 +34,22 @@ namespace Armory
             T_convex,
             T_concave,
             all_sides,
-            max = all_sides
+            g_max = all_sides
         };
+
+        /**
+         *  geometry modifier, this only works if Geometry is none
+         */
+        enum Modifier
+        {
+            no_modifier,
+            river,
+            trees,
+            rocks,
+            canyon,
+            m_max = canyon
+        };
+
 
         /**
          *  is_land is true for land tiles,
@@ -43,13 +57,6 @@ namespace Armory
          */
         bool is_land = true;
         GETSET(bool, is_land)
-
-
-        /**
-         *  actual mesh
-         */
-        Ref<Mesh> mesh;
-        GETSET_COPY( Ref<Mesh>,mesh);
 
         /**
          *  height {0,1,2,3}
@@ -62,9 +69,16 @@ namespace Armory
          *  type of geometry this tile has
          */
         Geometry type;
-        GETSET_COPY(Geometry, type)
+        GETSET_COPY(Geometry, type);
+        void set_geometry(int i_type) { type = static_cast<Geometry>(i_type % (static_cast<int>(Geometry::g_max) + 1)); }
 
-        void set_geometry(int type) { type = static_cast<Geometry>(type % (static_cast<int>(Geometry::max) + 1)); }
+
+        /**
+         *  type of geometry this tile has
+         */
+        Modifier modif;
+        GETSET_COPY(Modifier, modif)
+        void set_modifier(int i_modif) { modif = static_cast<Modifier>(i_modif % (static_cast<int>(Modifier::m_max) + 1)); }
 
         static void _bind_methods();
 
@@ -75,5 +89,6 @@ namespace Armory
 
 // declare enums
 VARIANT_ENUM_CAST(Armory::TileMesh::Geometry);
+VARIANT_ENUM_CAST(Armory::TileMesh::Modifier);
 
 #endif //TILE_MESH_H

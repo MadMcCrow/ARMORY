@@ -19,22 +19,29 @@ namespace Armory
 class TileInstance : public GeometryInstance3D  {
     GDCLASS(TileInstance, GeometryInstance3D);
 
+private:
 
+	Ref<MultiMesh> multimesh;
+	void update_multimesh(Ref<TileMesh> tile_mesh);
+
+public:
 	Ref<TileMesh> tile_mesh;
     GET(Ref<TileMesh>, tile_mesh)
     void set_tile_mesh(const Ref<TileMesh> &p_tile_mesh);
 
-protected:
 	static void _bind_methods();
 	// bind helpers
 
-public:
+	String get_configuration_warning() const override;
+
 	virtual Vector<Face3> get_faces(uint32_t p_usage_flags) const override;
 
 	virtual AABB get_aabb() const override;
 
 	TileInstance();
 	~TileInstance();
+
+	inline Ref<MultiMesh> get_multimesh() const {return multimesh;}
 
 };
 

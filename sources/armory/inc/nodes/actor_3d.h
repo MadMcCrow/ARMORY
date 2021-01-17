@@ -30,19 +30,25 @@ public:
     /**
      *  ready
      *  @brief called when node is ready to start doing stuff
-     *  @note  is connected via _bind_methods
-     *  @todo  investigate using signals
+     *  @note  is connected via signal
      */
-    virtual void _ready();
+    virtual void ready();
 
     /**
-     *  process
+     *  update
      *  @brief called each frame
      *  @param delta : deltaframe
      *  @note  is connected via _bind_methods.
      *  @todo  investigate using signals
      */
-    virtual void _process(float delta);
+    virtual void update(float delta);
+
+    /**
+     *  update
+     *  @brief called on a change in the node tree
+     *  @todo  investigate using signals
+     */
+    virtual void tree_update();
     
 
      /**

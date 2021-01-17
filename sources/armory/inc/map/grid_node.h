@@ -49,11 +49,17 @@ public:
     /**
      *  grid_size 
      *  @brief How many items in the grid
-     * 
      */
     Point2i grid_size;
     GET(Point2i, grid_size)
     void set_grid_size(Point2i new_grid_size);
+
+
+    /**
+     *  get_data_count 
+     *  @brief How many items correspond to this data
+     */
+    virtual int get_data_count(MapData s_data) const;
     
 private:
     /**

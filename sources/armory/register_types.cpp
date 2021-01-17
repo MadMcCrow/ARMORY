@@ -30,6 +30,7 @@ void _register_armory_importer()
 void register_armory_types() 
 {
   ClassDB::register_class<Armory::GridNode>();
+  ClassDB::register_class<Armory::Actor3D>();
   ClassDB::register_class<Armory::TileManager>();
   ClassDB::register_class<Armory::TileCollection>();
   ClassDB::register_class<Armory::TileMesh>();

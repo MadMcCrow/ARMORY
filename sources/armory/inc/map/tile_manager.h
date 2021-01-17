@@ -6,7 +6,7 @@
 
 // godot includes
 #include "core/templates/map.h"
-#include "core/object/reference.h"
+#include "map/tile_mesh.h"
 
 // Armory includes
 #include "nodes/actor_3d.h"
@@ -14,54 +14,50 @@
 #include "map/tile_collection.h"
 #include "static_helper.h" // add GETSET_SUPPORT
 
-
 // forward declaration
 class MultiMesh;
 
 /** Armory namespace */
-namespace Armory {
+namespace Armory
+{
 
-
-/**
+    /**
  *  TileManager handles the tiles for the Grid map
  */
-class TileManager : public Actor3D  {
-    GDCLASS(TileManager, Actor3D);
+    class TileManager : public Actor3D
+    {
+        GDCLASS(TileManager, Actor3D);
 
-public:
+    public:
+        virtual void ready() override;
+        virtual void tree_update() override;
 
-    virtual void _ready() override;
+    protected:
 
-protected:
+        /**
+         *  update the instances to match collection
+         */
+        virtual void updateInstanceMap();
 
-    /**
-     *  the collection to use
-     */
-    Ref<TileCollection> collection;
-    GETSET( Ref<TileCollection> , collection)
+        /**
+         *  get the info on how many instances to spawn
+         *  @todo : maybe move this to cpp only
+         */
+        virtual int get_instance_num(Ref<TileMesh> tilemesh) const;
 
+    public:
 
-    /**
-     *  for each TileMesh, we have a MultiMesh to have instances in the world
-     */
-    //Map<int, Mesh*> mesh_instance_map;
+        virtual String get_configuration_warning() const override;
 
+    public:
+        static void _bind_methods();
 
-    /**
-     *  update the instances to match collection
-     */
-    virtual void updateInstanceMap();
+    private:
 
+        GridNode* owning_grid = nullptr;
 
-
-
-public:
-
-    virtual String get_configuration_warning() const override;
-
-public:
-    static void _bind_methods();
-};
+        GridNode* get_owning_grid() const {return Cast<GridNode>(get_parent());}
+    };
 
 } // namespace Armory
 

@@ -44,6 +44,10 @@ void GridNode::ready()
     set_grid_size(grid_size);
 }
 
+int GridNode::get_data_count(MapData s_data) const
+{
+    return grid_size.x * grid_size.y;
+}
 
 void GridNode::_bind_methods() 
 {
