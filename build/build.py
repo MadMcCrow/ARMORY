@@ -116,16 +116,17 @@ def _parseBuildOutput(line :str):
         pass
     finally:
         if error :
-            _buildPrint("ERROR", out)
+            _buildPrint("ERROR", '\r' + out)
             return False
-        _buildPrint( "WARNING" if warning else "BUILD" ,'\r' + out, end='\x1b[1K' )
+        _buildPrint( "WARNING" if warning else "BUILD" ,'\r' + out + " ", end='\x1b[1K' ) 
         return True
    
 
 
 def _runScons(cmd : str, godot_path : str ) :
     import subprocess
-    scons = subprocess.Popen(cmd, cwd=godot_path, stdout=subprocess.PIPE, shell=True, encoding="utf-8")
+    import shlex
+    scons = subprocess.Popen(shlex.split(cmd), cwd=godot_path, stdout=subprocess.PIPE,  encoding="utf-8")
     while True:
         line = scons.stdout.readline()
         if not line:
@@ -134,7 +135,7 @@ def _runScons(cmd : str, godot_path : str ) :
             if scons != None:
                 scons.terminate()
             raise BuildError
-    print('\x1b[1K ') # clean terminal
+    print('\r', end = '\x1b[1K') # clean terminal
 
 
 

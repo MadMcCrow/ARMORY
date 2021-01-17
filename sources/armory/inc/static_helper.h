@@ -1,8 +1,8 @@
 /* Copyright © Noé Perard-Gayot 2020. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#ifndef STATIC_HELPER_H
-#define STATIC_HELPER_H
+#ifndef ARMORY_STATIC_HELPER_H
+#define ARMORY_STATIC_HELPER_H
 
 #include "core/object/object.h" // for cast
 
@@ -18,6 +18,10 @@
 #define SET(type, var) inline void SETTER(var)(const type &val) { var = val; }
 /** Generate setter and getter for a property */
 #define GETSET(type, var)   GET(type, var) SET(type, var)
+/** Generate setter for a property , pass by copy */
+#define SET_COPY(type, var) inline void SETTER(var)(type val) { var = val; }
+/** Generate setter and getter for a property,  pass by copy */
+#define GETSET_COPY(type, var)  GET(type, var) SET_COPY(type, var)
 
 /** Bind setter for a property */
 #define BIND_SET(var, class) ClassDB::bind_method(D_METHOD( XSTR(SETTER(var)), STR(var)), &class::SETTER(var));
@@ -28,6 +32,10 @@
 
 /**  Generate the correct ADD_PROPERTY compliant with GETSET */
 #define ADD_PROPERTY_GETSET(variant, var, property_hint_type, hint) ADD_PROPERTY(PropertyInfo( variant, #var, property_hint_type, hint), XSTR(SETTER(var)), XSTR(GETTER(var)) );
+
+/**  Generate the correct ADD_PROPERTY compliant with GETSET */
+#define BIND_PROPERTY_ENUM(class, var, hint)  BIND_GETSET(var, class) ADD_PROPERTY(PropertyInfo( Variant::INT, #var, PROPERTY_HINT_ENUM, hint), XSTR(SETTER(var)), XSTR(GETTER(var)) );
+
 
 /**  Generate the correct ADD_PROPERTY compliant with GETSET */
 #define BIND_PROPERTY_GETSET(class, variant, var, property_hint_type, hint) BIND_GETSET(var, class) ADD_PROPERTY_GETSET(variant, var, property_hint_type, hint);
@@ -86,4 +94,4 @@ namespace Armory
     }
 
 }
-#endif //STATIC_HELPER_H
+#endif //ARMORY_STATIC_HELPER_H

@@ -52,7 +52,18 @@ def importJsonConfig(path = './', override_globals = False) ->dict :
         f.close()
     return json_dict
 
-
+def isGodot4() :
+    '''
+    Check if we're building with Godot4 or newer
+    we default to Godot4
+    '''
+    try :
+        import version
+        if version.major >= 4 :
+            return True
+        return False
+    except:
+        return True
 
 def getPlatform() -> tuple :
     '''
@@ -66,6 +77,7 @@ def getPlatform() -> tuple :
     from sys      import maxsize
     from platform import system
     from os       import uname
+ 
     bits = 64 if maxsize > 2**32 else 32
     arch  = uname()[4][:3] 
     if "arm" in arch :
@@ -74,7 +86,7 @@ def getPlatform() -> tuple :
         arch = "x" + str(bits)
     platform =  system()
     if platform.lower() in ["linux", "freebsd7", "freebsd8", "freebsdN", "openbsd6"] : 
-        return bits, "linuxbsd" , arch
+        return bits,  "linuxbsd" if isGodot4() else "x11" , arch
     elif platform.lower() in ["win32", "cygwin", "msys"] : 
         return bits, "windows", arch
     elif platform.lower() in ["darwin", "os2", "os2emx"] : 

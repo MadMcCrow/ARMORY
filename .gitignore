@@ -34,7 +34,13 @@ __pycache__
 *.pyc
 
 # Godot
-## import data
+## import data, will be generated again
 */.import/*
+*/.godot/*
+
 ## mono objects
 */.mono/*
+
+# local blend files backup
+*.blend1
+*.blend2

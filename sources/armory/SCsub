@@ -40,7 +40,6 @@ def find_sources(path : str)  -> list:
     from os import walk
     for cur, _dirs, files in walk(path):
         glob_sources = glob_sources + ['/'.join([cur,itr]) for itr in files if itr.endswith('cpp')]
-    print(glob_sources)
     return glob_sources
 	
 
@@ -56,7 +55,12 @@ module_env['LIBS'] = []
 # reference our headers in 'inc'
 module_env.Append(CPPPATH=[inc_folder ])
 # add sources in 'src'
-sources.append(find_sources(src_folder))
+sources += (find_sources(src_folder))
+
+# remove duplicates:
+sources = list(set(list(sources)))
+print(sources)
+
 
 # godot is not yet fully compatible with '-std=c++20' so we stay at sooner
 
