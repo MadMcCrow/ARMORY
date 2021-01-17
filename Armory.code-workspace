@@ -1,7 +1,11 @@
 {
 	"folders": [
 		{
-			"name": "Armory",
+			"name": "",
+			"path": "./"
+		},
+		{
+			"name": "Project",
 			"path": "./armory"
 		},
 		{
@@ -10,12 +14,13 @@
 		},
 		{
 			"name": "Sources",
-			"path": "./sources"
+			"path": "./sources",
 		},
 		{
-			"name": "Workspace",
-			"path": "./"
-	}
+			"name": "Build",
+			"path": "./build"
+		},
+
 	],
 	"settings": {
 		"files.associations": {

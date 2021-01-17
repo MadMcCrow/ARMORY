@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj_tile_mesh"
+importer_version=1
+type="TileMesh"
+path="res://.godot/imported/hill_01_360.obj-e56d5650fef46771d42462ca84a6f269.mesh"
+
+[deps]
+
+files=[ "res://.godot/imported/hill_01_360.obj-e56d5650fef46771d42462ca84a6f269.mesh" ]
+
+source_file="res://obj/hill_01_360.obj"
+dest_files=[ "res://.godot/imported/hill_01_360.obj-e56d5650fef46771d42462ca84a6f269.mesh", "res://.godot/imported/hill_01_360.obj-e56d5650fef46771d42462ca84a6f269.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
+TileType=0

@@ -35,19 +35,12 @@ __pycache__
 *.pyc
 
 # Godot
-## import data
+## import data, will be generated again
 */.import/*
 */.godot/*
 
-# TODO : remove this , when ready to submit assets
-# import file (can replace the actual data)
-*.import
-*.obj
-*.mtl
-
 ## mono objects
 */.mono/*
-
 
 # local blend files backup
 *.blend1

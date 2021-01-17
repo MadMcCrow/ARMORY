@@ -1,6 +1,0 @@
-[gd_resource type="TileMesh" load_steps=2 format=2]
-
-[ext_resource path="res://obj/beach_center.obj" type="ArrayMesh" id=1]
-
-[resource]
-mesh = ExtResource( 1 )

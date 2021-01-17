@@ -451,7 +451,8 @@ bool ResourceImporterTileMesh::get_option_visibility(const String &p_option, con
 	return true;
 }
 
-Error ResourceImporterTileMesh::import(const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) {
+Error ResourceImporterTileMesh::import(const String &p_source_file, const String &p_save_path, const Map<StringName, Variant> &p_options, List<String> *r_platform_variants, List<String> *r_gen_files, Variant *r_metadata) 
+{
 	List<Ref<TileMesh>> meshes;
 
 	Error err = _parse_obj(p_source_file, meshes, true, p_options["generate_tangents"], p_options["optimize_mesh"], p_options[TileGeometryOption],  p_options["scale_mesh"], p_options["offset_mesh"], nullptr);
@@ -459,7 +460,7 @@ Error ResourceImporterTileMesh::import(const String &p_source_file, const String
 	ERR_FAIL_COND_V(err != OK, err);
 	ERR_FAIL_COND_V(meshes.size() != 1, ERR_BUG);
 
-	String save_path = p_save_path + ".tres";
+	String save_path = p_save_path + "." + get_save_extension();
 
 	err = ResourceSaver::save(save_path, meshes.front()->get());
 

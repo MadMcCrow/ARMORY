@@ -5,13 +5,15 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "(gdb) godot launch",
+        "name": "Armory debug",
         "type": "cppdbg",
         "request": "launch",
-        "program": "${workspaceFolder}/godot.bin",
-        "preLaunchTask": "build", 
-        "args": ["${workspaceFolder}/armory/project.godot", "--editor", "--upwards"],
-        "cwd": "${workspaceFolder}/fps",
+        "program": "${workspaceFolder}/godot/bin/godot.linuxbsd.tools.x64.llvm.armory",
+        "args": ["armory/project.godot",  "--editor", "--ups"],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}/armory",
+        "environment": [],
+        "externalConsole": false,
         "MIMode": "gdb",
         "setupCommands": [
             {

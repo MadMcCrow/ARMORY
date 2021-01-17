@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj_tile_mesh"
+importer_version=1
+type="TileMesh"
+path="res://.godot/imported/cliff_360.obj-787ab344dd7cb73c57686bfccfd60bda.mesh"
+
+[deps]
+
+files=[ "res://.godot/imported/cliff_360.obj-787ab344dd7cb73c57686bfccfd60bda.mesh" ]
+
+source_file="res://obj/cliff_360.obj"
+dest_files=[ "res://.godot/imported/cliff_360.obj-787ab344dd7cb73c57686bfccfd60bda.mesh", "res://.godot/imported/cliff_360.obj-787ab344dd7cb73c57686bfccfd60bda.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
+TileType=0
