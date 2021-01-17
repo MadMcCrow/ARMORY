@@ -1,10 +1,15 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://new_tilecollection.tres" type="TileCollection" id=1]
+[ext_resource path="res://obj/beach_center.obj" type="TileMesh" id=2]
 
 [node name="GridNode" type="GridNode"]
 script = null
 
 [node name="TileManager" type="TileManager" parent="."]
 collection = ExtResource( 1 )
+script = null
+
+[node name="TileInstance" type="TileInstance" parent="."]
+tile_mesh = ExtResource( 2 )
 script = null

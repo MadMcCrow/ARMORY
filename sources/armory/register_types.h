@@ -7,6 +7,4 @@
 void register_armory_types();
 void unregister_armory_types();
 
-
-
 #endif // ARMORY_REGISTER_TYPES_H

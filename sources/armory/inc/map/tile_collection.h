@@ -39,6 +39,15 @@ public:
      */
     const Vector<TileMesh*> get_tiles() const;
 
+
+#ifdef TOOLS_ENABLED
+    Ref<TileMesh> import_tile;
+    GET(Ref<TileMesh>, import_tile)
+    void set_import_tile(const Ref<TileMesh> &p_import_tile);
+#endif //TOOLS_ENABLED
+
+
+
 public:
     static void _bind_methods();
 

@@ -3,14 +3,14 @@
 importer="wavefront_obj_tile_mesh"
 importer_version=1
 type="TileMesh"
-path="res://.godot/imported/beach_left.obj-0de2a1dbe764fdedb21998517729083e.mesh"
+path="res://.godot/imported/beach_left.obj-0de2a1dbe764fdedb21998517729083e.tilemesh"
 
 [deps]
 
 files=[ "res://.godot/imported/beach_left.obj-0de2a1dbe764fdedb21998517729083e.mesh" ]
 
 source_file="res://obj/beach_left.obj"
-dest_files=[ "res://.godot/imported/beach_left.obj-0de2a1dbe764fdedb21998517729083e.mesh", "res://.godot/imported/beach_left.obj-0de2a1dbe764fdedb21998517729083e.mesh" ]
+dest_files=[ "res://.godot/imported/beach_left.obj-0de2a1dbe764fdedb21998517729083e.tilemesh", "res://.godot/imported/beach_left.obj-0de2a1dbe764fdedb21998517729083e.mesh" ]
 
 [params]
 

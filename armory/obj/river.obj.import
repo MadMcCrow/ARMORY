@@ -3,14 +3,14 @@
 importer="wavefront_obj_tile_mesh"
 importer_version=1
 type="TileMesh"
-path="res://.godot/imported/river.obj-e7e46732c8008a265e1498c2289b388c.mesh"
+path="res://.godot/imported/river.obj-e7e46732c8008a265e1498c2289b388c.tilemesh"
 
 [deps]
 
 files=[ "res://.godot/imported/river.obj-e7e46732c8008a265e1498c2289b388c.mesh" ]
 
 source_file="res://obj/river.obj"
-dest_files=[ "res://.godot/imported/river.obj-e7e46732c8008a265e1498c2289b388c.mesh", "res://.godot/imported/river.obj-e7e46732c8008a265e1498c2289b388c.mesh" ]
+dest_files=[ "res://.godot/imported/river.obj-e7e46732c8008a265e1498c2289b388c.tilemesh", "res://.godot/imported/river.obj-e7e46732c8008a265e1498c2289b388c.mesh" ]
 
 [params]
 

@@ -3,14 +3,14 @@
 importer="wavefront_obj_tile_mesh"
 importer_version=1
 type="TileMesh"
-path="res://.godot/imported/cliff.obj-1437f96275a5f920ccef1a8e00615bce.mesh"
+path="res://.godot/imported/cliff.obj-1437f96275a5f920ccef1a8e00615bce.tilemesh"
 
 [deps]
 
 files=[ "res://.godot/imported/cliff.obj-1437f96275a5f920ccef1a8e00615bce.mesh" ]
 
 source_file="res://obj/cliff.obj"
-dest_files=[ "res://.godot/imported/cliff.obj-1437f96275a5f920ccef1a8e00615bce.mesh", "res://.godot/imported/cliff.obj-1437f96275a5f920ccef1a8e00615bce.mesh" ]
+dest_files=[ "res://.godot/imported/cliff.obj-1437f96275a5f920ccef1a8e00615bce.tilemesh", "res://.godot/imported/cliff.obj-1437f96275a5f920ccef1a8e00615bce.mesh" ]
 
 [params]
 

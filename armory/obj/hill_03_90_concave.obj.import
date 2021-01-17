@@ -3,14 +3,14 @@
 importer="wavefront_obj_tile_mesh"
 importer_version=1
 type="TileMesh"
-path="res://.godot/imported/hill_03_90_concave.obj-3f1105562e2d4dd1afce905619e96499.mesh"
+path="res://.godot/imported/hill_03_90_concave.obj-3f1105562e2d4dd1afce905619e96499.tilemesh"
 
 [deps]
 
 files=[ "res://.godot/imported/hill_03_90_concave.obj-3f1105562e2d4dd1afce905619e96499.mesh" ]
 
 source_file="res://obj/hill_03_90_concave.obj"
-dest_files=[ "res://.godot/imported/hill_03_90_concave.obj-3f1105562e2d4dd1afce905619e96499.mesh", "res://.godot/imported/hill_03_90_concave.obj-3f1105562e2d4dd1afce905619e96499.mesh" ]
+dest_files=[ "res://.godot/imported/hill_03_90_concave.obj-3f1105562e2d4dd1afce905619e96499.tilemesh", "res://.godot/imported/hill_03_90_concave.obj-3f1105562e2d4dd1afce905619e96499.mesh" ]
 
 [params]
 

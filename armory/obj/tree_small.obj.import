@@ -3,14 +3,14 @@
 importer="wavefront_obj_tile_mesh"
 importer_version=1
 type="TileMesh"
-path="res://.godot/imported/tree_small.obj-9383bbbed8a71720d0854f10ad2c5e13.mesh"
+path="res://.godot/imported/tree_small.obj-9383bbbed8a71720d0854f10ad2c5e13.tilemesh"
 
 [deps]
 
 files=[ "res://.godot/imported/tree_small.obj-9383bbbed8a71720d0854f10ad2c5e13.mesh" ]
 
 source_file="res://obj/tree_small.obj"
-dest_files=[ "res://.godot/imported/tree_small.obj-9383bbbed8a71720d0854f10ad2c5e13.mesh", "res://.godot/imported/tree_small.obj-9383bbbed8a71720d0854f10ad2c5e13.mesh" ]
+dest_files=[ "res://.godot/imported/tree_small.obj-9383bbbed8a71720d0854f10ad2c5e13.tilemesh", "res://.godot/imported/tree_small.obj-9383bbbed8a71720d0854f10ad2c5e13.mesh" ]
 
 [params]
 

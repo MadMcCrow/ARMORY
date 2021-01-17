@@ -4,7 +4,8 @@
 #ifndef ARMORY_TILE_INSTANCE_H
 #define ARMORY_TILE_INSTANCE_H
 
-#include "scene/3d/multimesh_instance_3d.h"
+#include "scene/3d/visual_instance_3d.h"
+#include "map/tile_mesh.h"
 #include "map/map_core.h"
 #include "static_helper.h" // add GETSET_SUPPORT
 
@@ -15,15 +16,25 @@ namespace Armory
 /**
  *  GridNode3D implements gridNode with 3D 
  */
-class TileInstance : public MultiMeshInstance3D  {
-    GDCLASS(TileInstance, MultiMeshInstance3D);
+class TileInstance : public GeometryInstance3D  {
+    GDCLASS(TileInstance, GeometryInstance3D);
+
+
+	Ref<TileMesh> tile_mesh;
+    GET(Ref<TileMesh>, tile_mesh)
+    void set_tile_mesh(const Ref<TileMesh> &p_tile_mesh);
+
+protected:
+	static void _bind_methods();
+	// bind helpers
 
 public:
+	virtual Vector<Face3> get_faces(uint32_t p_usage_flags) const override;
 
-    MapData TileInfo;
+	virtual AABB get_aabb() const override;
 
-
-    static void _bind_methods();
+	TileInstance();
+	~TileInstance();
 
 };
 

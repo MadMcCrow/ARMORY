@@ -3,14 +3,14 @@
 importer="wavefront_obj_tile_mesh"
 importer_version=1
 type="TileMesh"
-path="res://.godot/imported/mountain_90_convex.obj-e3071917e36aa9296bd36e9bb907fab8.mesh"
+path="res://.godot/imported/mountain_90_convex.obj-e3071917e36aa9296bd36e9bb907fab8.tilemesh"
 
 [deps]
 
 files=[ "res://.godot/imported/mountain_90_convex.obj-e3071917e36aa9296bd36e9bb907fab8.mesh" ]
 
 source_file="res://obj/mountain_90_convex.obj"
-dest_files=[ "res://.godot/imported/mountain_90_convex.obj-e3071917e36aa9296bd36e9bb907fab8.mesh", "res://.godot/imported/mountain_90_convex.obj-e3071917e36aa9296bd36e9bb907fab8.mesh" ]
+dest_files=[ "res://.godot/imported/mountain_90_convex.obj-e3071917e36aa9296bd36e9bb907fab8.tilemesh", "res://.godot/imported/mountain_90_convex.obj-e3071917e36aa9296bd36e9bb907fab8.mesh" ]
 
 [params]
 

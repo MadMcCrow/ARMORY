@@ -3,14 +3,14 @@
 importer="wavefront_obj_tile_mesh"
 importer_version=1
 type="TileMesh"
-path="res://.godot/imported/mountain360.obj-c83f3117df016e2243ab9fccc51d6fb0.mesh"
+path="res://.godot/imported/mountain360.obj-c83f3117df016e2243ab9fccc51d6fb0.tilemesh"
 
 [deps]
 
 files=[ "res://.godot/imported/mountain360.obj-c83f3117df016e2243ab9fccc51d6fb0.mesh" ]
 
 source_file="res://obj/mountain360.obj"
-dest_files=[ "res://.godot/imported/mountain360.obj-c83f3117df016e2243ab9fccc51d6fb0.mesh", "res://.godot/imported/mountain360.obj-c83f3117df016e2243ab9fccc51d6fb0.mesh" ]
+dest_files=[ "res://.godot/imported/mountain360.obj-c83f3117df016e2243ab9fccc51d6fb0.tilemesh", "res://.godot/imported/mountain360.obj-c83f3117df016e2243ab9fccc51d6fb0.mesh" ]
 
 [params]
 

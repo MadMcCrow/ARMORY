@@ -53,14 +53,6 @@ protected:
     virtual void updateInstanceMap();
 
 
-private:
-
-    /**
-     *  allows creating and setting up properly a multimesh
-     */
-    static MultiMesh* createMultimeshInstance(TileMesh * input);
-
-
 
 
 public:

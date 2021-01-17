@@ -6,6 +6,7 @@
 #include "map/grid_node.h"        // GridNode
 #include "map/tile_mesh.h"        // tile mesh
 #include "map/tile_manager.h"     // TileManager
+#include "map/tile_instance.h"     // TileInstance
 #include "map/tile_collection.h"  // TileCollection
 #include "register_types.h"
 
@@ -32,6 +33,7 @@ void register_armory_types()
   ClassDB::register_class<Armory::TileManager>();
   ClassDB::register_class<Armory::TileCollection>();
   ClassDB::register_class<Armory::TileMesh>();
+  ClassDB::register_class<Armory::TileInstance>();
 
 #ifdef TOOLS_ENABLED
 if (Engine::get_singleton()->is_editor_hint()) 

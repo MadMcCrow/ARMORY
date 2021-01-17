@@ -3,14 +3,14 @@
 importer="wavefront_obj_tile_mesh"
 importer_version=1
 type="TileMesh"
-path="res://.godot/imported/hill_02_90_convex.obj-77123413c0d3f2d95994ef398abb293d.mesh"
+path="res://.godot/imported/hill_02_90_convex.obj-77123413c0d3f2d95994ef398abb293d.tilemesh"
 
 [deps]
 
 files=[ "res://.godot/imported/hill_02_90_convex.obj-77123413c0d3f2d95994ef398abb293d.mesh" ]
 
 source_file="res://obj/hill_02_90_convex.obj"
-dest_files=[ "res://.godot/imported/hill_02_90_convex.obj-77123413c0d3f2d95994ef398abb293d.mesh", "res://.godot/imported/hill_02_90_convex.obj-77123413c0d3f2d95994ef398abb293d.mesh" ]
+dest_files=[ "res://.godot/imported/hill_02_90_convex.obj-77123413c0d3f2d95994ef398abb293d.tilemesh", "res://.godot/imported/hill_02_90_convex.obj-77123413c0d3f2d95994ef398abb293d.mesh" ]
 
 [params]
 

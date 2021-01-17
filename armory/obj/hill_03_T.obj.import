@@ -3,14 +3,14 @@
 importer="wavefront_obj_tile_mesh"
 importer_version=1
 type="TileMesh"
-path="res://.godot/imported/hill_03_T.obj-5218fb137c699f4eb0b1a3e77b53c434.mesh"
+path="res://.godot/imported/hill_03_T.obj-5218fb137c699f4eb0b1a3e77b53c434.tilemesh"
 
 [deps]
 
 files=[ "res://.godot/imported/hill_03_T.obj-5218fb137c699f4eb0b1a3e77b53c434.mesh" ]
 
 source_file="res://obj/hill_03_T.obj"
-dest_files=[ "res://.godot/imported/hill_03_T.obj-5218fb137c699f4eb0b1a3e77b53c434.mesh", "res://.godot/imported/hill_03_T.obj-5218fb137c699f4eb0b1a3e77b53c434.mesh" ]
+dest_files=[ "res://.godot/imported/hill_03_T.obj-5218fb137c699f4eb0b1a3e77b53c434.tilemesh", "res://.godot/imported/hill_03_T.obj-5218fb137c699f4eb0b1a3e77b53c434.mesh" ]
 
 [params]
 

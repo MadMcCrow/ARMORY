@@ -3,14 +3,14 @@
 importer="wavefront_obj_tile_mesh"
 importer_version=1
 type="TileMesh"
-path="res://.godot/imported/land_00.obj-32ce5daae7997598372aff80945bdfc8.mesh"
+path="res://.godot/imported/land_00.obj-32ce5daae7997598372aff80945bdfc8.tilemesh"
 
 [deps]
 
 files=[ "res://.godot/imported/land_00.obj-32ce5daae7997598372aff80945bdfc8.mesh" ]
 
 source_file="res://obj/land_00.obj"
-dest_files=[ "res://.godot/imported/land_00.obj-32ce5daae7997598372aff80945bdfc8.mesh", "res://.godot/imported/land_00.obj-32ce5daae7997598372aff80945bdfc8.mesh" ]
+dest_files=[ "res://.godot/imported/land_00.obj-32ce5daae7997598372aff80945bdfc8.tilemesh", "res://.godot/imported/land_00.obj-32ce5daae7997598372aff80945bdfc8.mesh" ]
 
 [params]
 

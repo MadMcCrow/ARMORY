@@ -3,14 +3,14 @@
 importer="wavefront_obj_tile_mesh"
 importer_version=1
 type="TileMesh"
-path="res://.godot/imported/Mountain_T.obj-58c8cdb35c0877bd4b1ccddb0463e25b.mesh"
+path="res://.godot/imported/Mountain_T.obj-58c8cdb35c0877bd4b1ccddb0463e25b.tilemesh"
 
 [deps]
 
 files=[ "res://.godot/imported/Mountain_T.obj-58c8cdb35c0877bd4b1ccddb0463e25b.mesh" ]
 
 source_file="res://obj/Mountain_T.obj"
-dest_files=[ "res://.godot/imported/Mountain_T.obj-58c8cdb35c0877bd4b1ccddb0463e25b.mesh", "res://.godot/imported/Mountain_T.obj-58c8cdb35c0877bd4b1ccddb0463e25b.mesh" ]
+dest_files=[ "res://.godot/imported/Mountain_T.obj-58c8cdb35c0877bd4b1ccddb0463e25b.tilemesh", "res://.godot/imported/Mountain_T.obj-58c8cdb35c0877bd4b1ccddb0463e25b.mesh" ]
 
 [params]
 
