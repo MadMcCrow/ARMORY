@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj_tile_mesh"
+importer_version=1
+type="TileMesh"
+path="res://.godot/imported/river_cliff.obj-34b6aa1e1b27739701f8ca0b9deb7432.tilemesh"
+
+[deps]
+
+files=[ "res://.godot/imported/river_cliff.obj-34b6aa1e1b27739701f8ca0b9deb7432.mesh" ]
+
+source_file="res://obj/river_cliff.obj"
+dest_files=[ "res://.godot/imported/river_cliff.obj-34b6aa1e1b27739701f8ca0b9deb7432.tilemesh", "res://.godot/imported/river_cliff.obj-34b6aa1e1b27739701f8ca0b9deb7432.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
+TileType=0

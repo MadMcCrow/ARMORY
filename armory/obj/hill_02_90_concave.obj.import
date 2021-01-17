@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj_tile_mesh"
+importer_version=1
+type="TileMesh"
+path="res://.godot/imported/hill_02_90_concave.obj-f99af55f243b6c51575eca28a18742c9.tilemesh"
+
+[deps]
+
+files=[ "res://.godot/imported/hill_02_90_concave.obj-f99af55f243b6c51575eca28a18742c9.mesh" ]
+
+source_file="res://obj/hill_02_90_concave.obj"
+dest_files=[ "res://.godot/imported/hill_02_90_concave.obj-f99af55f243b6c51575eca28a18742c9.tilemesh", "res://.godot/imported/hill_02_90_concave.obj-f99af55f243b6c51575eca28a18742c9.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
+TileType=0

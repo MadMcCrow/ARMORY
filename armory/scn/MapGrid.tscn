@@ -1,19 +1,15 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
 
-[node name="Node3D" type="Node3D"]
+[ext_resource path="res://new_tilecollection.tres" type="TileCollection" id=1]
+[ext_resource path="res://obj/beach_center.obj" type="TileMesh" id=2]
+
+[node name="GridNode" type="GridNode"]
 script = null
 
-[node name="GridMap" type="GridMap" parent="."]
-data = {
-"cells": PackedInt32Array(  )
-}
-script = null
-__meta__ = {
-"_editor_clip_": 0
-}
-
-[node name="GridNode" type="GridNode" parent="GridMap"]
+[node name="TileManager" type="TileManager" parent="."]
+collection = ExtResource( 1 )
 script = null
 
-[node name="TileManager" type="TileManager" parent="GridMap/GridNode"]
+[node name="TileInstance" type="TileInstance" parent="."]
+tile_mesh = ExtResource( 2 )
 script = null

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj_tile_mesh"
+importer_version=1
+type="TileMesh"
+path="res://.godot/imported/mountain_end.obj-7ff25d6a2a9e1f5e23cb9728653a999d.tilemesh"
+
+[deps]
+
+files=[ "res://.godot/imported/mountain_end.obj-7ff25d6a2a9e1f5e23cb9728653a999d.mesh" ]
+
+source_file="res://obj/mountain_end.obj"
+dest_files=[ "res://.godot/imported/mountain_end.obj-7ff25d6a2a9e1f5e23cb9728653a999d.tilemesh", "res://.godot/imported/mountain_end.obj-7ff25d6a2a9e1f5e23cb9728653a999d.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
+TileType=0

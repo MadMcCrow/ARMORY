@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj_tile_mesh"
+importer_version=1
+type="TileMesh"
+path="res://.godot/imported/land_02.obj-375cfbfe7e709dea676140f340b3c50e.tilemesh"
+
+[deps]
+
+files=[ "res://.godot/imported/land_02.obj-375cfbfe7e709dea676140f340b3c50e.mesh" ]
+
+source_file="res://obj/land_02.obj"
+dest_files=[ "res://.godot/imported/land_02.obj-375cfbfe7e709dea676140f340b3c50e.tilemesh", "res://.godot/imported/land_02.obj-375cfbfe7e709dea676140f340b3c50e.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
+TileType=0
