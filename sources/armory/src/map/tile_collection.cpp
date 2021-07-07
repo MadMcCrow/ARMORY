@@ -15,7 +15,7 @@ const TileMesh * TileCollection::get_tile(int index) const
     Variant element = tileset[index];
     if(element.is_ref())
     {
-        Reference *reference = static_cast<Reference *>(static_cast<Object *>(element));
+        Object *reference = static_cast<Object *>(element);
         return Cast<TileMesh>(reference);
     }
 

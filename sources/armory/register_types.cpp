@@ -22,7 +22,7 @@ template<typename Class>
 void _register_armory_importer()
 {
 	Ref<Class> import;
-	import.instance();
+	import.instantiate();
 	ResourceFormatImporter::get_singleton()->add_importer(import);
 }
 #endif // TOOLS_ENABLED

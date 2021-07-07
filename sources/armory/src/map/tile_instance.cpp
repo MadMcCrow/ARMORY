@@ -20,7 +20,7 @@ void TileInstance::update_multimesh(Ref<TileMesh> tile_mesh)
                 multimesh.unref();
             }
             */
-            multimesh.instance();
+            multimesh.instantiate();
             multimesh->set_mesh(tile_mesh->get_mesh());
             multimesh->set_transform_format(MultiMesh::TransformFormat::TRANSFORM_3D);
         }
@@ -32,17 +32,18 @@ void TileInstance::_bind_methods()
     BIND_PROPERTY_GETSET(TileInstance, Variant::OBJECT, tile_mesh, PROPERTY_HINT_RESOURCE_TYPE, "TileMesh");
 }
 
-
-String TileInstance::get_configuration_warning() const
+/*
+ * TODO : find a way to do this
+TypedArray<String> TileInstance::get_configuration_warning() const
 {
-    auto warning = Node3D::get_configuration_warning();
+    auto warning = GeometryInstance3D::get_configuration_warning();
     if (!Cast<TileManager>(get_parent()))
     {
-        warning += TTR("this node requieres to be a child of a TileManager");
+        warning.Add(TTR("this node requieres to be a child of a TileManager"));
     }
     return warning;
 }
-
+*/
 
 void TileInstance::set_tile_mesh(const Ref<TileMesh> &p_tile_mesh)
 {

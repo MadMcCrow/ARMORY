@@ -47,7 +47,7 @@ namespace Armory
 
     public:
 
-        virtual String get_configuration_warning() const override;
+        //virtual String get_configuration_warning() const override;
 
     public:
         static void _bind_methods();

@@ -11,7 +11,7 @@ using namespace Armory;
 
 GridNode::GridNode()
 {
-    grid.instance();
+    grid.instantiate();
 }
 
 GridNode::~GridNode()
@@ -23,7 +23,7 @@ void GridNode::set_grid_size(Point2i new_grid_size)
 {
     if(!grid.is_valid())
     {
-        grid.instance();
+        grid.instantiate();
     }
 
     // avoid zero and negative sizes as well as atrociously big sizes

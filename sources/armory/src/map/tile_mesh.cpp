@@ -40,7 +40,7 @@ void TileMesh::_bind_methods()
 Ref<TileMesh> TileMesh::from_mesh(Ref<ArrayMesh> src_mesh)
 {
     Ref<TileMesh> mesh;
-    mesh.instance();
+    mesh.instantiate();
     mesh->set_mesh(src_mesh);
     return mesh;
 }

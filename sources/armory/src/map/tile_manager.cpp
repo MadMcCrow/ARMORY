@@ -22,6 +22,7 @@ void TileManager::tree_update()
     updateInstanceMap();
 }
 
+/*
 String TileManager::get_configuration_warning() const
 {
     auto warning = Node3D::get_configuration_warning();
@@ -31,6 +32,7 @@ String TileManager::get_configuration_warning() const
     }
     return warning;
 }
+*/
 
 void TileManager::_bind_methods()
 {
@@ -54,7 +56,7 @@ void TileManager::updateInstanceMap()
                 for (int t = 0; t < count; t++)
                 {
                     print_msg(this, String("generating a new instance"));
-                    instance->get_multimesh()->set_instance_transform(t, Transform(Basis(), Vector3(t * 10, 0, 0)));
+                    instance->get_multimesh()->set_instance_transform(t, Transform3D(Basis(), Vector3(t * 10, 0, 0)));
                 }
             }
         }

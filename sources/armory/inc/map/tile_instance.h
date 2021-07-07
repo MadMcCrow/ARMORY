@@ -32,7 +32,7 @@ public:
 	static void _bind_methods();
 	// bind helpers
 
-	String get_configuration_warning() const override;
+	//TypedArray<String> get_configuration_warning() const override;
 
 	virtual Vector<Face3> get_faces(uint32_t p_usage_flags) const override;
 

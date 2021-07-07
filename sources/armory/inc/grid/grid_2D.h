@@ -5,8 +5,9 @@
 #define ARMORY_GRID_2D_H
 
 // Godot Includes
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
 #include "core/templates/vector.h" // for vector container
-#include "core/object/reference.h" // for reference
 #include "core/math/vector2.h"     // for Point2i
 
 
@@ -39,7 +40,7 @@ using  GridSize2D = Point2i;
  *  @note the subscript are [y] [x] (outer vector is y)
  */
 template <typename T>
-class Grid2D : public Reference
+class Grid2D : public RefCounted
 {
 
 private:
