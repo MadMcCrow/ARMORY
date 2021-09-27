@@ -2,52 +2,82 @@
 extends Node
 
 
-# Declare member variables here. Examples:
+
+# The mesh to use to show grid element positions in 3d
 @export var debugMesh : Mesh
-@export var sizeX : int = 20
-@export var sizeY = sizeX
-var steps = 5
 
-# this is the final array
-var _matrix = []
-var _rng = RandomNumberGenerator.new()
+# grid size (2D)
+@export var size : Vector2i = Vector2i(20,20)
 
-# Called when the node enters the scene tree for the first time.
+# how many different heights we can have
+@export var quantificationSteps : int = 5
+
+# grid matrix stored as 1D array
+@onready var _matrix = []
+
+#random number generator
+@onready var _rng = RandomNumberGenerator.new()
+
+#
+# @func _ready
+# called on scene init
+#
 func _ready():
-	_matrix.resize(sizeX * sizeY)
+	_matrix.resize(size.x * size.y)
 	_matrix.fill(0)
 	_rng.randomize()
 	_diamondsquare()
 	_printMatrix()
-	spawnCubes()
+	_spawnCubes()
 
-
+#
+# @func _printMatrix
+# print in output the content of the grid
+#
 func _printMatrix():
 	var line = []
-	for x in range (0, sizeX):
-		for y in range (0, sizeY): 
+	for x in range (0, size.x):
+		for y in range (0, size.y):
 			line.append("%.2f" % _get(x,y))
 		print(line)
 		line = []
 
-func _getCoord(x,y):
-	var fixedX = int(x)%sizeX;
-	var fixedY = int(y)%sizeY;
-	return (fixedY * sizeX) + fixedX
+#
+# @func _getCoord
+# @returns 1D coord of 2D coords
+#
+func _getCoord(x ,y):
+	var fixedX = int(x)%size.x;
+	var fixedY = int(y)%size.y;
+	return (fixedY * size.x) + fixedX
 
-# get value at x, y
+#
+# @func _get
+# @returns value at {x,y}
+#
 func _get(x,y):
 	return _matrix[_getCoord(x,y)]
 
-# set value at x, y
+#
+# @func _set
+# sets value at {x,y}
+#
 func _set(x,y, val):
 	_matrix[_getCoord(x,y)] = val
 
+#
+# @func _random
+# gets a random value for {a,b}
+#
 func _random(a,b):
 	return _rng.randf_range(a, b)
 
+#
+# @func _diamondsquare
+# diamond square algorithm to generate an array
+#
 func _diamondsquare():
-	var h = sizeX + 1
+	var h = size.x + 1
 	_set(0,0, _random(-h, h))  # initialisation des coins : 1 seul
 	var i = h-1
 	while i > 1 :
@@ -88,13 +118,28 @@ func _diamondsquare():
 		i = id
 	#while end
 
-func spawnCubes() :
-	for x in range (0, sizeX):
-		for y in range (0, sizeY): 
-			var node = MeshInstance3D.new()
-			node.set_name("node_%d_%d" % [x,y])
-			add_child(node)
-			node.set_owner(get_tree().edited_scene_root)
-			node.translate(Vector3(x,_get(x,y), y))
-			node.set_mesh(debugMesh)
+#
+# @func spawnCubes
+# debug function to draw all cubes
+#
+func _spawnCubes() :
+	# get a multimeshinstance
+	var node = MultiMeshInstance3D.new()
+	node.set_name("debugmultimesh")
+	node.set_owner(get_tree().edited_scene_root)
+	add_child(node)
+	#set multimesh
+	var multimesh = MultiMesh.new()
+	node.set_multimesh(multimesh)
+	multimesh.set_mesh(debugMesh)
+	multimesh.set_transform_format(1) # 1 is 3D, 0 is 2D
+	multimesh.set_instance_count( size.x * size.y)
+	#base transform
+	var base = node.get_transform()
+	# set all instances
+	for x in range (0, size.x):
+		for y in range (0, size.y):
+			multimesh.set_instance_transform( _getCoord(x,y), base.translated(Vector3(x,_get(x,y), y)))
+
+
 
