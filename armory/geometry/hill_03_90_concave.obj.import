@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bywqwpiojcjux"
+path="res://.godot/imported/hill_03_90_concave.obj-0f024c28f86af7af015d289f670c5095.mesh"
+
+[deps]
+
+files=["res://.godot/imported/hill_03_90_concave.obj-0f024c28f86af7af015d289f670c5095.mesh"]
+
+source_file="res://geometry/hill_03_90_concave.obj"
+dest_files=["res://.godot/imported/hill_03_90_concave.obj-0f024c28f86af7af015d289f670c5095.mesh", "res://.godot/imported/hill_03_90_concave.obj-0f024c28f86af7af015d289f670c5095.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

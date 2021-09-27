@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b2qb4eoaomjee"
+path="res://.godot/imported/Mountain_T.obj-095ee5d552ed7067e6f9fab9c1e6eb5a.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Mountain_T.obj-095ee5d552ed7067e6f9fab9c1e6eb5a.mesh"]
+
+source_file="res://geometry/Mountain_T.obj"
+dest_files=["res://.godot/imported/Mountain_T.obj-095ee5d552ed7067e6f9fab9c1e6eb5a.mesh", "res://.godot/imported/Mountain_T.obj-095ee5d552ed7067e6f9fab9c1e6eb5a.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
