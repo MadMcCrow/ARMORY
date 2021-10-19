@@ -1,5 +1,4 @@
- 
-# custom.py for godot binary
+﻿# custom.py for godot binary
 platform="linuxbsd"
 target="release_debug"
 tools="yes"
