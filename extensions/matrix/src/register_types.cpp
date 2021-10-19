@@ -8,12 +8,15 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 
+// matrix classes
 #include "matrix.h"
+#include "matrix_view.h"
 
 using namespace godot;
 
 void register_matrix_types() {
-	ClassDB::register_class<Matrix>();
+	ClassDB::register_class<matrix::Matrix>();
+	ClassDB::register_class<matrix::MatrixView>();
 }
 
 void unregister_matrix_types() {}

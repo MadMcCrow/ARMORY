@@ -4,10 +4,12 @@
 #ifndef MATRIX_CLASS_H
 #define MATRIX_CLASS_H
 
-#include <godot_cpp/classes/reference.hpp>
+#include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/core/binder_common.hpp>
 #include <vector>
 
+// we must use this namespace if we want to compile against godot
+using namespace godot;
 
 // make sure we do not override
 namespace matrix
@@ -18,8 +20,8 @@ namespace matrix
  *	Matrix class
  *	A nice 2D array with fast access
  */
-class Matrix : public Reference {
-	GDCLASS(Matrix, Reference);
+class Matrix : public RefCounted {
+	GDCLASS(Matrix, RefCounted);
 
 public:
 
@@ -33,10 +35,10 @@ protected:
 private:
 
 	/** size of this vector */
-	godot::Vector2i size;
+	Vector2i size;
 
 	/** the internal */
-	std::vector<godot::Variant> internal_matrix;
+	std::vector<Variant> internal_matrix;
 
 	void init_matrix();
 
@@ -46,19 +48,19 @@ public:
 
 	/** convert 2d coordinate to unique index */
 	int  get_index(int x, int y) const;
-	int  get_indexv(const godot::Vector2i &vector) const;
+	int  get_indexv(const Vector2i &vector) const;
 
 	/** getter */
-	godot::Variant get(int x, int y) const;
-	godot::Variant getv(const godot::Vector2i &vector) const;
+	Variant get(int x, int y) const;
+	Variant getv(const Vector2i &vector) const;
 
 	/** setter */
-	void set(int x, int y,const godot::Variant& value);
-	void setv(const godot::Vector2i &vector,const godot::Variant& value);
+	void set(int x, int y,const Variant& value);
+	void setv(const Vector2i &vector,const Variant& value);
 
 	/** size */
-	void set_size(const godot::Vector2i &in_size);
-	godot::Vector2i get_size() const;
+	void set_size(const Vector2i &in_size);
+	Vector2i get_size() const;
 
 
 };
