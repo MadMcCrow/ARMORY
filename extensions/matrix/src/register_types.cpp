@@ -13,10 +13,11 @@
 #include "matrix_view.h"
 
 using namespace godot;
+using namespace matrix;
 
 void register_matrix_types() {
-	ClassDB::register_class<matrix::Matrix>();
-	ClassDB::register_class<matrix::MatrixView>();
+	ClassDB::register_class<Matrix>();
+	ClassDB::register_class<MatrixView>();
 }
 
 void unregister_matrix_types() {}
@@ -29,8 +30,9 @@ GDNativeBool GDN_EXPORT matrix_library_init(const GDNativeInterface *p_interface
 	godot::GDExtensionBinding::InitObject init_obj(p_interface, p_library, r_initialization);
 
 	init_obj.register_scene_initializer(register_matrix_types);
-	init_obj.register_scene_terminator(register_matrix_types);
+	init_obj.register_scene_terminator(unregister_matrix_types);
 
 	return init_obj.init();
 }
 }
+

@@ -62,22 +62,22 @@ int  Matrix::get_indexv(const Vector2i &vector) const
 
 Variant Matrix::get(int x, int y) const
 {
-	return internal_matrix[get_index(x,y)];
+	return internal_matrix.at(get_index(x,y));
 }
 
 Variant Matrix::getv(const Vector2i &vector) const
 {
-	return internal_matrix[get_indexv(vector)];
+	return internal_matrix.at(get_indexv(vector));
 }
 
 void Matrix::set(int x, int y,const Variant& value)
 {
-internal_matrix[get_index(x,y)] = value;
+internal_matrix.at(get_index(x,y)) = value;
 }
 
 void Matrix::setv(const Vector2i &vector,const Variant& value)
 {
-	internal_matrix[get_indexv(vector)] = value;
+	internal_matrix.at(get_indexv(vector)) = value;
 }
 
 void Matrix::set_size(const Vector2i &in_size)

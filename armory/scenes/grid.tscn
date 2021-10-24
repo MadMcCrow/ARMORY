@@ -9,18 +9,20 @@ size = Vector3(1, 1, 1)
 [node name="Node3D" type="Node3D"]
 script = ExtResource( "1_fehku" )
 debugMesh = SubResource( "BoxMesh_xty58" )
-size = Vector2i(60, 60)
 
 [node name="debugCanvas" type="CanvasLayer" parent="."]
 script = null
 
-[node name="debugDraw" type="Control" parent="debugCanvas"]
+[node name="DebugDraw" type="Control" parent="debugCanvas"]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource( "2_yad5w" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="DebugMesh" type="MultiMeshInstance3D" parent="debugCanvas/DebugDraw"]
+script = null
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.911382, 0.411562, 0, -0.411562, 0.911382, 0, 1.42961, 2.45759)
