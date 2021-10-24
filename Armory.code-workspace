@@ -13,13 +13,9 @@
 			"path": "./godot"
 		},
 		{
-			"name": "Sources",
-			"path": "./sources",
-		},
-		{
-			"name": "Build",
-			"path": "./build"
-		},
+			"name": "Extensions",
+			"path": "./extensions",
+		}
 
 	],
 	"settings": {
