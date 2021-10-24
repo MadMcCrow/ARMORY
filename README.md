@@ -13,17 +13,18 @@ This project is made with the Godot Engine (here pronounced _/ˈɡɒdoʊ/_ _GOD-
 to set the project up on your device just clone this repository and run the following:
    
 ```
-git submodule update --init # update/get the godot submodule
-make # or python build/setup.py
+git submodule update --init --recursive # update/get Godot and it's modules
+cd godot
+scons -j profile=/custom.py
+cd ../godot-cpp
+scons target=debug
+cd ../extensions/matrix # build matrix extension
+scons -j target=debug
 ```
-if this does not work for you, I suggest you check [`build/config.json`](build/config.json) and [`build/custom.py`](build/custom.py) to see if anything is not compatible with your current configuration.
 
+alternatively you can use [./setup.sh]
 
-### Modular approach
-
-The game will be (almost) entirely in C++. the code is added to modules in the sources folder.
-
-## Help and Participate.
+### Help and Participate.
 
 Any push request will be treated, and merged if it's any kind of improvement or bug fix.
 You can also fork this project and make a game of your own.
