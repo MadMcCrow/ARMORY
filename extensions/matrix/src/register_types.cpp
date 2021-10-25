@@ -16,6 +16,7 @@ using namespace godot;
 using namespace matrix;
 
 void register_matrix_types() {
+	ClassDB::register_class<MatrixInterface>();
 	ClassDB::register_class<Matrix>();
 	ClassDB::register_class<MatrixView>();
 }

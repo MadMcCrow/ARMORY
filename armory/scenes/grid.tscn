@@ -9,6 +9,7 @@ size = Vector3(1, 1, 1)
 [node name="Node3D" type="Node3D"]
 script = ExtResource( "1_fehku" )
 debugMesh = SubResource( "BoxMesh_xty58" )
+size = 500
 
 [node name="debugCanvas" type="CanvasLayer" parent="."]
 script = null

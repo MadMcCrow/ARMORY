@@ -80,16 +80,19 @@ func _normalize() :
 #
 func _spawn_cubes() :
 	#set multimesh
-	var multimesh = debug_node.get_multimesh()
+	var multimesh = MultiMesh.new()
+	var dim = size * 2
 	multimesh.set_mesh(debugMesh)
 	multimesh.set_transform_format(1) # 1 is 3D, 0 is 2D
-	multimesh.set_instance_count( size * 2 * size * 2)
+	multimesh.set_instance_count(dim * dim)
+	debug_node.set_multimesh(multimesh)
 	#base transform
 	var base = debug_node.get_transform()
 	# set all instances
-	#for x in range (0, size * 2):
-	#	for y in range (0, size * 2):
-	#		multimesh.set_instance_transform( x*y, base.translated(Vector3(x,_matrix.get(x%size,y%size), y)))
+	for x in range (0, dim):
+		for y in range (0, dim):
+			var height = _matrix.get(x%size,y%size) * 10
+			multimesh.set_instance_transform( x+(dim*y), base.translated(Vector3(x,height, y)))
 
 
 

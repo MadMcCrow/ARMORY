@@ -35,7 +35,7 @@ protected:
 public:
 
 	// do nothing here, expose only what child classes do actually need
-	static void _bind_methods(){};
+	static void _bind_methods();
 
 	/** convert 2d coordinate to unique index */
 	virtual int get_index(int x, int y) const;

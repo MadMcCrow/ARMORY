@@ -8,6 +8,15 @@ using namespace matrix;
 
 #define NOT_IMPLEMENTED()   std::cout << "call to not implemented function " << __FUNCTION__ << "\n";
 
+
+
+void MatrixInterface::_bind_methods()
+{
+	BIND_VIRTUAL_METHOD(MatrixInterface, get_index);
+	BIND_VIRTUAL_METHOD(MatrixInterface, get);
+	BIND_VIRTUAL_METHOD(MatrixInterface, set);
+}
+
 /** size getter and setter */
 void MatrixInterface::set_size(const Vector2i &in_size)
 {
