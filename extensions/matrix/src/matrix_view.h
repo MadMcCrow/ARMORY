@@ -8,6 +8,7 @@
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/core/binder_common.hpp>
 
+#include "matrix_interface.h"
 #include "matrix.h"
 
 
@@ -23,8 +24,9 @@ namespace matrix
  *	Matrix class
  *	A nice 2D array with fast access
  */
-class MatrixView : public RefCounted {
-	GDCLASS(MatrixView, RefCounted);
+class MatrixView : public MatrixInterface
+{
+	GDCLASS(MatrixView, MatrixInterface);
 
 protected:
 	// godot
@@ -35,32 +37,34 @@ private:
 	/** position of the first sub_matrix element you look at */
 	Vector2i first;
 
-
-	/** size of this matrix */
-	Vector2i size;
-
 	/** the internal */
 	Ref<Matrix> reference_matrix;
 
-	/** initialize matrix to a certain size */
-	void init_matrix(const Ref<Matrix> &main_matrix, Vector2i size);
-
-	Vector2i modulated(const Vector2i &vector) 	const;
-	Vector2i clamped(const Vector2i &vector) 	const;
-
 public:
 
+	/**
+	 * @func init_matrix
+	 * initialize matrix from another matrix, a size and a corner
+	 * @param main_matrix	the matrix you're reading/setting from
+	 * @param in_first		the top left corner
+	 * @param in_size		the size of this view
+	 */
+	void view(const Ref<MatrixInterface> &main_matrix, Vector2i in_first, Vector2i in_size);
+
 	/** getter */
-	Variant get(int x, int y) const;
-	Variant getv(const Vector2i &vector) const;
+	virtual Variant get(int x, int y) const override;
 
 	/** setter */
-	void set(int x, int y,const Variant& value);
-	void setv(const Vector2i &vector,const Variant& value);
+	virtual void set(int x, int y,const Variant& value) override;
 
 	/** size */
-	void set_size(const Vector2i &in_size);
-	Vector2i get_size() const;
+	virtual void set_size(const Vector2i &in_size) override;
+
+	/** first is top left - getter */
+	Vector2i get_first() const;
+
+	/** first is top left - setter */
+	void set_first(const Vector2i& in_first);
 
 };
 

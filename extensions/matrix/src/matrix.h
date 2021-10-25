@@ -7,6 +7,7 @@
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/core/binder_common.hpp>
 #include <vector>
+#include "matrix_interface.h"
 
 // we must use this namespace if we want to compile against godot
 using namespace godot;
@@ -20,8 +21,9 @@ namespace matrix
  *	Matrix class
  *	A nice 2D array with fast access
  */
-class Matrix : public RefCounted {
-	GDCLASS(Matrix, RefCounted);
+class Matrix : public MatrixInterface
+{
+	GDCLASS(Matrix, MatrixInterface);
 
 public:
 
@@ -34,9 +36,6 @@ protected:
 
 private:
 
-	/** size of this vector */
-	Vector2i size;
-
 	/** the internal */
 	std::vector<Variant> internal_matrix;
 
@@ -47,22 +46,16 @@ private:
 public:
 
 	/** convert 2d coordinate to unique index */
-	int  get_index(int x, int y) const;
-	int  get_indexv(const Vector2i &vector) const;
+	virtual int  get_index(int x, int y) const override;
 
 	/** getter */
-	Variant get(int x, int y) const;
-	Variant getv(const Vector2i &vector) const;
+	virtual Variant get(int x, int y) const override;
 
 	/** setter */
-	void set(int x, int y,const Variant& value);
-	void setv(const Vector2i &vector,const Variant& value);
+	virtual void set(int x, int y,const Variant& value) override;
 
-	/** size */
-	void set_size(const Vector2i &in_size);
-	Vector2i get_size() const;
-
-
+	/** init matrix after set_size */
+	virtual void set_size(const Vector2i &in_size) override;
 };
 
 };

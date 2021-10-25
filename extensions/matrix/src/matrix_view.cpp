@@ -13,8 +13,20 @@ static constexpr int _clamp(int a, int min, int max)
  	return t > max ? max : t;
 }
 
+static Vector2i _modv(const Vector2i &vector,  Vector2i size)
+{
+	return Vector2i(vector.x % size.x, vector.y % size.y);
+}
+
+static Vector2i _clampv(const Vector2i &vector,  Vector2i size)
+{
+	return Vector2i(_clamp(vector.x, 0, size.x), _clamp(vector.y, 0, size.y));
+}
+
 void MatrixView::_bind_methods() {
+
 	// Methods.
+	ClassDB::bind_method(D_METHOD("view", "matrix", "first", "size"), &MatrixView::view);
 	ClassDB::bind_method(D_METHOD("get", "x", "y"),		&MatrixView::get);
 	ClassDB::bind_method(D_METHOD("getv", "coord"), 	&MatrixView::getv);
 	ClassDB::bind_method(D_METHOD("set", "x", "y", "value"), 	&MatrixView::set);
@@ -23,50 +35,34 @@ void MatrixView::_bind_methods() {
 	// Properties
 	ADD_GROUP("Matrix", "matrix_");
 
-	// internal setup
-	ADD_SUBGROUP("Matrix view", "matrix_view_");
+	ADD_SUBGROUP("Matrix View", "matrix_view_");
 
 	// size
-	ClassDB::bind_method(D_METHOD("get_size"), &Matrix::get_size);
-	ClassDB::bind_method(D_METHOD("set_size", "size"), &Matrix::set_size);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "matrix_internal_size"), "set_size", "get_size");
+	ClassDB::bind_method(D_METHOD("get_size"), &MatrixView::get_size);
+	ClassDB::bind_method(D_METHOD("set_size", "size"), &MatrixView::set_size);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "matrix_size"), "set_size", "get_size");
+
+	// first
+	ClassDB::bind_method(D_METHOD("get_first"), &MatrixView::get_first);
+	ClassDB::bind_method(D_METHOD("set_first", "first"), &MatrixView::set_first);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "view_first"), "set_first", "get_first");
 }
 
-
-void MatrixView::init_matrix(const Ref<Matrix> &main_matrix, Vector2i size)
+void MatrixView::view(const Ref<MatrixInterface> &main_matrix, Vector2i in_first, Vector2i in_size)
 {
 	reference_matrix = main_matrix;
+	first = in_first;
 	set_size(size);
-}
-
-Vector2i MatrixView::modulated(const Vector2i &vector) const
-{
-	return Vector2i(vector.x % size.x, vector.y % size.y);
-}
-
-Vector2i MatrixView::clamped(const Vector2i &vector) const
-{
-	return Vector2i(_clamp(vector.x, 0, size.x), _clamp(vector.y, 0, size.y));
 }
 
 Variant MatrixView::get(int x, int y) const
 {
-	return getv(Vector2i(x,y));
-}
-
-Variant MatrixView::getv(const Vector2i &vector) const
-{
-	return reference_matrix->getv(modulated(vector) + first);
+	return reference_matrix->getv(_modv(Vector2i(x,y), size) + first);
 }
 
 void MatrixView::set(int x, int y,const Variant& value)
 {
-	setv(Vector2i(x,y), value);
-}
-
-void MatrixView::setv(const Vector2i &vector,const Variant& value)
-{
-	reference_matrix->setv(modulated(vector) + first, value);
+	reference_matrix->setv(_modv(Vector2i(x,y), size) + first, value);
 }
 
 void MatrixView::set_size(const Vector2i &in_size)
@@ -75,7 +71,12 @@ void MatrixView::set_size(const Vector2i &in_size)
 	size = Vector2i(_clamp(in_size.x, 0, maxsize.x), _clamp(in_size.y, 0, maxsize.y));
 }
 
-Vector2i MatrixView::get_size() const
+Vector2i MatrixView::get_first() const
 {
-	return size;
+	return first;
+}
+
+void MatrixView::set_first(const Vector2i& in_first)
+{
+	first = in_first;
 }
