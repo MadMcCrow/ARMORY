@@ -1,6 +1,7 @@
 /* Copyright © Noé Perard-Gayot 2021. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
+#include <algorithm>
 #include "matrix.h"
 #include <godot_cpp/core/class_db.hpp>
 
@@ -25,6 +26,10 @@ void Matrix::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getv", "coord"), 		    &Matrix::getv);
 	ClassDB::bind_method(D_METHOD("set", "x", "y", "value"),    &Matrix::set);
 	ClassDB::bind_method(D_METHOD("setv", "coord", "value"),    &Matrix::setv);
+
+	ClassDB::bind_method(D_METHOD("min"),    &Matrix::min);
+    ClassDB::bind_method(D_METHOD("max"),    &Matrix::max);
+    ClassDB::bind_method(D_METHOD("normalize", "min", "max"),    &Matrix::normalize);
 
 	// Properties
 	ADD_GROUP("Matrix", "matrix_");
@@ -86,4 +91,15 @@ void Matrix::set_size(const Vector2i &in_size)
 {
     size = in_size;
     init_matrix();
+}
+
+
+Variant Matrix::min() const
+{
+    return *std::min_element(internal_matrix.begin(), internal_matrix.end());
+}
+
+Variant Matrix::max() const
+{
+    return *std::max_element(internal_matrix.begin(), internal_matrix.end());
 }

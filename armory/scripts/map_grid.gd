@@ -32,7 +32,7 @@ func _ready():
 	_matrix.set_size(Vector2i(size, size))
 	_rng.randomize()
 	_simplex_noise()
-	#_normalize()
+	_normalize()
 	_spawn_cubes()
 
 
@@ -54,25 +54,13 @@ func _simplex_noise():
 		for y in range (0, size):
 			_matrix.set(x,y,image.get_pixel(x,y).v)
 
-#
-# @func _remap_range
-# Remap for min/max
-#
-func _remap_quantification(value, InputMin, InputMax):
-	return(value - InputMin) / (InputMax - InputMin) * (quantificationSteps)
 
 #
 # @func normalize
 #
 func _normalize() :
-	var min = _matrix.min()
-	var max = _matrix.max()
-	print(min)
-	print(max)
-	# normalise
-	for x in range (0, size):
-		for y in range (0, size):
-			_matrix.set(x,y,_remap_quantification(_matrix.get(x,y),min,max))
+	_matrix.normalize(0.0,2)
+
 
 #
 # @func spawnCubes

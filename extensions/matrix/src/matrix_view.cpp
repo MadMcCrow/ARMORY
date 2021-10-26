@@ -32,6 +32,10 @@ void MatrixView::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set", "x", "y", "value"), 	&MatrixView::set);
 	ClassDB::bind_method(D_METHOD("setv", "coord", "value"),	&MatrixView::setv);
 
+	ClassDB::bind_method(D_METHOD("min"),    &MatrixView::min);
+    ClassDB::bind_method(D_METHOD("max"),    &MatrixView::max);
+    ClassDB::bind_method(D_METHOD("normalize", "min", "max"),    &MatrixView::normalize);
+
 	// Properties
 	ADD_GROUP("Matrix", "matrix_");
 

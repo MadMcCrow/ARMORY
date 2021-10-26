@@ -56,6 +56,12 @@ public:
 
 	/** init matrix after set_size */
 	virtual void set_size(const Vector2i &in_size) override;
+
+	/** min, redefined for better performance */
+	virtual Variant min() const override;
+
+	/** max, redefined for better performance */
+	virtual Variant max() const override;
 };
 
 };
