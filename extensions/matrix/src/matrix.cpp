@@ -5,6 +5,9 @@
 #include "matrix.h"
 #include <godot_cpp/core/class_db.hpp>
 
+
+#define MAX_OMP 4
+
 using namespace matrix;
 
 Matrix::Matrix() : MatrixInterface()
@@ -31,6 +34,10 @@ void Matrix::_bind_methods() {
     ClassDB::bind_method(D_METHOD("max"),    &Matrix::max);
     ClassDB::bind_method(D_METHOD("normalize", "min", "max"),    &Matrix::normalize);
 
+    ClassDB::bind_method(D_METHOD("fill", "in_size", "in_data"),    &Matrix::fill);
+    ClassDB::bind_method(D_METHOD("from_image", "image", "mode"),   &Matrix::from_image);
+    ClassDB::bind_method(D_METHOD("apply_filter", "filter"),        &Matrix::apply_filter);
+
 	// Properties
 	ADD_GROUP("Matrix", "matrix_");
 
@@ -41,6 +48,7 @@ void Matrix::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_size"), &Matrix::get_size);
 	ClassDB::bind_method(D_METHOD("set_size", "size"), &Matrix::set_size);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "matrix_size"), "set_size", "get_size");
+
 }
 
 

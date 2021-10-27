@@ -6,7 +6,8 @@
 
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/core/binder_common.hpp>
-
+#include <godot_cpp/classes/image.hpp>
+#include <godot_cpp/classes/ref.hpp>
 
 // we must use this namespace if we want to compile against godot
 using namespace godot;
@@ -74,7 +75,28 @@ public:
     /** set all values between in_min and in_max */
     virtual void normalize(Variant in_min, Variant in_max);
 
+    /** fill this matrix with linear data and dimensions */
+    virtual void fill(Vector2i in_size, Array in_data);
+
+    /** how to use image as an input */
+    enum ImageInputMode : int
+    {
+        COLOR,
+        VECTOR,
+        BRIGHTNESS,
+        GRAY
+	};
+
+    /** fill this matrix with an image */
+    virtual void from_image(const Ref<Image>& in_image, int in_mode);
+
+    /** apply another matrix as a filter */
+    virtual void apply_filter(const Ref<MatrixInterface> &in_filter);
+
 };
 
 };
+
+VARIANT_ENUM_CAST(matrix::MatrixInterface, ImageInputMode);
+
 #endif // ! MATRIX_INTERFACE_CLASS_H

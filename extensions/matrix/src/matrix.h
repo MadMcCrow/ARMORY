@@ -62,6 +62,7 @@ public:
 
 	/** max, redefined for better performance */
 	virtual Variant max() const override;
+
 };
 
 };

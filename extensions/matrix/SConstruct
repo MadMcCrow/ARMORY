@@ -44,6 +44,7 @@ opts.Add(
 )
 opts.Add(EnumVariable("bits", "Target platform bits", "64", ("32", "64")))
 opts.Add(BoolVariable("use_llvm", "Use the LLVM / Clang compiler", "no"))
+opts.Add(BoolVariable("use_openmp", "Use openmp for parralellism", "yes"))
 opts.Add(PathVariable("target_path", "The path where the lib is installed.", default_target_path, PathVariable.PathAccept))
 opts.Add(PathVariable("target_name", "The library name.", default_library_name, PathVariable.PathAccept))
 
@@ -98,6 +99,9 @@ if env["platform"] == "osx":
         env.Append(CCFLAGS=["-g", "-O2"])
     else:
         env.Append(CCFLAGS=["-g", "-O3"])
+    if env["use_openmp"]:
+        env.Append(CCFLAGS=["-fopenmp"])
+        env.Append(LINKFLAGS=["-fopenmp"])
 
 elif env["platform"] in ("x11", "linux"):
     #Linux
@@ -108,6 +112,10 @@ elif env["platform"] in ("x11", "linux"):
         env.Append(CCFLAGS=["-g3", "-Og"])
     else:
         env.Append(CCFLAGS=["-g", "-O3"])
+
+    if env["use_openmp"]:
+        env.Append(CCFLAGS=["-fopenmp"])
+        env.Append(LINKFLAGS=["-fopenmp"])
 
 elif env["platform"] == "windows":
     # Windows
@@ -130,6 +138,10 @@ elif env["platform"] == "windows":
     if not(env["use_llvm"]):
         env.Append(CPPDEFINES=["TYPED_METHOD_BIND"])
 
+    if env["use_openmp"]:
+        env.Append(CCFLAGS=["-openmp"])
+        env.Append(LINKFLAGS=["-openmp"])
+
 # determine our architecture suffix
 arch_suffix = str(bits)
 
@@ -144,6 +156,7 @@ env.Append(LIBS=[cpp_library])
 # tweak this if you want to use different folders, or more folders, to store your source code in.
 env.Append(CPPPATH=["src/"])
 sources = Glob("src/*.cpp")
+
 
 target_name = "{}.{}.{}.{}".format(env["target_name"], env["platform"], env["target"], arch_suffix)
 print(target_name)
