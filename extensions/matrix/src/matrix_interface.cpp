@@ -7,7 +7,7 @@
 using namespace matrix;
 
 #define NOT_IMPLEMENTED()   std::cout << "call to not implemented function " << __FUNCTION__ << "\n";
-#define MAX_OMP 12
+#define MAX_OMP 6
 
 
 Variant _remap( Variant value,Variant InputMin,Variant InputMax, Variant OutputMin, Variant OutputMax)
@@ -165,6 +165,23 @@ void MatrixInterface::from_image(const Ref<Image> &in_image, int in_mode)
             }
         }
     }
+}
+
+Ref<Image> MatrixInterface::get_image() const
+{
+    Ref<Image> Retval;
+    Retval.instantiate();
+
+    #pragma omp parallel for num_threads(MAX_OMP)
+    for (int idx = 0; idx < size.y * size.x; idx++)
+    {
+        const int y = (int) idx / size.x;
+        const int x = idx % size.x;
+        
+        Color col = get(x,y);
+        Retval->set_pixel(x,y,col);
+    }
+    return Retval;
 }
 
 

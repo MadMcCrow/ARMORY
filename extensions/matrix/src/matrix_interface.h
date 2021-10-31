@@ -90,6 +90,9 @@ public:
     /** fill this matrix with an image */
     virtual void from_image(const Ref<Image>& in_image, int in_mode);
 
+    /** retrieve this matrix as an image */
+    virtual Ref<Image> get_image() const;
+
     /** apply another matrix as a filter */
     virtual void apply_filter(const Ref<MatrixInterface> &in_filter);
 

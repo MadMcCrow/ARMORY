@@ -22,7 +22,7 @@ extends Node
 # inner matrix
 @onready var _matrix = Matrix.new()
 
-@onready var debug_node = $debugCanvas/DebugDraw/DebugMesh
+@onready var debug_node = $debug3d
 
 #
 # @func _ready
@@ -49,10 +49,7 @@ func _simplex_noise():
 	# prepare image
 	var image = _noise.get_seamless_image(size)
 	image.convert(Image.FORMAT_L8)
-	# set matrix
-	for x in range (0, size):
-		for y in range (0, size):
-			_matrix.set(x,y,image.get_pixel(x,y).v)
+	_matrix.from_image(image, Matrix.BRIGHTNESS)
 
 
 #
@@ -70,10 +67,10 @@ func _spawn_cubes() :
 	#set multimesh
 	var multimesh = MultiMesh.new()
 	var dim = size * 2
+	debug_node.set_multimesh(multimesh)
 	multimesh.set_mesh(debugMesh)
 	multimesh.set_transform_format(1) # 1 is 3D, 0 is 2D
 	multimesh.set_instance_count(dim * dim)
-	debug_node.set_multimesh(multimesh)
 	#base transform
 	var base = debug_node.get_transform()
 	# set all instances
