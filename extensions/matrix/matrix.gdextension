@@ -1,0 +1,10 @@
+[configuration]
+
+entry_symbol = "matrix_library_init"
+
+[libraries]
+
+linux.64.debug = "bin/libgdmatrix.linux.debug.64.so"
+linux.64.release = "bin/libgdmatrix.linux.release.64.so"
+windows.64.debug = "bin/libgdmatrix.windows.debug.64.dll"
+windows.64.release = "bin/libgdmatrix.windows.release.64.dll"

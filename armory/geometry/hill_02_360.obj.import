@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://djfa1nosi87s7"
+path="res://.godot/imported/hill_02_360.obj-fa2fcb3bcd0f46f707d969206353a3a9.mesh"
+
+[deps]
+
+files=["res://.godot/imported/hill_02_360.obj-fa2fcb3bcd0f46f707d969206353a3a9.mesh"]
+
+source_file="res://geometry/hill_02_360.obj"
+dest_files=["res://.godot/imported/hill_02_360.obj-fa2fcb3bcd0f46f707d969206353a3a9.mesh", "res://.godot/imported/hill_02_360.obj-fa2fcb3bcd0f46f707d969206353a3a9.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

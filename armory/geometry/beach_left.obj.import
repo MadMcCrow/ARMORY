@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://o7pmoo0virgp"
+path="res://.godot/imported/beach_left.obj-bd2387da53b0db68c486843e46b6ef7c.mesh"
+
+[deps]
+
+files=["res://.godot/imported/beach_left.obj-bd2387da53b0db68c486843e46b6ef7c.mesh"]
+
+source_file="res://geometry/beach_left.obj"
+dest_files=["res://.godot/imported/beach_left.obj-bd2387da53b0db68c486843e46b6ef7c.mesh", "res://.godot/imported/beach_left.obj-bd2387da53b0db68c486843e46b6ef7c.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

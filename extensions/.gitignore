@@ -1,0 +1,12 @@
+# ignore temp files 
+*.sconsign.dblite
+*.obj
+*.idb
+*.pdb
+
+# ignore build files
+*.exp
+*.ilk
+*.lib
+*.so
+*.dll

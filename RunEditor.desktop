@@ -1,0 +1,22 @@
+[Desktop Entry]
+Comment[en_US]=
+Comment=
+Exec=sh -e -c "exec \\"\\$(dirname \\"\\$0\\")/godot/bin/godot.linuxbsd.opt.tools.64\\" \\"\\$(dirname \\"\\$0\\")/armory/project.godot\\" --editor --ups" %k
+GenericName[en_US]=
+GenericName=
+Icon=./armory/icon.png
+MimeType=
+Name[en_US]=GodotEditor
+Name=GodotEditor
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+
+
+*

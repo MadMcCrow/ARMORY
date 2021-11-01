@@ -1,0 +1,329 @@
+[gd_resource type="MeshLibrary" load_steps=55 format=3 uid="uid://dsiu8wuou4wrn"]
+
+[ext_resource type="ArrayMesh" uid="uid://cfn6kipisexfe" path="res://geometry/river.start.obj" id="0_river_start"]
+[ext_resource type="ArrayMesh" uid="uid://cclo1fnptoptp" path="res://geometry/river.obj" id="1_river"]
+[ext_resource type="ArrayMesh" uid="uid://bywqwpiojcjux" path="res://geometry/hill_03_90_concave.obj" id="2_hill_03_90_concave"]
+[ext_resource type="ArrayMesh" uid="uid://bfyd1wpi7xda2" path="res://geometry/hill_03_90_convex.obj" id="3_hill_03_90_convex"]
+[ext_resource type="ArrayMesh" uid="uid://bv027ax620px1" path="res://geometry/hill_03_360.obj" id="4_hill_03_360"]
+[ext_resource type="ArrayMesh" uid="uid://5bogjyb0s2tc" path="res://geometry/hill_03_end.obj" id="5_hill_03_end"]
+[ext_resource type="ArrayMesh" uid="uid://dw5wnq61x0dg5" path="res://geometry/hill_03_straight.obj" id="6_hill_03_straight"]
+[ext_resource type="ArrayMesh" uid="uid://c1k5dvkq3j4mr" path="res://geometry/hill_03_T.obj" id="7_hill_03_T"]
+[ext_resource type="ArrayMesh" uid="uid://dx47ahs00p6mr" path="res://geometry/hill_03_X.obj" id="8_hill_03_X"]
+[ext_resource type="ArrayMesh" uid="uid://b33cnmpnatfum" path="res://geometry/hill_03_y.obj" id="9_hill_03_y"]
+[ext_resource type="ArrayMesh" uid="uid://c71ewies5yold" path="res://geometry/land_00.obj" id="10_land_00"]
+[ext_resource type="ArrayMesh" uid="uid://bnvofxq33e37f" path="res://geometry/land_01.obj" id="11_land_01"]
+[ext_resource type="ArrayMesh" uid="uid://nhy4b5u4rwaf" path="res://geometry/land_02.obj" id="12_land_02"]
+[ext_resource type="ArrayMesh" uid="uid://7kerkq583r8o" path="res://geometry/land_03.obj" id="13_land_03"]
+[ext_resource type="ArrayMesh" uid="uid://b4axwg1ahk0bf" path="res://geometry/mountain_90_concave.obj" id="14_mountain_90_concave"]
+[ext_resource type="ArrayMesh" uid="uid://8a87yrwo650f" path="res://geometry/mountain_90_convex.obj" id="15_mountain_90_convex"]
+[ext_resource type="ArrayMesh" uid="uid://dk2lfjx65wika" path="res://geometry/mountain_end.obj" id="16_mountain_end"]
+[ext_resource type="ArrayMesh" uid="uid://bl76gndogm4ux" path="res://geometry/mountain_full.obj" id="17_mountain_full"]
+[ext_resource type="ArrayMesh" uid="uid://brcrqw6eyb4d6" path="res://geometry/mountain_straight.obj" id="18_mountain_straight"]
+[ext_resource type="ArrayMesh" uid="uid://b2qb4eoaomjee" path="res://geometry/Mountain_T.obj" id="19_Mountain_T"]
+[ext_resource type="ArrayMesh" uid="uid://cho2k3gib4asp" path="res://geometry/mountain360.obj" id="20_mountain360"]
+[ext_resource type="ArrayMesh" uid="uid://onh4l21ubr7o" path="res://geometry/river_cliff.obj" id="21_river_cliff"]
+[ext_resource type="ArrayMesh" uid="uid://bcovhplcosvc6" path="res://geometry/river_turn.obj" id="22_river_turn"]
+[ext_resource type="ArrayMesh" uid="uid://bm250t0nufmvg" path="res://geometry/tree_small.obj" id="23_tree_small"]
+[ext_resource type="ArrayMesh" uid="uid://bp0dtm25yyq7n" path="res://geometry/rocks.obj" id="24_rocks"]
+[ext_resource type="ArrayMesh" uid="uid://bm8wyllhfoej6" path="res://geometry/tree_big.obj" id="25_tree_big"]
+[ext_resource type="ArrayMesh" uid="uid://ctowrqdyefr4x" path="res://geometry/tree_pine.obj" id="26_tree_pine"]
+[ext_resource type="ArrayMesh" uid="uid://c6b42t8ujdaqt" path="res://geometry/hill_01_90_concave.obj" id="27_hill_01_90_concave"]
+[ext_resource type="ArrayMesh" uid="uid://1apwqccrpfus" path="res://geometry/beach_center.obj" id="28_beach_center"]
+[ext_resource type="ArrayMesh" uid="uid://o7pmoo0virgp" path="res://geometry/beach_left.obj" id="29_beach_left"]
+[ext_resource type="ArrayMesh" uid="uid://bwysl41fbs5ss" path="res://geometry/beach_right.obj" id="30_beach_right"]
+[ext_resource type="ArrayMesh" uid="uid://we4hfcjsvari" path="res://geometry/cliff_90_concave.obj" id="31_cliff_90_concave"]
+[ext_resource type="ArrayMesh" uid="uid://cu8tgxcpg1lq2" path="res://geometry/cliff_90_convex.obj" id="32_cliff_90_convex"]
+[ext_resource type="ArrayMesh" uid="uid://ca0fqoq3cnhi0" path="res://geometry/cliff_360.obj" id="33_cliff_360"]
+[ext_resource type="ArrayMesh" uid="uid://bjudrjvn6mg2s" path="res://geometry/cliff_end.obj" id="34_cliff_end"]
+[ext_resource type="ArrayMesh" uid="uid://beff2856f2nfo" path="res://geometry/cliff_T.obj" id="35_cliff_T"]
+[ext_resource type="ArrayMesh" uid="uid://bhkw08gfo5ue" path="res://geometry/cliff_Y.001.obj" id="36_cliff_Y_001"]
+[ext_resource type="ArrayMesh" uid="uid://cim2o15k3x6ik" path="res://geometry/cliff_Y.obj" id="37_cliff_Y"]
+[ext_resource type="ArrayMesh" uid="uid://chf8u43ft84hm" path="res://geometry/cliff.obj" id="38_cliff"]
+[ext_resource type="ArrayMesh" uid="uid://bqiqwxtp1yhnh" path="res://geometry/hill_02_90_concave.obj" id="39_hill_02_90_concave"]
+[ext_resource type="ArrayMesh" uid="uid://cfoxlmdu3m0l5" path="res://geometry/hill_01_90_convex.obj" id="40_hill_01_90_convex"]
+[ext_resource type="ArrayMesh" uid="uid://dy4tjvb4sw0ar" path="res://geometry/hill_01_360.obj" id="41_hill_01_360"]
+[ext_resource type="ArrayMesh" uid="uid://dcx6swkejvfsr" path="res://geometry/hill_01_end.obj" id="42_hill_01_end"]
+[ext_resource type="ArrayMesh" uid="uid://lrk02q38v4ur" path="res://geometry/hill_01_straight.obj" id="43_hill_01_straight"]
+[ext_resource type="ArrayMesh" uid="uid://bkmuposd723ik" path="res://geometry/hill_01_T.obj" id="44_hill_01_T"]
+[ext_resource type="ArrayMesh" uid="uid://t0hpe3fplay6" path="res://geometry/hill_01_X.obj" id="45_hill_01_X"]
+[ext_resource type="ArrayMesh" uid="uid://bshrv83d6iuf1" path="res://geometry/hill_01_Y.obj" id="46_hill_01_Y"]
+[ext_resource type="ArrayMesh" uid="uid://cldmkhwd3hd2h" path="res://geometry/hill_02_90_convex.obj" id="47_hill_02_90_convex"]
+[ext_resource type="ArrayMesh" uid="uid://djfa1nosi87s7" path="res://geometry/hill_02_360.obj" id="48_hill_02_360"]
+[ext_resource type="ArrayMesh" uid="uid://c6q723ta1i56q" path="res://geometry/hill_02_end.obj" id="49_hill_02_end"]
+[ext_resource type="ArrayMesh" uid="uid://ckhb18yxknt24" path="res://geometry/hill_02_straight.obj" id="50_hill_02_straight"]
+[ext_resource type="ArrayMesh" uid="uid://2e3rj06f0e2o" path="res://geometry/hill_02_T.obj" id="51_hill_02_T"]
+[ext_resource type="ArrayMesh" uid="uid://dfmwbgcbyrfii" path="res://geometry/hill_02_X.obj" id="52_hill_02_X"]
+[ext_resource type="ArrayMesh" uid="uid://cuuwacm8fl7vx" path="res://geometry/hill_02_y.obj" id="53_hill_02_y"]
+
+[resource]
+resource_name = "ground mesh library"
+item/0/name = "river_start"
+item/0/mesh = ExtResource( "0_river_start" )
+item/0/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/0/shapes = []
+item/0/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/1/name = "river"
+item/1/mesh = ExtResource( "1_river" )
+item/1/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/1/shapes = []
+item/1/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/2/name = "hill_03_90_concave"
+item/2/mesh = ExtResource( "2_hill_03_90_concave" )
+item/2/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/2/shapes = []
+item/2/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/3/name = "hill_03_90_convex"
+item/3/mesh = ExtResource( "3_hill_03_90_convex" )
+item/3/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/3/shapes = []
+item/3/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/4/name = "hill_03_360"
+item/4/mesh = ExtResource( "4_hill_03_360" )
+item/4/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/4/shapes = []
+item/4/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/5/name = "hill_03_end"
+item/5/mesh = ExtResource( "5_hill_03_end" )
+item/5/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/5/shapes = []
+item/5/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/6/name = "hill_03_straight"
+item/6/mesh = ExtResource( "6_hill_03_straight" )
+item/6/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/6/shapes = []
+item/6/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/7/name = "hill_03_T"
+item/7/mesh = ExtResource( "7_hill_03_T" )
+item/7/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/7/shapes = []
+item/7/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/8/name = "hill_03_X"
+item/8/mesh = ExtResource( "8_hill_03_X" )
+item/8/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/8/shapes = []
+item/8/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/9/name = "hill_03_y"
+item/9/mesh = ExtResource( "9_hill_03_y" )
+item/9/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/9/shapes = []
+item/9/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/10/name = "land_00"
+item/10/mesh = ExtResource( "10_land_00" )
+item/10/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/10/shapes = []
+item/10/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/11/name = "land_01"
+item/11/mesh = ExtResource( "11_land_01" )
+item/11/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/11/shapes = []
+item/11/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/12/name = "land_02"
+item/12/mesh = ExtResource( "12_land_02" )
+item/12/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/12/shapes = []
+item/12/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/13/name = "land_03"
+item/13/mesh = ExtResource( "13_land_03" )
+item/13/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/13/shapes = []
+item/13/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/14/name = "mountain_90_concave"
+item/14/mesh = ExtResource( "14_mountain_90_concave" )
+item/14/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/14/shapes = []
+item/14/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/15/name = "mountain_90_convex"
+item/15/mesh = ExtResource( "15_mountain_90_convex" )
+item/15/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/15/shapes = []
+item/15/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/16/name = "mountain_end"
+item/16/mesh = ExtResource( "16_mountain_end" )
+item/16/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/16/shapes = []
+item/16/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/17/name = "mountain_full"
+item/17/mesh = ExtResource( "17_mountain_full" )
+item/17/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/17/shapes = []
+item/17/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/18/name = "mountain_straight"
+item/18/mesh = ExtResource( "18_mountain_straight" )
+item/18/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/18/shapes = []
+item/18/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/19/name = "Mountain_T"
+item/19/mesh = ExtResource( "19_Mountain_T" )
+item/19/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/19/shapes = []
+item/19/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/20/name = "mountain360"
+item/20/mesh = ExtResource( "20_mountain360" )
+item/20/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/20/shapes = []
+item/20/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/21/name = "river_cliff"
+item/21/mesh = ExtResource( "21_river_cliff" )
+item/21/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/21/shapes = []
+item/21/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/22/name = "river_turn"
+item/22/mesh = ExtResource( "22_river_turn" )
+item/22/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/22/shapes = []
+item/22/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/23/name = "tree_small"
+item/23/mesh = ExtResource( "23_tree_small" )
+item/23/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/23/shapes = []
+item/23/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/24/name = "rocks"
+item/24/mesh = ExtResource( "24_rocks" )
+item/24/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/24/shapes = []
+item/24/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/25/name = "tree_big"
+item/25/mesh = ExtResource( "25_tree_big" )
+item/25/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/25/shapes = []
+item/25/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/26/name = "tree_pine"
+item/26/mesh = ExtResource( "26_tree_pine" )
+item/26/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/26/shapes = []
+item/26/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/27/name = "hill_01_90_concave"
+item/27/mesh = ExtResource( "27_hill_01_90_concave" )
+item/27/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/27/shapes = []
+item/27/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/28/name = "beach_center"
+item/28/mesh = ExtResource( "28_beach_center" )
+item/28/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/28/shapes = []
+item/28/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/29/name = "beach_left"
+item/29/mesh = ExtResource( "29_beach_left" )
+item/29/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/29/shapes = []
+item/29/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/30/name = "beach_right"
+item/30/mesh = ExtResource( "30_beach_right" )
+item/30/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/30/shapes = []
+item/30/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/31/name = "cliff_90_concave"
+item/31/mesh = ExtResource( "31_cliff_90_concave" )
+item/31/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/31/shapes = []
+item/31/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/32/name = "cliff_90_convex"
+item/32/mesh = ExtResource( "32_cliff_90_convex" )
+item/32/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/32/shapes = []
+item/32/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/33/name = "cliff_360"
+item/33/mesh = ExtResource( "33_cliff_360" )
+item/33/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/33/shapes = []
+item/33/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/34/name = "cliff_end"
+item/34/mesh = ExtResource( "34_cliff_end" )
+item/34/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/34/shapes = []
+item/34/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/35/name = "cliff_T"
+item/35/mesh = ExtResource( "35_cliff_T" )
+item/35/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/35/shapes = []
+item/35/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/36/name = "cliff_Y_001"
+item/36/mesh = ExtResource( "36_cliff_Y_001" )
+item/36/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/36/shapes = []
+item/36/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/37/name = "cliff_Y"
+item/37/mesh = ExtResource( "37_cliff_Y" )
+item/37/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/37/shapes = []
+item/37/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/38/name = "cliff"
+item/38/mesh = ExtResource( "38_cliff" )
+item/38/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/38/shapes = []
+item/38/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/39/name = "hill_02_90_concave"
+item/39/mesh = ExtResource( "39_hill_02_90_concave" )
+item/39/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/39/shapes = []
+item/39/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/40/name = "hill_01_90_convex"
+item/40/mesh = ExtResource( "40_hill_01_90_convex" )
+item/40/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/40/shapes = []
+item/40/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/41/name = "hill_01_360"
+item/41/mesh = ExtResource( "41_hill_01_360" )
+item/41/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/41/shapes = []
+item/41/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/42/name = "hill_01_end"
+item/42/mesh = ExtResource( "42_hill_01_end" )
+item/42/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/42/shapes = []
+item/42/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/43/name = "hill_01_straight"
+item/43/mesh = ExtResource( "43_hill_01_straight" )
+item/43/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/43/shapes = []
+item/43/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/44/name = "hill_01_T"
+item/44/mesh = ExtResource( "44_hill_01_T" )
+item/44/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/44/shapes = []
+item/44/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/45/name = "hill_01_X"
+item/45/mesh = ExtResource( "45_hill_01_X" )
+item/45/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/45/shapes = []
+item/45/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/46/name = "hill_01_Y"
+item/46/mesh = ExtResource( "46_hill_01_Y" )
+item/46/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/46/shapes = []
+item/46/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/47/name = "hill_02_90_convex"
+item/47/mesh = ExtResource( "47_hill_02_90_convex" )
+item/47/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/47/shapes = []
+item/47/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/48/name = "hill_02_360"
+item/48/mesh = ExtResource( "48_hill_02_360" )
+item/48/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/48/shapes = []
+item/48/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/49/name = "hill_02_end"
+item/49/mesh = ExtResource( "49_hill_02_end" )
+item/49/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/49/shapes = []
+item/49/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/50/name = "hill_02_straight"
+item/50/mesh = ExtResource( "50_hill_02_straight" )
+item/50/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/50/shapes = []
+item/50/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/51/name = "hill_02_T"
+item/51/mesh = ExtResource( "51_hill_02_T" )
+item/51/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/51/shapes = []
+item/51/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/52/name = "hill_02_X"
+item/52/mesh = ExtResource( "52_hill_02_X" )
+item/52/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/52/shapes = []
+item/52/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/53/name = "hill_02_y"
+item/53/mesh = ExtResource( "53_hill_02_y" )
+item/53/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/53/shapes = []
+item/53/navmesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
