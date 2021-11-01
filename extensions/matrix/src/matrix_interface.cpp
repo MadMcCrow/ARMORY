@@ -158,6 +158,7 @@ void MatrixInterface::from_image(const Ref<Image> &in_image, int in_mode)
                 break;
                 case  BRIGHTNESS :
                     set(x,y,col.get_v());
+                break;
                 case GRAY :
                     float gray = (col.r + col.g + col.b) / 3.0;
                     set(x,y,gray);
@@ -167,21 +168,36 @@ void MatrixInterface::from_image(const Ref<Image> &in_image, int in_mode)
     }
 }
 
-Ref<Image> MatrixInterface::get_image() const
+void MatrixInterface::to_image(Ref<Image> out_image) const
 {
-    Ref<Image> Retval;
-    Retval.instantiate();
-
-    #pragma omp parallel for num_threads(MAX_OMP)
+    //godot::Image::Format format = Image::FORMAT_RF;
+    /*
+    switch (in_mode)
+    {
+        case COLOR :
+            format = Image::FORMAT_RGBA8;
+        break;
+        case  VECTOR :
+            format = Image::FORMAT_RGB8;
+        break;
+        default:
+        case  BRIGHTNESS :
+        case GRAY :
+            format = Image::FORMAT_L8;
+        break;
+    }
+    */
+    out_image->create( size.x, size.y, false, Image::FORMAT_L8);
+    //#pragma omp parallel for num_threads(MAX_OMP)
     for (int idx = 0; idx < size.y * size.x; idx++)
     {
         const int y = (int) idx / size.x;
         const int x = idx % size.x;
         
-        Color col = get(x,y);
-        Retval->set_pixel(x,y,col);
+        Color col = Color::from_hsv(0.f, 0.f, float(get(x,y)), 1.f);
+        out_image->set_pixel(x,y,col);
     }
-    return Retval;
+
 }
 
 

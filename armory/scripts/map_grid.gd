@@ -22,8 +22,6 @@ extends Node
 # inner matrix
 @onready var _matrix = Matrix.new()
 
-@onready var debug_node = $debug3d
-
 #
 # @func _ready
 # called on scene init
@@ -33,7 +31,6 @@ func _ready():
 	_rng.randomize()
 	_simplex_noise()
 	_normalize()
-	_spawn_cubes()
 
 
 #
@@ -57,27 +54,13 @@ func _simplex_noise():
 #
 func _normalize() :
 	_matrix.normalize(0.0,2)
-
-
-#
-# @func spawnCubes
-# debug function to draw all cubes
-#
-func _spawn_cubes() :
-	#set multimesh
-	var multimesh = MultiMesh.new()
-	var dim = size * 2
-	debug_node.set_multimesh(multimesh)
-	multimesh.set_mesh(debugMesh)
-	multimesh.set_transform_format(1) # 1 is 3D, 0 is 2D
-	multimesh.set_instance_count(dim * dim)
-	#base transform
-	var base = debug_node.get_transform()
-	# set all instances
-	for x in range (0, dim):
-		for y in range (0, dim):
-			var height = _matrix.get(x%size,y%size) * 10
-			multimesh.set_instance_transform( x+(dim*y), base.translated(Vector3(x,height, y)))
+	
+	
+func get_image() :
+	var image = Image.new()
+	_matrix.to_image(image)
+	print(image)
+	return image
 
 
 

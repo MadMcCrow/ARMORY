@@ -36,8 +36,10 @@ void Matrix::_bind_methods() {
 
     ClassDB::bind_method(D_METHOD("fill", "in_size", "in_data"),    &Matrix::fill);
     ClassDB::bind_method(D_METHOD("from_image", "image", "mode"),   &Matrix::from_image);
-    //ClassDB::bind_method(D_METHOD("get_image"),                     &Matrix::get_image);
+    ClassDB::bind_method(D_METHOD("to_image", "out_image"),         &Matrix::to_image);
     ClassDB::bind_method(D_METHOD("apply_filter", "filter"),        &Matrix::apply_filter);
+
+    
 
 	// Properties
 	ADD_GROUP("Matrix", "matrix_");
