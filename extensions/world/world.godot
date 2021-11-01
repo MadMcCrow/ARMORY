@@ -2,4 +2,4 @@
 
 [native_extensions]
 
-paths=["res://matrix.gdextension"]
+paths=["res://world.gdextension"]

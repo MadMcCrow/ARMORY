@@ -7,11 +7,14 @@ extends Node
 # grid size (2D)
 @export var size : int = 20
 
+# flattening factor
+@export var flat_ratio : float = 2.0
+
 # Seed for 2D noise
 @export var randomSeed : int = 15312
 
 # how many different heights we can have
-@export var quantificationSteps : int = 5
+@export var quantification_steps : int = 5
 
 # random number generator
 @onready var _rng = RandomNumberGenerator.new()
@@ -20,17 +23,26 @@ extends Node
 @onready var _noise = OpenSimplexNoise.new()
 
 # inner matrix
-@onready var _matrix = Matrix.new()
+@onready var _world = World.new()
 
 #
 # @func _ready
 # called on scene init
 #
 func _ready():
-	_matrix.set_size(Vector2i(size, size))
+	generate()
+
+
+#
+# @func generate
+#  generate map
+#
+func generate():
+	_world.set_size(Vector2i(size, size))
 	_rng.randomize()
 	_simplex_noise()
-	_normalize()
+	_world.level(flat_ratio)
+	_world.steps(quantification_steps)
 
 
 #
@@ -40,25 +52,20 @@ func _ready():
 func _simplex_noise():
 	# set noise
 	_noise.seed = randomSeed
-	_noise.octaves = 4
-	_noise.period = 20.0
+	_noise.octaves = 9
+	_noise.period = size / 4.0
 	_noise.persistence = 0.8
 	# prepare image
 	var image = _noise.get_seamless_image(size)
 	image.convert(Image.FORMAT_L8)
-	_matrix.from_image(image, Matrix.BRIGHTNESS)
-
-
-#
-# @func normalize
-#
-func _normalize() :
-	_matrix.normalize(0.0,2)
+	_world.generate_from_image(image)
 	
+
+
 	
 func get_image() :
 	var image = Image.new()
-	_matrix.to_image(image)
+	_world.export_to_image(image)
 	print(image)
 	return image
 

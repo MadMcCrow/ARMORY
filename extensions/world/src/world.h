@@ -84,10 +84,16 @@ public:
     Vector2i get_size() const;
 
     /** fill this matrix with an image */
-    virtual void generate_from_image(const Ref<Image>& in_image);
+    void generate_from_image(const Ref<Image>& in_image);
 
     /** retrieve this matrix as an image */
-    virtual Ref<Image> export_to_image();
+    void export_to_image(Ref<Image> out_image);
+
+    /** level the cells to have a "flatter" center before stepping */
+    void level(float ratio);
+
+    /** set the number of steps for this world */
+    void steps(int count);
 
 };
 
