@@ -185,13 +185,14 @@ void World::export_to_image(Ref<Image> out_image)
     out_image->create( size.x, size.y, false, Image::FORMAT_L8);
 
     // OMP might cause issues here
-    #pragma omp parallel for num_threads(MAX_OMP)
-    for (int idx = 0; idx < size.y * size.x; idx++)
+    #pragma omp parallel for collapse(2)
+    for (int y = 0; y < size.y; ++y) 
     {
-        const int y = (int) idx / size.x;
-        const int x = idx % size.x;
-        Color col = Color::from_hsv(0.f, 0.f, float(get(x,y).height) / 255.f, 1.f);
-        out_image->set_pixel(x,y,col);
+        for (int x = 0; x < size.x; ++x) 
+        {
+            Color col = Color::from_hsv(0.f, 0.f, float(get(x,y).height) / 255.f, 1.f);
+            out_image->set_pixel(x,y,col);
+        }
     }
 }
 

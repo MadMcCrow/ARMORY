@@ -11,7 +11,7 @@ extends Node
 @export var flat_ratio : float = 2.0
 
 # Seed for 2D noise
-@export var randomSeed : int = 15312
+@export var random_seed : int = 15312
 
 # how many different heights we can have
 @export var quantification_steps : int = 5
@@ -51,7 +51,7 @@ func generate():
 #
 func _simplex_noise():
 	# set noise
-	_noise.seed = randomSeed
+	_noise.seed = random_seed
 	_noise.octaves = 9
 	_noise.period = size / 4.0
 	_noise.persistence = 0.8
