@@ -1,4 +1,3 @@
-@tool
 extends Node
 
 # The mesh to use to show grid element positions in 3d
@@ -8,7 +7,7 @@ extends Node
 @export var size : int = 20
 
 # flattening factor
-@export var flat_ratio : float = 2.0
+@export var flat_ratio : float = 100
 
 # Seed for 2D noise
 @export var random_seed : int = 15312
@@ -41,7 +40,7 @@ func generate():
 	_world.set_size(Vector2i(size, size))
 	_rng.randomize()
 	_simplex_noise()
-	_world.level(flat_ratio)
+	_world.level(flat_ratio/100)
 	_world.steps(quantification_steps)
 
 
@@ -52,9 +51,9 @@ func generate():
 func _simplex_noise():
 	# set noise
 	_noise.seed = random_seed
-	_noise.octaves = 9
+	_noise.octaves = 4
 	_noise.period = size / 4.0
-	_noise.persistence = 0.8
+	_noise.persistence = 0.2
 	# prepare image
 	var image = _noise.get_seamless_image(size)
 	image.convert(Image.FORMAT_L8)
