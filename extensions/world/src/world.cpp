@@ -1,10 +1,15 @@
 /* Copyright © Noé Perard-Gayot 2021. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
+// header
 #include "world.h"
 
+//std
 #include <algorithm>
 #include <cmath>
+#include <random>
+
+// godot
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/core/error_macros.hpp>
 
@@ -15,6 +20,19 @@ using namespace world;
 // min and max values for a uint8
 static constexpr const uint8_t ui8max = std::numeric_limits<uint8_t>::max();
 static constexpr const uint8_t ui8min = std::numeric_limits<uint8_t>::min();
+
+template<typename t>
+static constexpr t min(t a, t b)
+{
+    return a < b ? a : b;
+}
+
+
+template<typename t>
+static constexpr t max(t a, t b)
+{
+    return a > b ? a : b;
+}
 
 // clamping
 static constexpr float clampf(float a, float min, float max)
@@ -42,17 +60,20 @@ static constexpr double fast_pow(double a, double b)
     return u.d;
 }
 
+
+static World::Cell ErrorCell = World::Cell();
+
+World::World() : RefCounted()
+{
+}
+
 void World::_bind_methods()
 {
 	// Methods.
 
     // Image related
-    ClassDB::bind_method(D_METHOD("generate_from_image", "image"),  &World::generate_from_image);
+    ClassDB::bind_method(D_METHOD("generate", "seed", "sea_level"),  &World::generate);
     ClassDB::bind_method(D_METHOD("export_to_image", "image"),      &World::export_to_image);
-
-    // level generation steps 
-    ClassDB::bind_method(D_METHOD("level", "ratio"), &World::level);
-    ClassDB::bind_method(D_METHOD("steps", "count"), &World::steps);
 
 	// Properties
 	ADD_GROUP("World", "world_");
@@ -89,7 +110,7 @@ int World::get_index(int x, int y) const
     return (x % size.x) + (y % size.y) * size.x;
 }
 
-World::Cell World::get(int x, int y) const
+const World::Cell& World::get(int x, int y) const
 {
    try
     {
@@ -98,9 +119,23 @@ World::Cell World::get(int x, int y) const
    catch (std::out_of_range oor)
     {
         ERR_PRINT("Out of Range error");
-        return Cell();
+        return ErrorCell;
     }
 }
+
+World::Cell& World::get(int x, int y)
+{
+   try
+    {
+        return cell_vector.at(get_index(x,y));
+    }
+   catch (std::out_of_range oor)
+    {
+        ERR_PRINT("Out of Range error");
+        return ErrorCell;
+    }
+}
+
 
 void World::set(int x, int y, const World::Cell &cell)
 {
@@ -114,63 +149,58 @@ void World::set(int x, int y, const World::Cell &cell)
     }
 }
 
-
-
-void World::generate_from_image(const Ref<Image>& in_image)
+int World::rect_distance(int ax, int ay, int bx, int by)
 {
-    if (in_image.is_null())
-    {
-        return;
-    }
+    // make sure all coordinate are within (0->size)
+    ax = ax % size.x;
+    bx = bx % size.x;
+    ay = ay % size.y;
+    by = by % size.y;
+    return std::abs(max(bx - ax, by - bx));
+}
 
-    auto image_size = in_image->get_size(); 
+void World::generate(int seed, float sea)
+{
+    std::mt19937 gen(seed);
 
-    // build heightmap
-    std::vector<uint8_t> heightmap;
-    heightmap.resize(image_size.x * image_size.y);
-    #pragma omp parallel for num_threads(MAX_OMP)
-    for (int idx = 0; idx < size.y * size.x; idx++)
+    const auto randi = [&gen](int min, int max) -> float
     {
-        const int y = (int)idx / size.x;
-        const int x = idx % size.x;
-        Color col = in_image->get_pixel(x,y);
-        // we build height based on value (luminance)
-        try
-        {
-            heightmap.at(idx) = touint8(col.get_v());
-        }
-        catch (std::out_of_range oor)
-        {
-            ERR_PRINT("Out of Range error");
-        }
-    }        constexpr auto ui8max = std::numeric_limits<uint8_t>::max();
-    WARN_PRINT( "done getting heightmap");
-
-    // get min and max  of our height map
-    auto min_max_itr = std::minmax_element(heightmap.begin(), heightmap.end());
-    auto _min = *min_max_itr.first;
-    auto _max = *min_max_itr.second;
-    constexpr auto normalize = [](uint8_t value, uint8_t min, uint8_t max) 
-    {
-        return ui8min + (value - min) * (ui8max - ui8min) / (max - min);
+        std:: uniform_int_distribution<> dis(min, max);
+        return  dis(gen);
     };
 
-    // build actual cell vector
-    set_size(image_size);
-    #pragma omp parallel for num_threads(MAX_OMP)
-    for (int idx = 0; idx < size.y * size.x; idx++)
+    const auto randb = [&gen](float p_true) -> bool
     {
-        try
+        clampf(p_true, 0.f,1.f); 
+        std::discrete_distribution<> dis({1-p_true, p_true});
+        return static_cast<bool>(dis(gen));
+    };
+
+    // get points count
+    const int points_count = randi(1,(size.x * size.y)/4);
+
+    // for each point , dig or build up
+    for (size_t i =  points_count; i-->0;)
+    {
+        const uint8_t dir = randb(sea) ? -1 : 1;
+        const int x_coord = randi(0, size.x);
+        const int y_coord = randi(0, size.y);
+        const int range   = randi(0, min(size.x,size.y)/2);
+
+        // for each cell in the point vicinity, set the new height
+        #pragma omp parallel for collapse(2)
+        for (int y = y_coord - range; y <=  y_coord + range; ++y) 
         {
-            cell_vector.at(idx) =  Cell(normalize(heightmap.at(idx), _min, _max));
-        }
-        catch (std::out_of_range oor)
-        {
-            ERR_PRINT("Out of Range error");
+            for (int x = x_coord - range; x <=  x_coord + range; ++x) 
+            {
+                Cell& t = get(x,y);
+                int8_t new_height = t.height +(dir * ( range - rect_distance(x,y, x_coord, y_coord)));
+                t.set_height(new_height);
+            }
         }
     }
-    WARN_PRINT( "done building map");
 
+    // do something cool ??
 }
 
 
@@ -196,52 +226,3 @@ void World::export_to_image(Ref<Image> out_image)
     }
 }
 
-
-void World::level(float ratio)
-{
-    constexpr auto level_func = [](float x , float n)
-    {
-        const float sx = (x * 2 ) - 1;
-        const bool neg = sx < 0; 
-        return ((((neg ? -1 : 1) * fast_pow((neg ? -sx : sx) ,2 * n + 1))+1)/2);
-    };
-
-    #pragma omp parallel for num_threads(MAX_OMP)
-    for (int idx = 0; idx < size.y * size.x; idx++)
-    {
-        try
-        {
-            uint8_t &height = cell_vector.at(idx).height;
-            float h = level_func(float(height) /255.f, ratio);
-            height = touint8(h);
-        }
-        catch (std::out_of_range oor)
-        {
-            ERR_PRINT("Out of Range error");
-        }
-    }
-}
-
-
-void World::steps(int count)
-{
-    constexpr auto step_func = [](float x, int c)
-    {
-        return (std::round(x * c) / static_cast<float>(c)); 
-    };
-
-    #pragma omp parallel for num_threads(MAX_OMP)
-    for (int idx = 0; idx < size.y * size.x; idx++)
-    {
-        try
-        {
-            uint8_t &height = cell_vector.at(idx).height;
-            float h = step_func(float(height) / 255.f, count);
-            height = touint8(h);
-        }
-        catch (std::out_of_range oor)
-        {
-            ERR_PRINT("Out of Range error");
-        }
-    }
-}

@@ -32,6 +32,9 @@ class World :  public RefCounted
 
 public:
 
+    // default CTR
+    World();
+
 
     /** 
      *  @struct Cell
@@ -40,15 +43,30 @@ public:
     struct Cell
     {
         /** how to represent it on the map */
-        uint8_t height;
+        int8_t height;
 
-        // TODO: replace this with something more sensible (smart pointer maybe ?)
-        /** is there anything on top */
-        //uint8_t unit_id;
+        /** sea floor */
+        static int8_t min_height;
 
+        /** mountain tops */
+        static int8_t max_height;
 
-        Cell(uint8_t in_height = 0) : height(in_height)
+        /**  Things that can be added for diversity (do or do not affect gameplay) */
+        enum Modifiers
+        {
+            none  = 0,
+            rocks = 1, // on ground only, can be removed
+            river = 2, // on ground only, cannot be removed
+            tree  = 3, // on ground only, can be removed
+            beach = 4, // ground to sea transition only
+            fish  = 1  // sea only, visual only 
+        };
+
+        Cell(int8_t in_height = 0) : height(in_height)
         {}
+
+        void set_height(int8_t in_height) { height = in_height < max_height ? (in_height < min_height ? in_height : min_height) : max_height;}
+
     };
 
 
@@ -72,10 +90,14 @@ protected:
     int get_index(int x, int y) const;
 
     /** getter */
-    Cell get(int x, int y) const;
+    const Cell& get(int x, int y) const;
+
+    Cell& get(int x, int y);
 
     /** setter */
     void set(int x, int y, const Cell &cell);
+
+    int rect_distance(int ax, int ay, int bx, int by);
 
 public:
 
@@ -83,17 +105,15 @@ public:
     void set_size(const Vector2i &in_size);
     Vector2i get_size() const;
 
-    /** fill this matrix with an image */
-    void generate_from_image(const Ref<Image>& in_image);
+    /** generate a world based on that seed */
+    void generate(int seed, float sea);
 
     /** retrieve this matrix as an image */
     void export_to_image(Ref<Image> out_image);
 
-    /** level the cells to have a "flatter" center before stepping */
-    void level(float ratio);
+private:
 
-    /** set the number of steps for this world */
-    void steps(int count);
+
 
 };
 
