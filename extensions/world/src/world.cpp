@@ -107,6 +107,7 @@ void World::init_vector()
 {
     // reserve does not create elements,  resize does.
     //internal_matrix.reserve(size.x * size.y);
+    cell_vector.clear();
     cell_vector.resize(size.x * size.y);
 }
 
@@ -220,7 +221,7 @@ void World::generate(int seed, float sea)
         const int range   = 10; randi(1, min(size.x,size.y)/4);
 
         // for each cell in the point vicinity, set the new height
-        #pragma omp parallel for collapse(2)
+        //#pragma omp parallel for collapse(2)
         for (int y = y_coord - range; y <= y_coord + range; ++y) 
         {
             for (int x = x_coord - range; x <=x_coord + range; ++x) 
