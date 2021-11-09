@@ -7,19 +7,11 @@ extends Node
 @export var size : int = 20
 
 # flattening factor
-@export var flat_ratio : float = 100
+@export var flat_ratio : float = 100.0
 
 # Seed for 2D noise
 @export var random_seed : int = 15312
 
-# how many different heights we can have
-@export var quantification_steps : int = 5
-
-# random number generator
-@onready var _rng = RandomNumberGenerator.new()
-
-# simplex noise for map
-@onready var _noise = OpenSimplexNoise.new()
 
 # inner matrix
 @onready var _world = World.new()
@@ -38,29 +30,7 @@ func _ready():
 #
 func generate():
 	_world.set_size(Vector2i(size, size))
-	_rng.randomize()
-	_simplex_noise()
-	_world.level(flat_ratio/100)
-	_world.steps(quantification_steps)
-
-
-#
-# @func _random
-# use simplex noise 
-#
-func _simplex_noise():
-	# set noise
-	_noise.seed = random_seed
-	_noise.octaves = 4
-	_noise.period = size / 4.0
-	_noise.persistence = 0.2
-	# prepare image
-	var image = _noise.get_seamless_image(size)
-	image.convert(Image.FORMAT_L8)
-	_world.generate_from_image(image)
-	
-
-
+	_world.generate(random_seed, flat_ratio/100.0)
 	
 func get_image() :
 	var image = Image.new()

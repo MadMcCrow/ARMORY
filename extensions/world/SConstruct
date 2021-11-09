@@ -12,6 +12,9 @@ cpp_bindings_path = "../../godot-cpp/"
 godot_headers_path = cpp_bindings_path + "godot-headers/"
 cpp_library = "libgodot-cpp"
 
+# cpp version
+cpp_std = "-std=c++20"
+
 # Try to detect the host platform automatically.
 # This is used if no `platform` argument is passed
 if sys.platform.startswith("linux"):
@@ -93,7 +96,7 @@ if env["platform"] == "osx":
     env["target_path"] += "osx/"
     cpp_library += ".osx"
     env.Append(CCFLAGS=["-arch", "x86_64"])
-    env.Append(CXXFLAGS=["-std=c++17"])
+    env.Append(CXXFLAGS=[cpp_std])
     env.Append(LINKFLAGS=["-arch", "x86_64"])
     if env["target"] == "debug":
         env.Append(CCFLAGS=["-g", "-O2"])
@@ -107,7 +110,7 @@ elif env["platform"] in ("x11", "linux"):
     #Linux
     cpp_library += ".linux"
     env.Append(CCFLAGS=["-fPIC"])
-    env.Append(CXXFLAGS=["-std=c++17"])
+    env.Append(CXXFLAGS=[cpp_std])
     if env["target"] == "debug":
         env.Append(CCFLAGS=["-g3", "-Og"])
     else:
@@ -126,7 +129,7 @@ elif env["platform"] == "windows":
 
     env.Append(CPPDEFINES=["WIN32", "_WIN32", "_WINDOWS", "_CRT_SECURE_NO_WARNINGS"])
     env.Append(CCFLAGS=["-W3", "-GR"])
-    env.Append(CXXFLAGS=["-std:c++17"])
+    env.Append(CXXFLAGS=[cpp_std])
     if env["target"] == "debug":
         env.Append(CPPDEFINES=["_DEBUG"])
         env.Append(CCFLAGS=["-EHsc", "-MDd", "-ZI", "-FS"])
@@ -155,6 +158,10 @@ env.Append(LIBS=[cpp_library])
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
 env.Append(CPPPATH=["src/"])
+
+# we want a certain c++ version
+env.Append(CXXFLAGS=[cpp_std])
+
 sources = Glob("src/*.cpp")
 
 

@@ -87,7 +87,7 @@ protected:
     static void _bind_methods();
 
     /** convert 2d coordinate to unique index */
-    int get_index(int x, int y) const;
+    size_t get_index(int x, int y) const;
 
     /** getter */
     const Cell& get(int x, int y) const;

@@ -28,8 +28,8 @@ godot-cpp : Godot-cpp
 Extensions:
 	mkdir armory/ext/bin --parent ;\
 	for EXT in $(shell ls extensions); do \
-	cd $(BASEDIR)/extensions/$${EXT} && scons -j$(THREADS) &&\
-	mv $(BASEDIR)/extensions/$${EXT}/bin/libgd*.so $(BASEDIR)/armory/ext/bin/ -f;\
+	cd $(BASEDIR)/extensions/$${EXT} && scons -j$(THREADS) use_llvm=true &&\
+	mv $(BASEDIR)/extensions/$${EXT}/bin/libgd*.so $(BASEDIR)/armory/ext/bin/ -fv;\
 	done; cd $(BASEDIR);
 
 extensions: Extensions

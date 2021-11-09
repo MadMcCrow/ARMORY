@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cmath>
 #include <random>
+#include <string>
 
 // godot
 #include <godot_cpp/core/class_db.hpp>
@@ -17,16 +18,23 @@ using namespace world;
 
 #define MAX_OMP 12
 
+
+		
 // min and max values for a uint8
 static constexpr const uint8_t ui8max = std::numeric_limits<uint8_t>::max();
 static constexpr const uint8_t ui8min = std::numeric_limits<uint8_t>::min();
+
+template<typename t>
+static constexpr t remap( t value,t InputMin,t InputMax, t OutputMin, t OutputMax)
+{ 
+    return OutputMin + (OutputMax - OutputMin) * ((value - InputMin) / (InputMax - InputMin));
+}
 
 template<typename t>
 static constexpr t min(t a, t b)
 {
     return a < b ? a : b;
 }
-
 
 template<typename t>
 static constexpr t max(t a, t b)
@@ -62,6 +70,16 @@ static constexpr double fast_pow(double a, double b)
 
 
 static World::Cell ErrorCell = World::Cell();
+
+
+
+/**
+ * min and max values 
+ * defined statically for now,
+ * we could add a function to set it, but it would requiere making "world" a singleton
+ */
+int8_t World::Cell::min_height = -8;
+int8_t World::Cell::max_height =  8;
 
 World::World() : RefCounted()
 {
@@ -105,18 +123,24 @@ Vector2i World::get_size() const
 }
 
 
-int World::get_index(int x, int y) const
+size_t World::get_index(int x, int y) const
 {
-    return (x % size.x) + (y % size.y) * size.x;
+    const int fixed_x = std::abs(x % size.x); // beware negative numbers
+    const int fixed_y = std::abs(y % size.y); // beware negative numbers
+    return (fixed_x) + (fixed_y * size.x);
 }
 
 const World::Cell& World::get(int x, int y) const
 {
-   try
+    // doing it like this would be less lines but using try/catch would yeld better performance
+    // const size_t idx = get_index(x,y);
+    // ERR_FAIL_INDEX_V_MSG(idx, size.x * size.y, ErrorCell, "index is out_of_range");
+    // return cell_vector.at(idx);
+    try
     {
         return cell_vector.at(get_index(x,y));
     }
-   catch (std::out_of_range oor)
+    catch (std::out_of_range oor)
     {
         ERR_PRINT("Out of Range error");
         return ErrorCell;
@@ -125,11 +149,11 @@ const World::Cell& World::get(int x, int y) const
 
 World::Cell& World::get(int x, int y)
 {
-   try
+    try
     {
         return cell_vector.at(get_index(x,y));
     }
-   catch (std::out_of_range oor)
+    catch (std::out_of_range oor)
     {
         ERR_PRINT("Out of Range error");
         return ErrorCell;
@@ -139,11 +163,14 @@ World::Cell& World::get(int x, int y)
 
 void World::set(int x, int y, const World::Cell &cell)
 {
-   try
+    // const size_t idx = get_index(x,y);
+    // ERR_FAIL_INDEX_MSG(idx, size.x * size.y, "index is out_of_range");
+    // cell_vector.at(idx) = cell;
+    try
     {
         cell_vector.at(get_index(x,y)) = cell;
     }
-   catch (std::out_of_range oor)
+    catch (std::out_of_range oor)
     {
         ERR_PRINT("Out of Range error");
     }
@@ -161,6 +188,11 @@ int World::rect_distance(int ax, int ay, int bx, int by)
 
 void World::generate(int seed, float sea)
 {
+    if (min(size.x, size.y) <= 0)
+    {
+        return;
+    }
+
     std::mt19937 gen(seed);
 
     const auto randi = [&gen](int min, int max) -> float
@@ -177,21 +209,21 @@ void World::generate(int seed, float sea)
     };
 
     // get points count
-    const int points_count = randi(1,(size.x * size.y)/4);
+    const int points_count = 1 ; randi(1,(size.x * size.y)/4);
 
     // for each point , dig or build up
     for (size_t i =  points_count; i-->0;)
     {
         const uint8_t dir = randb(sea) ? -1 : 1;
-        const int x_coord = randi(0, size.x);
-        const int y_coord = randi(0, size.y);
-        const int range   = randi(0, min(size.x,size.y)/2);
+        const int x_coord = randi(0, size.x -1);
+        const int y_coord = randi(0, size.y -1);
+        const int range   = 10; randi(1, min(size.x,size.y)/4);
 
         // for each cell in the point vicinity, set the new height
         #pragma omp parallel for collapse(2)
-        for (int y = y_coord - range; y <=  y_coord + range; ++y) 
+        for (int y = y_coord - range; y <= y_coord + range; ++y) 
         {
-            for (int x = x_coord - range; x <=  x_coord + range; ++x) 
+            for (int x = x_coord - range; x <=x_coord + range; ++x) 
             {
                 Cell& t = get(x,y);
                 int8_t new_height = t.height +(dir * ( range - rect_distance(x,y, x_coord, y_coord)));
@@ -199,7 +231,6 @@ void World::generate(int seed, float sea)
             }
         }
     }
-
     // do something cool ??
 }
 
@@ -220,7 +251,10 @@ void World::export_to_image(Ref<Image> out_image)
     {
         for (int x = 0; x < size.x; ++x) 
         {
-            Color col = Color::from_hsv(0.f, 0.f, float(get(x,y).height) / 255.f, 1.f);
+            float height = get(x,y).height;
+            // height is between min and max, it need to be between 0 and 1 :
+            float value = remap(height, -8.f, 8.f, 0.f,1.f);
+            Color col = Color::from_hsv(0.f, 0.f, value, 1.f);
             out_image->set_pixel(x,y,col);
         }
     }
