@@ -126,8 +126,9 @@ Vector2i World::get_size() const
 
 size_t World::get_index(int x, int y) const
 {
-    const int fixed_x = std::abs(x % size.x); // beware negative numbers
-    const int fixed_y = std::abs(y % size.y); // beware negative numbers
+    // beware negative numbers
+    const int fixed_x = x >= 0 ? x % size.x : size.x + (x % size.x);
+    const int fixed_y = y >= 0 ? y % size.y : size.y + (y % size.y);
     return (fixed_x) + (fixed_y * size.x);
 }
 
@@ -210,15 +211,15 @@ void World::generate(int seed, float sea)
     };
 
     // get points count
-    const int points_count = 1 ; randi(1,(size.x * size.y)/4);
+    const int points_count = randi(1,(size.x * size.y));
 
     // for each point , dig or build up
     for (size_t i =  points_count; i-->0;)
     {
         const uint8_t dir = randb(sea) ? -1 : 1;
-        const int x_coord = randi(0, size.x -1);
+        const int x_coord = randi(0, size.x -1); 
         const int y_coord = randi(0, size.y -1);
-        const int range   = 10; randi(1, min(size.x,size.y)/4);
+        const int range   = randi(1, min(size.x,size.y)/4);
 
         // for each cell in the point vicinity, set the new height
         //#pragma omp parallel for collapse(2)

@@ -65,7 +65,7 @@ public:
         Cell(int8_t in_height = 0) : height(in_height)
         {}
 
-        void set_height(int8_t in_height) { height = in_height < max_height ? (in_height < min_height ? in_height : min_height) : max_height;}
+        void set_height(int8_t in_height) { height = in_height < max_height ? (in_height > min_height ? in_height : min_height) : max_height;}
 
     };
 
