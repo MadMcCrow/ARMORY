@@ -95,9 +95,7 @@ protected:
     Cell& get(int x, int y);
 
     /** setter */
-    void set(int x, int y, const Cell &cell);
-
-    int rect_distance(int ax, int ay, int bx, int by);
+    void set(int x, int y, const Cell &cell); 
 
 public:
 

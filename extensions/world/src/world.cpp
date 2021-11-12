@@ -68,6 +68,12 @@ static constexpr double fast_pow(double a, double b)
     return u.d;
 }
 
+// it's like modulo, but better 
+static constexpr auto repeat(auto p, auto q)
+{
+    return (p >= 0 ? 0 : q) + p % q; 
+}
+
 
 static World::Cell ErrorCell = World::Cell();
 
@@ -127,9 +133,8 @@ Vector2i World::get_size() const
 size_t World::get_index(int x, int y) const
 {
     // beware negative numbers
-    const int fixed_x = x >= 0 ? x % size.x : size.x + (x % size.x);
-    const int fixed_y = y >= 0 ? y % size.y : size.y + (y % size.y);
-    return (fixed_x) + (fixed_y * size.x);
+   
+    return repeat(x, size.x) + repeat(y, size.y) * size.x;
 }
 
 const World::Cell& World::get(int x, int y) const
@@ -178,16 +183,6 @@ void World::set(int x, int y, const World::Cell &cell)
     }
 }
 
-int World::rect_distance(int ax, int ay, int bx, int by)
-{
-    // make sure all coordinate are within (0->size)
-    ax = ax % size.x;
-    bx = bx % size.x;
-    ay = ay % size.y;
-    by = by % size.y;
-    return std::abs(max(bx - ax, by - bx));
-}
-
 void World::generate(int seed, float sea)
 {
     if (min(size.x, size.y) <= 0)
@@ -203,6 +198,7 @@ void World::generate(int seed, float sea)
         return  dis(gen);
     };
 
+
     const auto randb = [&gen](float p_true) -> bool
     {
         clampf(p_true, 0.f,1.f); 
@@ -210,26 +206,29 @@ void World::generate(int seed, float sea)
         return static_cast<bool>(dis(gen));
     };
 
-    // get points count
-    const int points_count = randi(1,(size.x * size.y));
+    // get lines count
+    const int zone_count = randi(1,(size.x * size.y)/4);
 
-    // for each point , dig or build up
-    for (size_t i =  points_count; i-->0;)
+    
+    for (size_t i =  zone_count; i-->0;)
     {
-        const uint8_t dir = randb(sea) ? -1 : 1;
-        const int x_coord = randi(0, size.x -1); 
-        const int y_coord = randi(0, size.y -1);
-        const int range   = randi(1, min(size.x,size.y)/4);
+        const auto x_min = randi(0, size.x - 1);
+        const auto x_max = randi(0, size.x - 1);
+    
+        const auto y_min = randi(0, size.y - 1);
+        const auto y_max = randi(0, size.y - 1);
+
+        const auto dir  = randb(sea) ? -1 : 1; 
 
         // for each cell in the point vicinity, set the new height
-        //#pragma omp parallel for collapse(2)
-        for (int y = y_coord - range; y <= y_coord + range; ++y) 
+        #pragma omp parallel for collapse(2)
+        for (int y = 0; y < size.y; y++) 
         {
-            for (int x = x_coord - range; x <=x_coord + range; ++x) 
+            for (int x = 0; x < size.x; x++) 
             {
                 Cell& t = get(x,y);
-                int8_t new_height = t.height +(dir * ( range - rect_distance(x,y, x_coord, y_coord)));
-                t.set_height(new_height);
+                constexpr auto inside = [](int a, int min, int max) -> bool { return (a >= min) ? ((min <= max) ? a <= max : true) :  ((min <= max) ? false : a <= max); };       
+                t.set_height( t.height + dir *(inside(x, x_min, x_max) && inside(y,y_min, y_max) ? 1 : -1) );
             }
         }
     }
