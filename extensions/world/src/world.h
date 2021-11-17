@@ -4,13 +4,19 @@
 #ifndef WORLD_CLASS_H
 #define WORLD_CLASS_H
 
+// std
 #include <vector>
-#include <cstdint> 
-#include <godot_cpp/classes/ref_counted.hpp>
+#include <cstdint>
+
+// godot-cpp
+#include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/core/binder_common.hpp>
 #include <godot_cpp/classes/image.hpp>
 #include <godot_cpp/classes/ref.hpp>
 
+// world
+#include "world_cell.h"
+#include "world_module.h"
 
 // we must use this namespace if we want to compile against godot
 using namespace godot;
@@ -26,76 +32,59 @@ namespace world
  *	Base Matrix functions
  *	Offers function for child classes
  */
-class World :  public RefCounted
+class World :  public Node
 {
-    GDCLASS(World, RefCounted);
+    GDCLASS(World, Node);
+    static void _bind_methods();
 
 public:
 
     // default CTR
     World();
 
-
-    /** 
-     *  @struct Cell
-     *  Describe a world cell with all the necessary info layed on top
-     */
-    struct Cell
-    {
-        /** how to represent it on the map */
-        int8_t height;
-
-        /** sea floor */
-        static int8_t min_height;
-
-        /** mountain tops */
-        static int8_t max_height;
-
-        /**  Things that can be added for diversity (do or do not affect gameplay) */
-        enum Modifiers
-        {
-            none  = 0,
-            rocks = 1, // on ground only, can be removed
-            river = 2, // on ground only, cannot be removed
-            tree  = 3, // on ground only, can be removed
-            beach = 4, // ground to sea transition only
-            fish  = 1  // sea only, visual only 
-        };
-
-        Cell(int8_t in_height = 0) : height(in_height)
-        {}
-
-        void set_height(int8_t in_height) { height = in_height < max_height ? (in_height > min_height ? in_height : min_height) : max_height;}
-
-    };
-
-
-
 private:
 
-    /** size property */
+    /** 
+     * size property
+     * stored as a godot Vector2i directly
+     */
     Vector2i size;
 
-    /** the internal */
-	std::vector<Cell> cell_vector;
+    /**
+     *  the final cells 
+     *  @note :
+     *          Also refered as "slots" during generation, a cell is the final collapsed version
+     *          another way to think about it is : a slot is a collection of possible cells,
+     *          and modules are set of conditions to produce a slot
+     */
+	std::vector<WorldCell> cell_vector;
 
-    void init_vector();
+    /**
+     *  the modules to consider to produce a final map
+     *  @note :
+     *          Even thought they are exposed to godot, it is NOT stored as @class Array nor Dictionary,
+     *          this is to avoid casting all the time.  this induce a non trivial cost for functions 
+     *          @see get_modules and @see set_modules
+     *  @see cell_vector
+     */
+	std::vector<WorldModule> modules_vector;
 
-protected:
 
-    // do nothing here, expose only what child classes do actually need
-    static void _bind_methods();
+    
+    Dictionary modules_dict;
+
+public:
+
+    //  setter and getter for modules
+    //  we convert to array, but to avoid casting all the time, we store as std::vector 
+    Dictionary get_modules() const;
+    void set_modules(const Dictionary& in_modules);
 
     /** convert 2d coordinate to unique index */
     size_t get_index(int x, int y) const;
 
-    /** getter */
-    const Cell& get(int x, int y) const;
-
-    Cell& get(int x, int y);
-
-    /** setter */
-    void set(int x, int y, const Cell &cell); 
+    /** compute squared distance between two point on the map */
+    int dist2(int ax, int ay, int bx, int by);
 
 public:
 
@@ -103,15 +92,10 @@ public:
     void set_size(const Vector2i &in_size);
     Vector2i get_size() const;
 
-    /** generate a world based on that seed */
-    void generate(int seed, float sea);
-
-    /** retrieve this matrix as an image */
+    /** retrieve this world as an image */
     void export_to_image(Ref<Image> out_image);
 
 private:
-
-
 
 };
 

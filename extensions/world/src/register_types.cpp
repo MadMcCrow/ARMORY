@@ -10,11 +10,15 @@
 
 // world classes
 #include "world.h"
+#include "world_module.h"
+#include "world_cell.h"
 
 using namespace godot;
 using namespace world;
 
 void register_world_types() {
+	ClassDB::register_class<WorldCell>();
+	ClassDB::register_class<WorldModule>();
 	ClassDB::register_class<World>();
 }
 
