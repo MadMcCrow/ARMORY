@@ -2,7 +2,7 @@
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
 // header
-#include "world.h"
+#include "world/world.h"
 
 //std
 #include <algorithm>
@@ -11,14 +11,15 @@
 #include <string>
 
 // godot
-#include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/core/error_macros.hpp>
+#include <core/object/class_db.h>
+#include <core/error/error_macros.h>
 
 // world
-#include "world_func.h"
+#include "world/world_func.h"
 
 using namespace world;
-		
+
+#if 0	
 
 void World::_bind_methods()
 {
@@ -56,8 +57,9 @@ Dictionary World::get_modules() const
 
 void World::set_modules(const Dictionary& in_modules)
 {
+    
     modules_dict = in_modules;
-
+/*
     // copy to vector :
 
     size_t count = in_modules.size();
@@ -72,6 +74,7 @@ void World::set_modules(const Dictionary& in_modules)
         Ref<WorldModule> res = in_modules.get(key, def);
         modules_vector[idx] = *(*res);
     }
+    */
 }
 
 
@@ -179,3 +182,5 @@ void World::export_to_image(Ref<Image> out_image)
     }
 }
 
+
+#endif 0

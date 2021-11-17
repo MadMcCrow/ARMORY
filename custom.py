@@ -1,12 +1,9 @@
 # custom.py for godot binary
 
-from os import walk
+from os import listdir
 from os.path import relpath
 
-# custom modules found in modules folder
-for cur, dirs, _files in walk("../"):
-    if "modules" in dirs :
-        custom_modules = relpath( str('/'.join([cur, "modules"])) )
+custom_modules = relpath('../modules')
 
 # global options
 platform="linuxbsd"
@@ -14,7 +11,7 @@ target="release_debug"
 tools="yes"
 optimize="speed"
 debug_symbols="no"
-warnings="moderate"
+warnings="no" #(extra|all|moderate|no)
 use_static_cpp="no"
 deprecated="no"
 no_editor_splash="yes"

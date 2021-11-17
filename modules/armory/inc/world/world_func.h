@@ -1,14 +1,15 @@
 /* Copyright © Noé Perard-Gayot 2021. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#ifndef WORLD_FUNC_H
-#define WORLD_FUNC_H
+#ifndef ARMORY_WORLD_FUNC_H
+#define ARMORY_WORLD_FUNC_H
 
 #include <cstdint> 
 
 namespace world
 {
 
+#if 0
 /**
  * Collection of helper functions !
  */
@@ -82,7 +83,7 @@ static const bool randb(std::mt19937& gen, float p_true)
     return static_cast<bool>(dis(gen));
 };
 
-
+#endif
 };
 
-#endif // ! WORLD_FUNC_H
+#endif // ! ARMORY_WORLD_FUNC_H

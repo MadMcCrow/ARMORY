@@ -1,15 +1,19 @@
 /* Copyright © Noé Perard-Gayot 2021. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#ifndef WORLD_MODULE_CLASS_H
-#define WORLD_MODULE_CLASS_H
- 
-#include <godot_cpp/classes/resource.hpp>
-#include <godot_cpp/core/binder_common.hpp>
+#ifndef ARMORY_WORLD_MODULE_CLASS_H
+#define ARMORY_WORLD_MODULE_CLASS_H
+
+// std
+#include <vector>
+
+// godot
+#include "core/object/class_db.h"
+#include "core/io/resource.h"
+
+//armory
 #include "world_cell.h"
 
-// we must use this namespace if we want to compile against godot
-using namespace godot;
 
 namespace world
 {

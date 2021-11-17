@@ -2,7 +2,9 @@
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
 // header
-#include "world_module.h"
+#include "world/world_module.h"
+
+#include <core/object/class_db.h>
 
 using namespace world;
 

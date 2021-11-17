@@ -1,32 +1,29 @@
 /* Copyright © Noé Perard-Gayot 2021. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#ifndef WORLD_CLASS_H
-#define WORLD_CLASS_H
+#ifndef ARMORY_WORLD_CLASS_H
+#define ARMORY_WORLD_CLASS_H
 
 // std
-#include <vector>
-#include <cstdint>
+//#include <vector>
+//#include <cstdint>
 
-// godot-cpp
-#include <godot_cpp/classes/node.hpp>
-#include <godot_cpp/core/binder_common.hpp>
-#include <godot_cpp/classes/image.hpp>
-#include <godot_cpp/classes/ref.hpp>
+// godot
+//#include "scene/main/node.h"
+#include "scene/resources/texture.h"
+#include "core/io/image.h"
+#include "core/object/ref_counted.h"
 
 // world
 #include "world_cell.h"
 #include "world_module.h"
 
-// we must use this namespace if we want to compile against godot
-using namespace godot;
 
 // make sure we do not override
 namespace world
 {
 
-
-
+#if 0
 /**
  * 	@class World
  *	Base Matrix functions
@@ -98,8 +95,8 @@ public:
 private:
 
 };
+#endif //0
+}; // namespace world
 
-};
 
-
-#endif // ! WORLD_CLASS_H
+#endif // ! ARMORY_WORLD_CLASS_H

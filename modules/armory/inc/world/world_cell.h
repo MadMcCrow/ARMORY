@@ -1,22 +1,19 @@
 /* Copyright © Noé Perard-Gayot 2021. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-#ifndef WORLD_CELL_CLASS_H
-#define WORLD_CELL_CLASS_H
+#ifndef ARMORY_WORLD_CELL_CLASS_H
+#define ARMORY_WORLD_CELL_CLASS_H
 
-
+//std
 #include <cstdint> 
-#include <godot_cpp/core/binder_common.hpp>
-#include <godot_cpp/classes/object.hpp>
 
-
-// we must use this namespace if we want to compile against godot
-using namespace godot;
+// godot
+#include "core/object/class_db.h"
+#include "core/object/object.h"
 
 // make sure we do not override
 namespace world
 {
-
 
 /**
  *  @class Cell
@@ -58,4 +55,4 @@ private:
 
 }; // namespace world
 
-#endif // ! WORLD_CELL_CLASS_H
+#endif // ! ARMORY_WORLD_CELL_CLASS_H

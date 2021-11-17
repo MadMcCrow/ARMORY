@@ -1,5 +1,7 @@
 # custom.py for godot binary
 
+custom_modules = relpath('../modules')
+
 # global options
 platform="linuxbsd"
 target="release"

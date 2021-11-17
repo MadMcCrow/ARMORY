@@ -98,7 +98,8 @@
 			"exception": "cpp",
 			"numbers": "cpp",
 			"semaphore": "cpp",
-			"cfenv": "cpp"
+			"cfenv": "cpp",
+			"*.inc": "cpp"
 		},
 		"files.exclude": {
 			"**/__pycache__/**": true,
