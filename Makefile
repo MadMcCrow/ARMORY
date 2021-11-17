@@ -12,7 +12,7 @@ THREADS := $(shell nproc)
 BASEDIR := $(realpath $(CURDIR))
 
 godot/bin/godot.*tools.* :
-	cd godot && scons -j$(THREADS) profile=../custom.py;
+	@cd godot && scons -j$(THREADS) profile=../custom.py;
 
 Godot : godot/bin/godot.*tools.*
 
@@ -20,13 +20,13 @@ godot: Godot
 
 # Godot Cpp bindings
 godot-cpp/bin/libgodot-cpp.*.a :
-	cd godot-cpp && scons -j$(THREADS) target=debug;
+	@cd godot-cpp && scons -j$(THREADS) target=debug;
 Godot-cpp : godot-cpp/bin/libgodot-cpp.*.a
 godot-cpp : Godot-cpp
 
 # extensions:
 Extensions:
-	mkdir armory/ext/bin --parent ;\
+	@mkdir armory/ext/bin --parent ;\
 	for EXT in $(shell ls extensions); do \
 	cd $(BASEDIR)/extensions/$${EXT} && scons -j$(THREADS) use_llvm=true &&\
 	mv $(BASEDIR)/extensions/$${EXT}/bin/libgd*.so $(BASEDIR)/armory/ext/bin/ -fv;\
@@ -39,14 +39,16 @@ all: godot extensions
 
 # `make launch` calls launch script
 launch:
-	godot/bin/godot.*.tools* armory/project.godot --editor --ups;
+	@godot/bin/godot.*.tools* armory/project.godot --editor --ups;
 
 # clean everything
 clean:
-	@for f in $(shell ls extensions);\
-	do echo "cleaning ${f}";\
-	rm extensions/$${f}/bin/libgd*.so || true\
+	@echo "cleaning engine";\
+	rm godot/bin/godot.*.tools* > /dev/null 2>&1 || true;\
+	for EXT in $(shell ls extensions); do \
+	echo "cleaning extension $${EXT}";\
+	rm $(BASEDIR)/extensions/$${EXT}/bin/libgd*.so > /dev/null 2>&1 || true;\
 	done;\
-	rm godot/bin/godot.*.tools*
+
 
 
