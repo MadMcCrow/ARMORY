@@ -17,7 +17,7 @@
 // world
 #include "world/world_func.h"
 
-using namespace world;
+using namespace armory;
 
 #if 0	
 

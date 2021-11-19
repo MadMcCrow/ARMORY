@@ -12,7 +12,7 @@
 #include "core/object/object.h"
 
 // make sure we do not override
-namespace world
+namespace armory
 {
 
 /**
@@ -53,6 +53,6 @@ private:
 
 };
 
-}; // namespace world
+}; // namespace armory
 
 #endif // ! ARMORY_WORLD_CELL_CLASS_H

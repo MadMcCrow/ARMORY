@@ -5,25 +5,25 @@
 #define ARMORY_WORLD_CLASS_H
 
 // std
-//#include <vector>
-//#include <cstdint>
+#include <vector>
+#include <cstdint>
 
 // godot
-//#include "scene/main/node.h"
+#include "scene/main/node.h"
 #include "scene/resources/texture.h"
 #include "core/io/image.h"
 #include "core/object/ref_counted.h"
 
 // world
-#include "world_cell.h"
-#include "world_module.h"
+//#include "world_cell.h"
+//#include "world_module.h"
 
+class WorldCell;
+class WorldModule;
 
-// make sure we do not override
-namespace world
+namespace armory
 {
 
-#if 0
 /**
  * 	@class World
  *	Base Matrix functions
@@ -95,8 +95,7 @@ public:
 private:
 
 };
-#endif //0
-}; // namespace world
+}; // namespace armory
 
 
 #endif // ! ARMORY_WORLD_CLASS_H

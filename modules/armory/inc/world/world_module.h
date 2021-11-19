@@ -15,7 +15,7 @@
 #include "world_cell.h"
 
 
-namespace world
+namespace armory
 {
 
 /**

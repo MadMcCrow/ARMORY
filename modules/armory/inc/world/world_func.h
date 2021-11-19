@@ -6,7 +6,7 @@
 
 #include <cstdint> 
 
-namespace world
+namespace armory
 {
 
 #if 0

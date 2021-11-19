@@ -6,7 +6,7 @@
 
 #include <core/object/class_db.h>
 
-using namespace world;
+using namespace armory;
 
 void WorldModule::_bind_methods()
 {
