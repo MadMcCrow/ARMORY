@@ -6,10 +6,12 @@
 
 //std
 #include <cstdint> 
+#include <vector>
 
 // godot
 #include "core/object/class_db.h"
-#include "core/object/object.h"
+#include "core/io/resource.h"
+#include "core/io/image.h"
 
 // make sure we do not override
 namespace armory
@@ -17,39 +19,49 @@ namespace armory
 
 /**
  *  @class Cell
- *  Describe a world cell with all the necessary info layed on top
+ *  Describe a world cell type with all the necessary info layed on top
  */
-class WorldCell :  public Object
+class WorldCell :  public Resource
 {
-    GDCLASS(WorldCell, Object);
+    GDCLASS(WorldCell, Resource);
     static void _bind_methods();
 
 public:
 
-    /** how to represent it on the map */
-    enum class Type : uint8_t
-    {
-        deep_sea     = 0,   // sea visual only
-        sea_oil      = 1,   // on deep sea, spawns a offshore platform building
-        sea          = 2,   // sea visual only
-        shoreline    = 3,   // sea visual only
-        beach        = 4,   // sea transition, allows unloading
-        cliff        = 5,   // sea transition
-        plain        = 6,   // level 0
-        mound        = 7,   // level 1
-        river        = 8,   // spawns on level 1 goes to sea
-        hill         = 9,   // level 2
-        hill_tree    = 10,  // prevents building, stops vehicules
-        hill_rock    = 11,  // prevents building, does not stop tanks 
-        ore_mine     = 12,  // on hills, spawns a ore mine building
-        mountain     = 13,  // blocks land unit
-        mountain_top = 14   // blocks planes
-    };
+    WorldCell();
 
 private:
-    Type T; 
 
-    // TODO : bind enum, CTR, and use in world
+    /**
+     *  The cell type name, used as a tag/reference for allowed neighbours
+     */
+    StringName cell_type_name;
+
+    /**
+     *  The 2D image to use to draw this tile
+     */
+    Ref<Image> tile_2d;
+
+    /**
+     * Types of cells allowed on directions : top, down, left and right 
+     */
+    StringName north;
+    StringName south;
+    StringName east;
+    StringName west;
+
+protected:
+
+    // getters and setters for bindings
+
+    StringName get_cell_type() const;
+    void       set_cell_type(const StringName &in_cell_type);
+
+    Dictionary get_allowed_neighbours() const;
+    void       set_allowed_neighbours(const Dictionary &neighbours);
+
+    Ref<Image> get_tile_2d() const;
+    void       set_tile_2d(const  Ref<Image> &in_tile_2d);
 
 };
 

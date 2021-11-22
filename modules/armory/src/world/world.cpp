@@ -15,11 +15,9 @@
 #include <core/error/error_macros.h>
 
 // world
-#include "world/world_func.h"
+#include "world/world_statics.h"
 
 using namespace armory;
-
-#if 0	
 
 void World::_bind_methods()
 {
@@ -50,31 +48,33 @@ World::World() : Node()
 {
 }
 
-Dictionary World::get_modules() const
+Array World::get_modules() const
 {
-   return modules_dict;
-}
-
-void World::set_modules(const Dictionary& in_modules)
-{
-    
-    modules_dict = in_modules;
-/*
-    // copy to vector :
-
-    size_t count = in_modules.size();
-    modules_vector.clear(); // clear set vector size at zero
-    modules_vector.reserve(count);
+    Array ret_val;
+    size_t count = modules_vector.size();
+    ret_val.resize(count);
     #pragma omp parallel for
     for (int idx = 0; idx < count; ++idx)
     {
-        WorldModule mod;
-        Variant def = Ref<WorldModule>(&mod);
-        Variant key = idx;
-        Ref<WorldModule> res = in_modules.get(key, def);
-        modules_vector[idx] = *(*res);
+        Variant ref = modules_vector[idx];
+        ret_val[idx] = ref;
     }
-    */
+    return ret_val;
+}
+
+void World::set_modules(const Array& in_modules)
+{
+    // copy to vector :
+    size_t count = in_modules.size();
+    //modules_vector.clear(); // clear set vector size at zero
+    modules_vector.resize(count);
+    #pragma omp parallel for
+    for (int idx = 0; idx < count; ++idx)
+    {
+        Ref<WorldModule> ref = cast_to<WorldModule>(in_modules.get(idx).get_validated_object());
+        modules_vector[idx] = ref;
+    }
+    
 }
 
 
@@ -182,5 +182,3 @@ void World::export_to_image(Ref<Image> out_image)
     }
 }
 
-
-#endif 0

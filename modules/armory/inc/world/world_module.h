@@ -21,15 +21,36 @@ namespace armory
 /**
  * 	@class WorldModule
  *	contains the definition of a WFC module
+ *  A module has a name (acting as a key), and a pattern.
+ *  the pattern is a small subset of tiles
  */
 class WorldModule :  public Resource
 {
     GDCLASS(WorldModule, Resource);
     static void _bind_methods();
 
+
 public:
 
+    WorldModule();
+
 private:
+
+    /**
+     *  a simple struct to store infos of the cells
+     */
+    struct ModuleCell
+    {
+        // Cell to use
+        Ref<WorldCell> cell;
+        
+        // North facing rotation [North, South, East, West]
+        StringName rotation;
+    };
+
+
+    /** size of the pattern */
+    Vector2i Size;
 
     /**
      * Types of modules allowed on directions : top, down, left and right 
@@ -37,10 +58,22 @@ private:
      *          this is stored as a vector as you can force conditions 
      *          to be more than one cell
      */
-    std::vector<WorldCell::Type> north;
-    std::vector<WorldCell::Type> south;
-    std::vector<WorldCell::Type> east;
-    std::vector<WorldCell::Type> west;
+    std::vector<ModuleCell> cells;
+
+
+
+protected: 
+
+
+    /**
+     *  setter and getter for modules
+     *  we convert to array (of dict), but to avoid casting all the time, we store as std::vector of Struct
+     */
+    Array get_cells() const;
+    void set_cells(const Array& in_modules);
+
+
+
 
 };
 

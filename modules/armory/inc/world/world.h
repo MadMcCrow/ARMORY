@@ -15,11 +15,9 @@
 #include "core/object/ref_counted.h"
 
 // world
-//#include "world_cell.h"
-//#include "world_module.h"
+#include "world/world_cell.h"
+#include "world/world_module.h"
 
-class WorldCell;
-class WorldModule;
 
 namespace armory
 {
@@ -64,18 +62,17 @@ private:
      *          @see get_modules and @see set_modules
      *  @see cell_vector
      */
-	std::vector<WorldModule> modules_vector;
+	std::vector<Ref<WorldModule>> modules_vector;
 
 
     
-    Dictionary modules_dict;
 
 public:
 
     //  setter and getter for modules
     //  we convert to array, but to avoid casting all the time, we store as std::vector 
-    Dictionary get_modules() const;
-    void set_modules(const Dictionary& in_modules);
+    Array get_modules() const;
+    void set_modules(const Array& in_modules);
 
     /** convert 2d coordinate to unique index */
     size_t get_index(int x, int y) const;

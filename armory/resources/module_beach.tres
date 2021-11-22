@@ -1,0 +1,19 @@
+[gd_resource type="WorldModule" format=3 uid="uid://b41xj15nnjd5e"]
+
+[resource]
+cells = [{
+"Cell": null,
+"Rotation": &""
+}, {
+"Cell": null,
+"Rotation": &""
+}, {
+"Cell": null,
+"Rotation": &""
+}, {
+"Cell": null,
+"Rotation": &""
+}, {
+"Cell": null,
+"Rotation": &""
+}]
