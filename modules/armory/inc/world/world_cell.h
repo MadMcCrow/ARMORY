@@ -11,7 +11,7 @@
 // godot
 #include "core/object/class_db.h"
 #include "core/io/resource.h"
-#include "core/io/image.h"
+#include "scene/resources/texture.h"
 
 // make sure we do not override
 namespace armory
@@ -40,15 +40,8 @@ private:
     /**
      *  The 2D image to use to draw this tile
      */
-    Ref<Image> tile_2d;
+    Ref<Texture2D> tile_2d;
 
-    /**
-     * Types of cells allowed on directions : top, down, left and right 
-     */
-    StringName north;
-    StringName south;
-    StringName east;
-    StringName west;
 
 protected:
 
@@ -56,12 +49,9 @@ protected:
 
     StringName get_cell_type() const;
     void       set_cell_type(const StringName &in_cell_type);
-
-    Dictionary get_allowed_neighbours() const;
-    void       set_allowed_neighbours(const Dictionary &neighbours);
-
-    Ref<Image> get_tile_2d() const;
-    void       set_tile_2d(const  Ref<Image> &in_tile_2d);
+    
+    Ref<Texture2D>  get_tile_2d() const;
+    void            set_tile_2d(const  Ref<Texture2D> &in_tile_2d);
 
 };
 

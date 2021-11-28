@@ -6,13 +6,17 @@
 
 using namespace armory;
 
-// Singleton stuff :
+// bindings
 
 void WorldStatics::_bind_methods()
 {
-    // TODO : bind north south east west as enum / values
-
+    ClassDB::bind_integer_constant(get_class_static(), StringName(), north(), static_cast<uint8_t>(Direction::North));
+    ClassDB::bind_integer_constant(get_class_static(), StringName(), south(), static_cast<uint8_t>(Direction::South));
+    ClassDB::bind_integer_constant(get_class_static(), StringName(), east(),  static_cast<uint8_t>(Direction::East));
+    ClassDB::bind_integer_constant(get_class_static(), StringName(), west(),  static_cast<uint8_t>(Direction::West));
 }
+
+// Singleton stuff :
 
 WorldStatics * WorldStatics::singleton;
 

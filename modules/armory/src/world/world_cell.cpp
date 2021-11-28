@@ -17,10 +17,6 @@ void WorldCell::_bind_methods()
     ClassDB::bind_method(D_METHOD("get_cell_type"), &WorldCell::get_cell_type);
 	ClassDB::bind_method(D_METHOD("set_cell_type", "cell_type"), &WorldCell::set_cell_type);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING_NAME, "cell_type_name"), "set_cell_type", "get_cell_type");
-	// neighbours
-	ClassDB::bind_method(D_METHOD("get_allowed_neighbours"), &WorldCell::get_allowed_neighbours);
-	ClassDB::bind_method(D_METHOD("set_allowed_neighbours", "neighbours"), &WorldCell::set_allowed_neighbours);
-	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "neighbours"), "set_allowed_neighbours", "get_allowed_neighbours");
     // drawing 2d
     ADD_SUBGROUP("2D", "draw_2d_");
     // 2d tile
@@ -35,7 +31,6 @@ WorldCell::WorldCell() : Resource()
 
 }
 
-
 StringName WorldCell::get_cell_type() const
 {
     return cell_type_name;
@@ -47,31 +42,12 @@ void WorldCell::set_cell_type(const StringName &in_cell_type)
     cell_type_name = in_cell_type;
 }
 
-Dictionary WorldCell::get_allowed_neighbours() const
-{
-    Dictionary ret_val;
-    ret_val[WorldStatics::north()] = north;
-    ret_val[WorldStatics::south()] = south;
-    ret_val[WorldStatics::east()]  = east;
-    ret_val[WorldStatics::west()]  = west;
-    return ret_val;
-}
-
-void WorldCell::set_allowed_neighbours(const Dictionary &neighbours)
-{
-    north = neighbours[WorldStatics::north()];
-    south = neighbours[WorldStatics::south()];
-    east  = neighbours[WorldStatics::east()] ;
-    west  = neighbours[WorldStatics::west()] ;
-}
-
-
-Ref<Image> WorldCell::get_tile_2d() const
+Ref<Texture2D> WorldCell::get_tile_2d() const
 {
     return tile_2d;
 }
 
-void WorldCell::set_tile_2d(const  Ref<Image> &in_tile_2d)
+void WorldCell::set_tile_2d(const  Ref<Texture2D> &in_tile_2d)
 {
     tile_2d = in_tile_2d;
 }

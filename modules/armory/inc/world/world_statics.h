@@ -44,6 +44,15 @@ public:
     static const StringName east();
     static const StringName west();
 
+
+    enum Direction : uint8_t
+    {
+        North,
+        South,
+        East,
+        West
+    };
+
 };
     /**
      * Collection of helper functions !

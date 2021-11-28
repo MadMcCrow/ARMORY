@@ -5,7 +5,7 @@
 #define ARMORY_WORLD_MODULE_CLASS_H
 
 // std
-#include <vector>
+#include <map>
 
 // godot
 #include "core/object/class_db.h"
@@ -27,6 +27,8 @@ namespace armory
 class WorldModule :  public Resource
 {
     GDCLASS(WorldModule, Resource);
+
+
     static void _bind_methods();
 
 
@@ -45,21 +47,14 @@ private:
         Ref<WorldCell> cell;
         
         // North facing rotation [North, South, East, West]
-        StringName rotation;
+        int rotation;
+
     };
 
-
-    /** size of the pattern */
-    Vector2i Size;
-
     /**
-     * Types of modules allowed on directions : top, down, left and right 
-     * @note :
-     *          this is stored as a vector as you can force conditions 
-     *          to be more than one cell
+     * cells contained in this module
      */
-    std::vector<ModuleCell> cells;
-
+    std::map<Vector2i, ModuleCell> cells;
 
 
 protected: 
@@ -72,12 +67,11 @@ protected:
     Array get_cells() const;
     void set_cells(const Array& in_modules);
 
-
-
+};
+        
 
 };
 
-};
 
 
 #endif // ! WORLD_MODULE_CLASS_H
