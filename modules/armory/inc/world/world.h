@@ -6,6 +6,7 @@
 
 // std
 #include <vector>
+#include <set>
 #include <cstdint>
 
 // godot
@@ -39,6 +40,20 @@ public:
 
 private:
 
+    /** Struct for possible cells */
+    struct WorldSlot
+    {
+        /** the various possibilities for this cell */
+        std::vector<Ref<WorldCell>> possibilities;
+
+        bool is_collapsed() const {return possibilities.size() <= 1;}
+
+        WorldSlot(std::initializer_list<Ref<WorldCell>> cell_list) 
+        : possibilities(cell_list)
+        {
+        }
+    };
+
     /** 
      * size property
      * stored as a godot Vector2i directly
@@ -52,7 +67,7 @@ private:
      *          another way to think about it is : a slot is a collection of possible cells,
      *          and modules are set of conditions to produce a slot
      */
-	std::vector<WorldCell> cell_vector;
+	std::vector<WorldSlot> cell_vector;
 
     /**
      *  the modules to consider to produce a final map
@@ -62,34 +77,46 @@ private:
      *          @see get_modules and @see set_modules
      *  @see cell_vector
      */
-	std::vector<Ref<WorldModule>> modules_vector;
+	std::set<Ref<WorldModule>> modules_vector;
 
+
+protected:
+
+    size_t get_index(Vector2i coord) const;
+    WorldSlot& get(Vector2i coord);
+    const WorldSlot& get(Vector2i coord) const;
 
     
-
-public:
-
-    //  setter and getter for modules
-    //  we convert to array, but to avoid casting all the time, we store as std::vector 
-    Array get_modules() const;
-    void set_modules(const Array& in_modules);
-
-    /** convert 2d coordinate to unique index */
-    size_t get_index(int x, int y) const;
-
-    /** compute squared distance between two point on the map */
-    int dist2(int ax, int ay, int bx, int by);
-
 public:
 
     /** size getter and setter */
     void set_size(const Vector2i &in_size);
     Vector2i get_size() const;
 
-    /** retrieve this world as an image */
-    void export_to_image(Ref<Image> out_image);
+
+
+
+
+    /** Generate map */
+    bool generate();
+
+    /**
+     *  retrieve this world as an image 
+     *  @param [out] out_image  the resulting image
+     *  @param       cell_size  the how many pixels to allocate for cells
+     */
+    void export_to_image(Ref<Image> out_image, int cell_size);
 
 private:
+
+    /** get all possible cells this world can produce */
+	std::set<Ref<WorldCell>> get_possible_cells() const;
+
+    /** get a random module out of a sub-set of modules */
+    Ref<WorldModule> get_random_module(std::set<Ref<WorldModule>> compatible_modules) const;
+
+    /** get all modules compatible with a given slot */
+    std::set<Ref<WorldModule>> get_compatible_modules(const Vector2i& coord) const;
 
 };
 }; // namespace armory

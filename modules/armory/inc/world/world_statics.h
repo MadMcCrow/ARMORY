@@ -43,15 +43,26 @@ public:
     static const StringName south();
     static const StringName east();
     static const StringName west();
-
+    static const StringName north_south()
+    static const StringName west_east()
+    static const StringName all_directions()
 
     enum Direction : uint8_t
     {
         North,
         South,
         East,
-        West
+        West,
+        NS, // North and south are equals
+        WE, // West and east are equals
+        All, // All directions are the same
     };
+
+    /** Random values generator - mersenne twister */ 
+    static std::mt19937 random_gen;
+
+    /** reset generator to get identical result */
+    static void reset_gen() {random_gen = std::mt19937(); }
 
 };
     /**
@@ -113,18 +124,27 @@ public:
     }
 
     // random integer
-    static const float randi(std::mt19937& gen, int min, int max)
+    static const int randi(int min, int max)
     {
         std:: uniform_int_distribution<> dis(min, max);
-        return  dis(gen);
+        return  dis(WorldStatics::random_gen);
     };
 
+
+    // random float
+    static const float randf(float min = 0.f, float max = 1.f)
+    {
+        std:: uniform_real_distribution<> dis(min, max);
+        return  dis(WorldStatics::random_gen);
+    };
+
+
     // random boolean
-    static const bool randb(std::mt19937& gen, float p_true)
+    static const bool randb(float p_true)
     {
         clampf(p_true, 0.f,1.f); 
         std::discrete_distribution<> dis({1-p_true, p_true});
-        return static_cast<bool>(dis(gen));
+        return static_cast<bool>(dis(WorldStatics::random_gen));
     };
 
 

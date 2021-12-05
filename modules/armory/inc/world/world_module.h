@@ -6,6 +6,7 @@
 
 // std
 #include <map>
+#include <set>
 
 // godot
 #include "core/object/class_db.h"
@@ -46,7 +47,7 @@ private:
         // Cell to use
         Ref<WorldCell> cell;
         
-        // North facing rotation [North, South, East, West]
+        // North facing rotation [North, South, East, West, None]
         int rotation;
 
     };
@@ -56,8 +57,19 @@ private:
      */
     std::map<Vector2i, ModuleCell> cells;
 
+    /**
+     *  dimension of this module
+     *                           some of the cells might be undefined
+     */
+    Vector2i size;
 
-protected: 
+    /**
+     * probability 
+     *              this is its intrinsect probability, not relative to the rest
+     */
+    float probability;
+
+protected:
 
 
     /**
@@ -66,6 +78,34 @@ protected:
      */
     Array get_cells() const;
     void set_cells(const Array& in_modules);
+
+    /**
+     *  setter and getter for modules
+     *  we convert to array (of dict), but to avoid casting all the time, we store as std::vector of Struct
+     */
+    float get_probability() const;
+    void set_probability(const float& in_probability);
+
+public :
+
+    /** Check if contains a certain cell, used for filtering out modules before testing them for compatibility */
+    bool contains_cell(Ref<WorldCell> cell) const;
+
+    /** calculate size of the module - slow but always exact */ 
+    Vector2i calculate_size() const;
+
+    /** get last calculated size */
+    const Vector2i& get_size() const {return size;}
+
+    /** get the cells contained in this */
+    std::set<Ref<WorldCell>> get_world_cells() const;
+
+    /** get this module probability */
+    _FORCE_INLINE_ const float& get_p() const {return probability;}
+
+    
+    std
+
 
 };
         
