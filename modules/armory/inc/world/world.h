@@ -6,8 +6,8 @@
 
 // std
 #include <vector>
-#include <set>
 #include <cstdint>
+#include <optional>
 
 // godot
 #include "scene/main/node.h"
@@ -38,21 +38,34 @@ public:
     // default CTR
     World();
 
-private:
 
     /** Struct for possible cells */
     struct WorldSlot
     {
+      
         /** the various possibilities for this cell */
-        std::vector<Ref<WorldCell>> possibilities;
+        WorldCellSet possibilities;
 
         bool is_collapsed() const {return possibilities.size() <= 1;}
 
-        WorldSlot(std::initializer_list<Ref<WorldCell>> cell_list) 
-        : possibilities(cell_list)
+        WorldSlot(WorldCellSet in_possibilities)
+        :  possibilities(in_possibilities)
         {
+           
+        }
+
+        WorldSlot()
+        {}
+
+    
+
+        Ref<WorldCell> get_collapsed() const 
+        {
+            return is_collapsed() ? *possibilities.begin() : Ref<WorldCell>();
         }
     };
+
+private:
 
     /** 
      * size property
@@ -77,7 +90,7 @@ private:
      *          @see get_modules and @see set_modules
      *  @see cell_vector
      */
-	std::set<Ref<WorldModule>> modules_vector;
+	std::set<Ref<WorldModule>> modules_set;
 
 
 protected:
@@ -94,7 +107,8 @@ public:
     Vector2i get_size() const;
 
 
-
+    Array get_modules() const;
+	void set_modules(const Array& in_modules);
 
 
     /** Generate map */
@@ -110,11 +124,8 @@ public:
 private:
 
     /** get all possible cells this world can produce */
-	std::set<Ref<WorldCell>> get_possible_cells() const;
-
-    /** get a random module out of a sub-set of modules */
-    Ref<WorldModule> get_random_module(std::set<Ref<WorldModule>> compatible_modules) const;
-
+	WorldCellSet get_possible_cells() const;
+    
     /** get all modules compatible with a given slot */
     std::set<Ref<WorldModule>> get_compatible_modules(const Vector2i& coord) const;
 

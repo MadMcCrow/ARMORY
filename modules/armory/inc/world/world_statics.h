@@ -34,6 +34,9 @@ private:
 
    static WorldStatics* singleton;
 
+    /** Random values generator - mersenne twister */ 
+    std::mt19937 random_gen;
+
 public:
 
 
@@ -43,9 +46,9 @@ public:
     static const StringName south();
     static const StringName east();
     static const StringName west();
-    static const StringName north_south()
-    static const StringName west_east()
-    static const StringName all_directions()
+    static const StringName north_south();
+    static const StringName west_east();
+    static const StringName all_directions();
 
     enum Direction : uint8_t
     {
@@ -58,11 +61,11 @@ public:
         All, // All directions are the same
     };
 
-    /** Random values generator - mersenne twister */ 
-    static std::mt19937 random_gen;
-
+  
     /** reset generator to get identical result */
-    static void reset_gen() {random_gen = std::mt19937(); }
+    static void reset_gen() {get_random_gen() = std::mt19937(); }
+
+    static std::mt19937& get_random_gen() {return get_singleton()->random_gen;}
 
 };
     /**
@@ -127,7 +130,7 @@ public:
     static const int randi(int min, int max)
     {
         std:: uniform_int_distribution<> dis(min, max);
-        return  dis(WorldStatics::random_gen);
+        return  dis(WorldStatics::get_random_gen());
     };
 
 
@@ -135,7 +138,7 @@ public:
     static const float randf(float min = 0.f, float max = 1.f)
     {
         std:: uniform_real_distribution<> dis(min, max);
-        return  dis(WorldStatics::random_gen);
+        return  dis(WorldStatics::get_random_gen());
     };
 
 
@@ -144,7 +147,7 @@ public:
     {
         clampf(p_true, 0.f,1.f); 
         std::discrete_distribution<> dis({1-p_true, p_true});
-        return static_cast<bool>(dis(WorldStatics::random_gen));
+        return static_cast<bool>(dis(WorldStatics::get_random_gen()));
     };
 
 

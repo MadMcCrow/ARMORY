@@ -13,11 +13,40 @@
 #include "core/io/resource.h"
 
 //armory
+#include "world_statics.h"
 #include "world_cell.h"
 
 
 namespace armory
 {
+
+
+/**
+ *  @class WorldModuleCell
+ *  a cell as defined for @see WorldModule
+ */
+class WorldModuleCell :  public RefCounted
+{
+    GDCLASS(WorldModuleCell, RefCounted);
+
+public:
+
+    // Cell to use
+    Ref<WorldCell> cell;
+        
+    // North facing rotation [North, South, East, West, None]
+    WorldStatics::Direction rotation;
+
+    // this is to make sure rotation shows as enum in the editor
+    static void _bind_methods();
+
+    Ref<WorldCell> get_cell() const;
+    void set_cell(const Ref<WorldCell>& in_cell);
+
+    int get_rotation() const;
+    void set_rotation(const int& in_rotation);
+    
+};
 
 /**
  * 	@class WorldModule
@@ -39,23 +68,12 @@ public:
 
 private:
 
-    /**
-     *  a simple struct to store infos of the cells
-     */
-    struct ModuleCell
-    {
-        // Cell to use
-        Ref<WorldCell> cell;
-        
-        // North facing rotation [North, South, East, West, None]
-        int rotation;
 
-    };
 
     /**
      * cells contained in this module
      */
-    std::map<Vector2i, ModuleCell> cells;
+    std::map<Vector2i, Ref<WorldModuleCell>> cells;
 
     /**
      *  dimension of this module
@@ -102,9 +120,6 @@ public :
 
     /** get this module probability */
     _FORCE_INLINE_ const float& get_p() const {return probability;}
-
-    
-    std
 
 
 };

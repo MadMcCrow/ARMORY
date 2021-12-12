@@ -5,7 +5,8 @@
 #define ARMORY_WORLD_CELL_CLASS_H
 
 //std
-#include <cstdint> 
+#include <set>
+#include <cstdint>
 #include <vector>
 
 // godot
@@ -43,7 +44,7 @@ private:
     Ref<Texture2D> tile_2d;
 
 
-protected:
+public:
 
     // getters and setters for bindings
 
@@ -54,6 +55,19 @@ protected:
     void            set_tile_2d(const  Ref<Texture2D> &in_tile_2d);
 
 };
+
+/** struct to allow sorting of set */
+struct ltRefWorldCell
+{
+    bool operator()(const Ref<WorldCell> &T1, const Ref<WorldCell> &T2) const
+    {
+        return (uintptr_t(T1.ptr()) <uintptr_t(T2.ptr()));
+    }
+};
+
+
+typedef std::set<Ref<WorldCell>,ltRefWorldCell> WorldCellSet;
+
 
 }; // namespace armory
 

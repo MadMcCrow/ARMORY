@@ -8,6 +8,26 @@
 
 using namespace armory;
 
+void WorldModuleCell::_bind_methods()
+{
+    ADD_GROUP("WorldModule", "world_module_");
+    // generation system
+	// ADD_SUBGROUP("system", "system_");
+    // cells
+    ClassDB::bind_method(D_METHOD("get_cell"), &WorldModuleCell::get_cell);
+    ClassDB::bind_method(D_METHOD("set_cell", "in_cell"), &WorldModuleCell::set_cell);
+    ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cell"), "set_cell", "get_cell");
+
+    ClassDB::bind_method(D_METHOD("get_rotation"), &WorldModuleCell::get_rotation);
+    ClassDB::bind_method(D_METHOD("set_rotation", "in_rotation"), &WorldModuleCell::set_rotation);
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "cell"), "set_rotation", "get_rotation");
+}
+
+Ref<WorldCell> WorldModuleCell::get_cell() const { return cell;}
+void WorldModuleCell::set_cell(const Ref<WorldCell> & in_cell) {cell = in_cell;}
+int WorldModuleCell::get_rotation() const {return static_cast<int>(rotation);}
+void WorldModuleCell::set_rotation(const int& in_rotation) {rotation = static_cast<WorldStatics::Direction>(in_rotation);}
+
 void WorldModule::_bind_methods()
 {
 		// Properties
@@ -39,25 +59,27 @@ Array WorldModule::get_cells() const
     {
         // create dictionnary from struct:
         Dictionary dict;
-        dict["Cell"]        = cell_itr.second.cell;
+        dict["Cell"]        = cell_itr.second;
         dict["Position"]    = cell_itr.first;
-        switch(cell_itr.second.rotation)
+        if(cell_itr.second.is_valid())
         {
-            default:
-            case WorldStatics::Direction::North :
-            dict["Rotation"] = WorldStatics::north();
-            break;
-            case WorldStatics::Direction::South:
-            dict["Rotation"] = WorldStatics::south();
-            break;
-            case WorldStatics::Direction::East :
-            dict["Rotation"] = WorldStatics::east();
-            break;
-            case WorldStatics::Direction::West :
-            dict["Rotation"] =  WorldStatics::west();
-            break;
+            switch(cell_itr.second->get_rotation())
+            {
+                default:
+                case WorldStatics::Direction::North :
+                dict["Rotation"] = WorldStatics::north();
+                break;
+                case WorldStatics::Direction::South:
+                dict["Rotation"] = WorldStatics::south();
+                break;
+                case WorldStatics::Direction::East :
+                dict["Rotation"] = WorldStatics::east();
+                break;
+                case WorldStatics::Direction::West :
+                dict["Rotation"] =  WorldStatics::west();
+                break;
+            }
         }
-
         ret_val.append(dict);
     }
     return ret_val;
@@ -71,15 +93,8 @@ void WorldModule::set_cells(const Array& in_modules)
     {
         Dictionary dict     = in_modules[idx];
         Vector2i pos        = dict["Position"];
-        cells[pos].cell     = dict["Cell"];
-        // direction
-        String dir = dict["Rotation"];
-        if (dir.begins_with("W"))           cells[pos].rotation = WorldStatics::Direction::West;
-        else if (dir.begins_with("E"))      cells[pos].rotation = WorldStatics::Direction::East;
-        else if (dir.begins_with("S"))      cells[pos].rotation = WorldStatics::Direction::South;
-        else                                cells[pos].rotation = WorldStatics::Direction::North;
+        cells[pos]->cell    = dict["Cell"];
     }
-
     // update dimension 
     size = calculate_size();
 }
@@ -97,11 +112,13 @@ void WorldModule::set_probability(const float& in_probability)
 bool WorldModule::contains_cell(Ref<WorldCell> cell) const 
 {
     // Modules are usually no bigger than a 5*5 so it shouldn't take long, this could still be improved upon
-    for (auto itr : cells)
+    for (auto citr : cells)
     {
-        if (itr.second.cell == cell)
-            return true;
+        if(citr.second.is_valid())
+            if (citr.second->cell == cell)
+                return true;
     }
+    return false;
 }
 
 Vector2i WorldModule::calculate_size() const
@@ -126,6 +143,7 @@ std::set<Ref<WorldCell>> WorldModule::get_world_cells() const
     std::set<Ref<WorldCell>> ret_val;
     for (auto itr : cells)
     {
-       ret_val.emplace(itr.second.cell);
+        if(itr.second.is_valid())
+            ret_val.emplace(itr.second->cell);
     }
 }
