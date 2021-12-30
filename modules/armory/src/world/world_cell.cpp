@@ -4,6 +4,7 @@
 // header
 #include "world/world_cell.h"
 #include "world/world_statics.h"
+#include "scene/resources/texture.h"
 
 using namespace armory;
 

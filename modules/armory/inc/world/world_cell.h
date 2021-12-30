@@ -12,7 +12,9 @@
 // godot
 #include "core/object/class_db.h"
 #include "core/io/resource.h"
-#include "scene/resources/texture.h"
+
+// forward declaration
+class Texture2D;
 
 // make sure we do not override
 namespace armory

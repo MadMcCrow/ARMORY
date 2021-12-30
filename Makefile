@@ -13,7 +13,7 @@ BASEDIR := $(realpath $(CURDIR))
 
 # godot/bin/godot.*tools.*
 Godot :
-	@cd godot && scons -j$(THREADS) profile=../custom.py;
+	@cd godot && scons -j$(THREADS) profile="../custom.py" ;
 
 godot: Godot
 

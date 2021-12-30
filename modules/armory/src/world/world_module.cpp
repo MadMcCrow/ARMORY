@@ -3,8 +3,11 @@
 
 // header
 #include "world/world_module.h"
-#include "world/world_statics.h"
+
 #include <core/object/class_db.h>
+#include <scene/resources/texture.h>
+
+#include "world/world_statics.h"
 
 using namespace armory;
 
@@ -93,7 +96,7 @@ void WorldModule::set_cells(const Array& in_modules)
     {
         Dictionary dict     = in_modules[idx];
         Vector2i pos        = dict["Position"];
-        cells[pos]->cell    = dict["Cell"];
+        cells[pos]          = dict["Cell"];
     }
     // update dimension 
     size = calculate_size();

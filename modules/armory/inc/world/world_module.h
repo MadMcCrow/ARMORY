@@ -121,6 +121,8 @@ public :
     /** get this module probability */
     _FORCE_INLINE_ const float& get_p() const {return probability;}
 
+    /** get cell, in a const manner */
+    _FORCE_INLINE_ const std::map<Vector2i, Ref<WorldModuleCell>>& get_cell_map() const {return cells;}
 
 };
         
