@@ -4,7 +4,7 @@
 def can_build(env, platform):
     # build if using editor and have armory module
     is_editor = env["tools"]
-    depend_armory = env.module_check_dependencies("armory-tools", ["armory"])
+    depend_armory = env.module_check_dependencies("armory_tools", ["armory"])
     return is_editor and depend_armory
 
 def configure(env):

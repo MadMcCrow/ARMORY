@@ -1,12 +1,9 @@
 # custom.py for godot binary
 
-from os import listdir
-from os.path import relpath
-
-
 # ARMORY
-custom_modules = relpath('../modules')
-module_armory_shared = "yes"
+custom_modules='../modules'
+module_armory_shared="yes"
+module_armory_tools_shared="yes"
 
 # global options
 platform="linuxbsd"

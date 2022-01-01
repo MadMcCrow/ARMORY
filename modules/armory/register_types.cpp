@@ -10,10 +10,6 @@
 #include "world/world_module.h"
 #include "world/world_statics.h"
 
-
-#ifdef TOOLS_ENABLED
-#endif //TOOLS_ENABLED
-
 // statics holds enums, names, functions, etc for world
 static armory::WorldStatics* world_statics = nullptr;
 

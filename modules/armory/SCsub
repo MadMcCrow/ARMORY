@@ -5,33 +5,6 @@
 # Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
 #
 
-# Get environment
-Import('env')
-
-
-
-# First, create a custom env for the shared library.
-module_env = env.Clone()
-
-
-# generate module name
-try:
-    from os.path import basename
-    ModuleName = basename(__file__)
-except :
-    from os import getcwd
-    ModuleName = basename(getcwd())
-
-src_folder = 'src'
-inc_folder = 'inc'
-
-# get info about current data
-module_shared_name = ("_".join(["module",ModuleName,"shared"]))
-module_llvm_name   = "use_llvm"
-
-module_shared = globals()[module_shared_name] if module_shared_name in globals() else (ARGUMENTS.get('module_armory_shared', 'no')!= 'no')
-module_llvm   = globals()[module_llvm_name]   if module_llvm_name   in globals() else (ARGUMENTS.get('use_llvm', 'no') != 'no')
-
 
 # Find all sources in path
 def find_sources(path : str)  -> list:
@@ -40,8 +13,25 @@ def find_sources(path : str)  -> list:
     for cur, _dirs, files in walk(path):
         glob_sources = glob_sources + ['/'.join([cur,itr]) for itr in files if itr.endswith('cpp')]
     return glob_sources
-	
 
+# folders for headers and sources
+src_folder = 'src'
+inc_folder = 'inc'
+
+# get module name from folder
+import os.path
+module_name = os.path.basename(Dir('.').srcnode().abspath)
+module_shared_name = ("_".join(["module",module_name,"shared"]))
+
+# Scons import
+Import("env")
+Import("env_modules")
+
+# add our sources to the build environment
+module_env = env_modules.Clone()
+module_obj = []
+module_env.add_source_files(module_obj, "*.cpp")
+module_env.add_source_files(module_obj, find_sources(src_folder))
 
 # we need our register type source :
 sources = ["register_types.cpp"]
@@ -49,40 +39,44 @@ sources = ["register_types.cpp"]
 # Don't inject Godot's dependencies into our shared library.
 module_env['LIBS'] = []
 
-# reference our headers in 'inc'
-module_env.Append(CPPPATH=[inc_folder])
-# add sources in 'src'
-sources += (find_sources(src_folder))
 
-# remove duplicates:
-sources = list(set(list(sources)))
+module_is_shared_lib = ARGUMENTS.get(module_shared_name, 'no') == "yes"
 
-# godot is not yet fully compatible with '-std=c++20' so we stay at sooner
-
-if module_llvm :
+if module_is_shared_lib:
+    # Shared lib compilation
+    # reference our headers in 'inc'
+    module_env.Append(CPPPATH=[inc_folder])
+    # cpp 17
     module_env.Append(CXXFLAGS=['-std=c++17','-Wpadded'])
-else :
     module_env.Append(CCFLAGS=['-O3'])
-    module_env.Append(CXXFLAGS=['-std=c++17'])
-
-
-
-# avoid building in the same path to avoid complication
-#VariantDir('../build/armory', './src', duplicate=0)
-VariantDir('build', 'src')
-
-
-try:
-    if module_shared:
-        # Shared lib compilation
-        module_env.Append(CCFLAGS=['-fPIC'])
-        module_env['LIBS'] = []
-        shared_lib = module_env.SharedLibrary(target='#bin/armory', source=sources)
-        shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
-        env.Append(LIBS=[shared_lib_shim])
-        env.Append(LIBPATH=['#bin'])
-except:
+    # Position Independent Code , requiered for shared libs
+    module_env.Append(CCFLAGS=['-fPIC'])
+    module_env['LIBS'] = []
+    # Define the shared library. By default, it would be built in the module's
+    # folder, however it's better to output it into `bin` next to the
+    # Godot binary.
+    shared_lib = module_env.SharedLibrary(target='#bin/'+ module_name, source=sources)
+    shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
+    # Finally, notify the main build environment it now has our shared library
+    # as a new dependency.
+    # LIBPATH and LIBS need to be set on the real "env" (not the clone)
+    # to link the specified libraries to the Godot executable.
+    env.Append(LIBPATH=['#bin'])
+    # SCons wants the name of the library with it custom suffixes
+    # (e.g. ".x11.tools.64") but without the final ".so".
+    shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
+    env.Append(LIBS=[shared_lib_shim])
     pass
 else:
     # Static compilation
+    # reference our headers in 'inc'
+    module_env.Append(CPPPATH=[inc_folder])
+    # godot is not yet fully compatible with '-std=c++20' so we stay at 17
+    module_env.Append(CXXFLAGS=['-std=c++17','-Wpadded'])
+    module_env.Append(CCFLAGS=['-O3'])
+    # add sources to build here
     module_env.add_source_files(env.modules_sources, sources)
+
+
+# output to signal this has been done
+print('\x1b[6;30;42m' + "{} added as {} library".format(module_name, "dynamic" if module_is_shared_lib else "static")  + '\x1b[0m')

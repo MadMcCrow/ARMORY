@@ -2,10 +2,10 @@
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
 #include "world/world_module_preview_plugin.h" // header
-#include "scene/resources/texture.h" // godot
+#include <scene/resources/texture.h> // godot
 
-#include "world/world_module.h"
-#include "world/world_cell.h"
+#include "modules/world/world_module.h"
+#include "modules/world/world_cell.h"
 
 using namespace armory;
 
@@ -67,7 +67,7 @@ Ref<Texture2D> WorldModulePreviewPlugin::generate_from_path(const String &p_path
         auto pos  = cell_itr.first;
         auto cell = cell.second;
         if (!cell.is_valid())
-        {
+        {module_env.Append(CPPPATH=[inc_folder ])
             continue;
         }
 

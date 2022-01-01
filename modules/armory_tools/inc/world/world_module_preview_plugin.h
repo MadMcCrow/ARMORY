@@ -5,11 +5,10 @@
 #define ARMORY_WORLD_MODULE_PREVIEW_PLUGIN_CLASS_H
 // godot class
 #include <scene/main/node.h>
-
+#include <editor/editor_resource_preview.h>
 
 namespace armory
 {
-
 class WorldModulePreviewPlugin : public EditorResourcePreviewGenerator {
 	GDCLASS(WorldModulePreviewPlugin, EditorResourcePreviewGenerator);
 
