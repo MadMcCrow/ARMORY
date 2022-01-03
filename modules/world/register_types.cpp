@@ -38,8 +38,9 @@ void register_world_types()
 
 void unregister_world_types() 
 {
+	// this MIGHT not be requiered.
 	// delete world statics singleton
-	memdelete(world_statics);
+	// memdelete(world_statics);
 
 #if TOOLS_ENABLED
 #endif // TOOLS_ENABLED

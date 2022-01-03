@@ -7,22 +7,26 @@
 #if TOOLS_ENABLED
 
 // godot class
-#include <scene/gui/box_container.h>
+#include <scene/gui/panel_container.h>
+
+// in godot namespace
+class TabContainer;
 
 namespace armory
 {
 
-
 // forward declaration :
 class WorldResource;
+class WorldEditorPluginCell;
+class WorldEditorPluginModule;
 
 /**
  * 	@class WorldEditorPluginWindow
  *	"window" that contains the buttons etc to edit world resources
  */
-class WorldEditorPluginWindow : public VBoxContainer 
+class WorldEditorPluginWindow : public  PanelContainer
 {
-	GDCLASS(WorldEditorPluginWindow, VBoxContainer);
+	GDCLASS(WorldEditorPluginWindow, PanelContainer);
 
 public: 
 
@@ -31,8 +35,15 @@ public:
 	 */
 	void edit(const Ref<WorldResource> &Res);
 
+	WorldEditorPluginWindow();
+	~WorldEditorPluginWindow();
 
-	
+private:
+
+	TabContainer* 				tab_container;
+	WorldEditorPluginCell* 		cell_editor;
+	WorldEditorPluginModule* 	module_editor;
+
 };
 };
 

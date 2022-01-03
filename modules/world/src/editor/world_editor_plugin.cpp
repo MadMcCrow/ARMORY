@@ -3,6 +3,9 @@
 #if TOOLS_ENABLED
 
 #include "editor/world_editor_plugin.h"
+
+#include <editor/editor_scale.h>
+
 #include "editor/world_editor_plugin_window.h"
 
 #include "world_resource.h"
@@ -52,15 +55,15 @@ WorldEditorPlugin::WorldEditorPlugin(EditorNode *p_node)
 {
 	editor = p_node;
 	world_editor = memnew(WorldEditorPluginWindow);
-	//world_editor->set_custom_minimum_size(Size2(0, 300) * EDSCALE);
+	world_editor->set_custom_minimum_size(Size2(0, 300) * EDSCALE);
 	button = editor->add_bottom_panel_item(TTR("WorldEditor"), world_editor);
 	button->hide();
 }
 
 WorldEditorPlugin::~WorldEditorPlugin() 
 {
-	// maybe delete editor
-	memdelete(world_editor);
+	//other plugin editor do not call memdelete on their deletion. 
+	//memdelete(world_editor);
 }
 
 
