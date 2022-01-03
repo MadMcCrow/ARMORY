@@ -2,7 +2,7 @@
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
 // header
-#include "world/world.h"
+#include "world.h"
 
 // godot
 #include <core/object/class_db.h>
@@ -10,7 +10,7 @@
 #include <core/math/color.h>
 
 // world
-#include "world/world_statics.h"
+#include "world_statics.h"
 
 using namespace armory;
 
@@ -63,7 +63,7 @@ void World::set_modules(const Array& in_modules)
     size_t count = in_modules.size();
     for (int idx = 0; idx < count; ++idx)
     {
-        Ref<WorldModule> ref = cast_to<WorldModule>(in_modules.get(idx).get_validated_object());
+        Ref<Module> ref = cast_to<Module>(in_modules.get(idx).get_validated_object());
         modules_set.emplace(ref);
     }
 }
@@ -204,9 +204,9 @@ void World::export_to_image(Ref<Image> out_image, int cell_size)
     }
 }
 
-WorldCellSet World::get_possible_cells() const
+CellSet World::get_possible_cells() const
 {
-    WorldCellSet ret_val;
+    CellSet ret_val;
     for (auto mod_itr : modules_set)
     {
         ret_val.merge(mod_itr->get_world_cells());
@@ -214,7 +214,7 @@ WorldCellSet World::get_possible_cells() const
     return ret_val;
 }
 
-std::set<Ref<WorldModule>> World::get_compatible_modules(const Vector2i& coord) const
+std::set<Ref<Module>> World::get_compatible_modules(const Vector2i& coord) const
 {
     // for each module, find cells that correspond to our cell, and then check neighbours
     const WorldSlot& RefSlot = get(coord);

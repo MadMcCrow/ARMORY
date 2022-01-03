@@ -3,14 +3,16 @@
 
 #ifndef ARMORY_WORLD_MODULE_PREVIEW_PLUGIN_CLASS_H
 #define ARMORY_WORLD_MODULE_PREVIEW_PLUGIN_CLASS_H
+
+#if TOOLS_ENABLED
+
 // godot class
-#include <scene/main/node.h>
 #include <editor/editor_resource_preview.h>
 
 namespace armory
 {
-class WorldModulePreviewPlugin : public EditorResourcePreviewGenerator {
-	GDCLASS(WorldModulePreviewPlugin, EditorResourcePreviewGenerator);
+class ModulePreviewPlugin : public EditorResourcePreviewGenerator {
+	GDCLASS(ModulePreviewPlugin, EditorResourcePreviewGenerator);
 
 	RID viewport;
 	RID viewport_texture;
@@ -27,9 +29,12 @@ public:
 	virtual Ref<Texture2D> generate_from_path(const String &p_path, const Size2 &p_size) const override;
 
 
-	WorldModulePreviewPlugin();
-	~WorldModulePreviewPlugin();
+	ModulePreviewPlugin();
+	~ModulePreviewPlugin();
 };
 };
+
+
+#endif //TOOLS_ENABLED
 
 #endif // ARMORY_WORLD_MODULE_PREVIEW_PLUGIN_CLASS_H

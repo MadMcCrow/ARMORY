@@ -1,4 +1,4 @@
-[gd_resource type="WorldCell" load_steps=2 format=3 uid="uid://c1dqa2j82r3fe"]
+[gd_resource type="Cell" load_steps=2 format=3 uid="uid://c1dqa2j82r3fe"]
 
 [sub_resource type="Image" id="Image_diydk"]
 

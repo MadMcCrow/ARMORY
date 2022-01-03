@@ -2,60 +2,60 @@
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
 // header
-#include "world/world_module.h"
+#include "world_module.h"
 
 #include <core/object/class_db.h>
 #include <scene/resources/texture.h>
 
-#include "world/world_statics.h"
+#include "world_statics.h"
 
 using namespace armory;
 
-void WorldModuleCell::_bind_methods()
+void ModuleCell::_bind_methods()
 {
-    ADD_GROUP("WorldModule", "world_module_");
+    ADD_GROUP("Module", "world_module_");
     // generation system
 	// ADD_SUBGROUP("system", "system_");
     // cells
-    ClassDB::bind_method(D_METHOD("get_cell"), &WorldModuleCell::get_cell);
-    ClassDB::bind_method(D_METHOD("set_cell", "in_cell"), &WorldModuleCell::set_cell);
+    ClassDB::bind_method(D_METHOD("get_cell"), &ModuleCell::get_cell);
+    ClassDB::bind_method(D_METHOD("set_cell", "in_cell"), &ModuleCell::set_cell);
     ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cell"), "set_cell", "get_cell");
 
-    ClassDB::bind_method(D_METHOD("get_rotation"), &WorldModuleCell::get_rotation);
-    ClassDB::bind_method(D_METHOD("set_rotation", "in_rotation"), &WorldModuleCell::set_rotation);
+    ClassDB::bind_method(D_METHOD("get_rotation"), &ModuleCell::get_rotation);
+    ClassDB::bind_method(D_METHOD("set_rotation", "in_rotation"), &ModuleCell::set_rotation);
     ADD_PROPERTY(PropertyInfo(Variant::INT, "cell"), "set_rotation", "get_rotation");
 }
 
-Ref<WorldCell> WorldModuleCell::get_cell() const { return cell;}
-void WorldModuleCell::set_cell(const Ref<WorldCell> & in_cell) {cell = in_cell;}
-int WorldModuleCell::get_rotation() const {return static_cast<int>(rotation);}
-void WorldModuleCell::set_rotation(const int& in_rotation) {rotation = static_cast<WorldStatics::Direction>(in_rotation);}
+Ref<Cell> ModuleCell::get_cell() const { return cell;}
+void ModuleCell::set_cell(const Ref<Cell> & in_cell) {cell = in_cell;}
+int ModuleCell::get_rotation() const {return static_cast<int>(rotation);}
+void ModuleCell::set_rotation(const int& in_rotation) {rotation = static_cast<WorldStatics::Direction>(in_rotation);}
 
-void WorldModule::_bind_methods()
+void Module::_bind_methods()
 {
 		// Properties
-	ADD_GROUP("WorldModule", "world_module_");
+	ADD_GROUP("Module", "world_module_");
     // generation system
 	ADD_SUBGROUP("system", "system_");
     // cells
-    ClassDB::bind_method(D_METHOD("get_cells"), &WorldModule::get_cells);
-    ClassDB::bind_method(D_METHOD("set_cells", "in_cells"), &WorldModule::set_cells);
+    ClassDB::bind_method(D_METHOD("get_cells"), &Module::get_cells);
+    ClassDB::bind_method(D_METHOD("set_cells", "in_cells"), &Module::set_cells);
     ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "cells"), "set_cells", "get_cells");
 
     // proba
-    ClassDB::bind_method(D_METHOD("get_probability"), &WorldModule::get_probability);
-    ClassDB::bind_method(D_METHOD("set_probability", "in_probability"), &WorldModule::set_probability);
+    ClassDB::bind_method(D_METHOD("get_probability"), &Module::get_probability);
+    ClassDB::bind_method(D_METHOD("set_probability", "in_probability"), &Module::set_probability);
     ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "probability"), "set_probability", "get_probability");
 }
 
 
-WorldModule::WorldModule() : Resource()
+Module::Module() : Resource()
 {
 
 }
 
 
-Array WorldModule::get_cells() const
+Array Module::get_cells() const
 {
     Array ret_val;
     for (auto cell_itr : cells)
@@ -88,7 +88,7 @@ Array WorldModule::get_cells() const
     return ret_val;
 }
 
-void WorldModule::set_cells(const Array& in_modules)
+void Module::set_cells(const Array& in_modules)
 {
     size_t sz = in_modules.size();
     cells.clear();
@@ -102,17 +102,17 @@ void WorldModule::set_cells(const Array& in_modules)
     size = calculate_size();
 }
 
-float WorldModule::get_probability() const
+float Module::get_probability() const
 {
     return probability;
 }
 
-void WorldModule::set_probability(const float& in_probability)
+void Module::set_probability(const float& in_probability)
 {
     probability = in_probability;
 }
 
-bool WorldModule::contains_cell(Ref<WorldCell> cell) const 
+bool Module::contains_cell(Ref<Cell> cell) const 
 {
     // Modules are usually no bigger than a 5*5 so it shouldn't take long, this could still be improved upon
     for (auto citr : cells)
@@ -124,7 +124,7 @@ bool WorldModule::contains_cell(Ref<WorldCell> cell) const
     return false;
 }
 
-Vector2i WorldModule::calculate_size() const
+Vector2i Module::calculate_size() const
 {
     // Vector2i are sorted first by x, then by Y.
     // thus biggest X is last key. you still have to search for biggest Y.
@@ -141,9 +141,9 @@ Vector2i WorldModule::calculate_size() const
 }
 
 
-std::set<Ref<WorldCell>> WorldModule::get_world_cells() const
+std::set<Ref<Cell>> Module::get_world_cells() const
 {
-    std::set<Ref<WorldCell>> ret_val;
+    std::set<Ref<Cell>> ret_val;
     for (auto itr : cells)
     {
         if(itr.second.is_valid())

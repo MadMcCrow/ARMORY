@@ -11,12 +11,7 @@
 		{
 			"name": "Godot",
 			"path": "./godot"
-		},
-		{
-			"name": "Extensions",
-			"path": "./extensions",
 		}
-
 	],
 	"settings": {
 		"files.associations": {

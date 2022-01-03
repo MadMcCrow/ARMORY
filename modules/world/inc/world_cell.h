@@ -24,14 +24,14 @@ namespace armory
  *  @class Cell
  *  Describe a world cell type with all the necessary info layed on top
  */
-class WorldCell :  public Resource
+class Cell :  public Resource
 {
-    GDCLASS(WorldCell, Resource);
+    GDCLASS(Cell, Resource);
     static void _bind_methods();
 
 public:
 
-    WorldCell();
+    Cell();
 
 private:
 
@@ -59,16 +59,16 @@ public:
 };
 
 /** struct to allow sorting of set */
-struct ltRefWorldCell
+struct ltRefCell
 {
-    bool operator()(const Ref<WorldCell> &T1, const Ref<WorldCell> &T2) const
+    bool operator()(const Ref<Cell> &T1, const Ref<Cell> &T2) const
     {
         return (uintptr_t(T1.ptr()) <uintptr_t(T2.ptr()));
     }
 };
 
 
-typedef std::set<Ref<WorldCell>,ltRefWorldCell> WorldCellSet;
+typedef std::set<Ref<Cell>,ltRefCell> CellSet;
 
 
 }; // namespace armory

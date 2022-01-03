@@ -3,18 +3,21 @@
 
 def can_build(env, platform):
     return  True
-    # env.module_check_dependencies("armory", ["some dependancy"])
 
 def configure(env):
     pass
 
 
 def get_doc_classes():
-    return [
+    base_classes = [
         "World",
-        "WorldCell",
-        "WorldModule",
+        "Cell",
+        "Module",
     ]
+    editor_classes = [
+        "ModulePreviewPlugin"
+    ]
+    return base_classes
 
 
 def get_doc_path():

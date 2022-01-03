@@ -2,7 +2,7 @@
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
 // header
-#include "world/world_statics.h"
+#include "world_statics.h"
 
 using namespace armory;
 

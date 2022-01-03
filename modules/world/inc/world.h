@@ -16,8 +16,8 @@
 #include "core/object/ref_counted.h"
 
 // world
-#include "world/world_cell.h"
-#include "world/world_module.h"
+#include "world_cell.h"
+#include "world_module.h"
 
 
 namespace armory
@@ -44,11 +44,11 @@ public:
     {
       
         /** the various possibilities for this cell */
-        WorldCellSet possibilities;
+        CellSet possibilities;
 
         bool is_collapsed() const {return possibilities.size() <= 1;}
 
-        WorldSlot(WorldCellSet in_possibilities)
+        WorldSlot(CellSet in_possibilities)
         :  possibilities(in_possibilities)
         {
            
@@ -59,9 +59,9 @@ public:
 
     
 
-        Ref<WorldCell> get_collapsed() const 
+        Ref<Cell> get_collapsed() const 
         {
-            return is_collapsed() ? *possibilities.begin() : Ref<WorldCell>();
+            return is_collapsed() ? *possibilities.begin() : Ref<Cell>();
         }
     };
 
@@ -90,7 +90,7 @@ private:
      *          @see get_modules and @see set_modules
      *  @see cell_vector
      */
-	std::set<Ref<WorldModule>> modules_set;
+	std::set<Ref<Module>> modules_set;
 
 
 protected:
@@ -124,10 +124,10 @@ public:
 private:
 
     /** get all possible cells this world can produce */
-	WorldCellSet get_possible_cells() const;
+	CellSet get_possible_cells() const;
     
     /** get all modules compatible with a given slot */
-    std::set<Ref<WorldModule>> get_compatible_modules(const Vector2i& coord) const;
+    std::set<Ref<Module>> get_compatible_modules(const Vector2i& coord) const;
 
 };
 }; // namespace armory

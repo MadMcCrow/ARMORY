@@ -1,31 +1,33 @@
 /* Copyright © Noé Perard-Gayot 2021. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
+#if TOOLS_ENABLED
 
-#include "world/world_module_preview_plugin.h" // header
+#include "editor/world_module_preview_plugin.h" // header
+#include <editor/plugins/editor_preview_plugins.h>
 #include <scene/resources/texture.h> // godot
 
-#include "modules/world/world_module.h"
-#include "modules/world/world_cell.h"
+#include "world_module.h"
+#include "world_cell.h"
 
 using namespace armory;
 
-void WorldModulePreviewPlugin::_generate_frame_started()
+void ModulePreviewPlugin::_generate_frame_started()
 {
 	RS::get_singleton()->viewport_set_update_mode(viewport, RS::VIEWPORT_UPDATE_ONCE); //once used for capture
-	RS::get_singleton()->request_frame_drawn_callback(callable_mp(const_cast<WorldModulePreviewPlugin *>(this), &WorldModulePreviewPlugin::_preview_done));
+	RS::get_singleton()->request_frame_drawn_callback(callable_mp(const_cast<ModulePreviewPlugin *>(this), &ModulePreviewPlugin::_preview_done));
 }
 
-void WorldModulePreviewPlugin::_preview_done()
+void ModulePreviewPlugin::_preview_done()
 {
 	preview_done.post();
 }
 
-bool WorldModulePreviewPlugin::handles(const String &p_type) const
+bool ModulePreviewPlugin::handles(const String &p_type) const
 {
-   return ClassDB::is_parent_class(p_type, "WorldModule");
+   return ClassDB::is_parent_class(p_type, "Module");
 }
 
-Ref<Texture2D> generate(const RES &p_from, const Size2 &p_size) const
+Ref<Texture2D> ModulePreviewPlugin::generate(const RES &p_from, const Size2 &p_size) const
 {
 	String path = p_from->get_path();
 	if (!FileAccess::exists(path)) {
@@ -35,11 +37,11 @@ Ref<Texture2D> generate(const RES &p_from, const Size2 &p_size) const
 
 }
 
-Ref<Texture2D> WorldModulePreviewPlugin::generate_from_path(const String &p_path, const Size2 &p_size) const
+Ref<Texture2D> ModulePreviewPlugin::generate_from_path(const String &p_path, const Size2 &p_size) const
 {
     RES res = ResourceLoader::load(p_path);
-	Ref<WorldModule> sampled_module;
-	if (res->is_class("WorldModule")) {
+	Ref<Module> sampled_module;
+	if (res->is_class("Module")) {
 		sampled_module = res->duplicate();
 	}
     else
@@ -53,8 +55,8 @@ Ref<Texture2D> WorldModulePreviewPlugin::generate_from_path(const String &p_path
     }
 
     sampled_module->calculate_size();
-	mod_size = sampled_module->get_size();
-    mod_map  = sampled_module->get_cell_map();
+	const auto mod_size = sampled_module->get_size();
+    const auto mod_map  = sampled_module->get_cell_map();
 
     // calculate final cell size based on module size. there might be issues
     Size2 cell_size(p_size.x / mod_size.x, p_size.y / mod_size.y);
@@ -65,13 +67,18 @@ Ref<Texture2D> WorldModulePreviewPlugin::generate_from_path(const String &p_path
     for (auto cell_itr : mod_map)
     {
         auto pos  = cell_itr.first;
-        auto cell = cell.second;
+        auto cell = cell_itr.second;
         if (!cell.is_valid())
-        {module_env.Append(CPPPATH=[inc_folder ])
+        {
             continue;
         }
 
-        auto cell_tex = cell->get_tile_2d();
+		if (!cell->get_cell().is_valid())
+		{
+			continue;
+		}
+
+        auto cell_tex = cell->get_cell()->get_tile_2d();
         if (!cell_tex.is_valid())
         {
             continue;
@@ -81,7 +88,7 @@ Ref<Texture2D> WorldModulePreviewPlugin::generate_from_path(const String &p_path
         cell_tex->draw_rect(canvas_item, draw_rect, false);
     }
 
-	RS::get_singleton()->connect(SNAME("frame_pre_draw"), callable_mp(const_cast<WorldModulePreviewPlugin *>(this), &WorldModulePreviewPlugin::_generate_frame_started), Vector<Variant>(), Object::CONNECT_ONESHOT);
+	RS::get_singleton()->connect(SNAME("frame_pre_draw"), callable_mp(const_cast<ModulePreviewPlugin *>(this), &ModulePreviewPlugin::_generate_frame_started), Vector<Variant>(), Object::CONNECT_ONESHOT);
 	preview_done.wait();
 	RS::get_singleton()->canvas_item_clear(canvas_item);
 
@@ -107,7 +114,7 @@ Ref<Texture2D> WorldModulePreviewPlugin::generate_from_path(const String &p_path
 	return ptex;
 }
 
-WorldModulePreviewPlugin::WorldModulePreviewPlugin()
+ModulePreviewPlugin::ModulePreviewPlugin()
 {
 	viewport = RS::get_singleton()->viewport_create();
 	RS::get_singleton()->viewport_set_update_mode(viewport, RS::VIEWPORT_UPDATE_DISABLED);
@@ -122,9 +129,11 @@ WorldModulePreviewPlugin::WorldModulePreviewPlugin()
 	RS::get_singleton()->canvas_item_set_parent(canvas_item, canvas);
 }
 
-WorldModulePreviewPlugin::~WorldModulePreviewPlugin()
+ModulePreviewPlugin::~ModulePreviewPlugin()
 {
     RS::get_singleton()->free(canvas_item);
 	RS::get_singleton()->free(canvas);
 	RS::get_singleton()->free(viewport);
 }
+
+#endif // TOOLS_ENABLED

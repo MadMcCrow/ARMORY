@@ -4,34 +4,35 @@
 # Copyright © Noé Perard-Gayot 2021.                                                                                        #
 # Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
 #
-
-
-
-# folders for headers and sources
-src_folder = 'src'
-inc_folder = 'inc'
-
-# get module name from folder
-import os.path
-module_name = os.path.basename(Dir('.').srcnode().abspath)
-module_shared_name = ("_".join(["module",module_name,"shared"]))
+import os
 
 # Scons import
 Import("env")
 Import("env_modules")
 
+# folders for headers and sources
+src_folder = 'src'
+inc_folder = 'inc'
+module_name = 'armory_world'
+module_shared_name = 'module_armory_world_shared'
+
+# Build it all as a library
+env.module_armory_world_sources = []
+lib = env.add_library(module_name, env.module_armory_world_sources)
+env.Prepend(LIBS=[lib])
+
 # add our sources to the build environment
 module_env = env_modules.Clone()
-module_obj = Glob(src_folder + '/*.cpp')
-module_env.add_source_files(module_obj, "*.cpp")
-env.modules_sources += module_obj
+#module_obj = []
+#module_env.add_source_files(module_obj, "*.cpp")
 
-# we need our register type source :
-sources = ["register_types.cpp"]
+# get all source files
+sources = [os.path.join(p, n) for p, s, f in os.walk(src_folder) for n in f if n.endswith('cpp')]
+sources += ["register_types.cpp"]
+print (sources)
 
 # Don't inject Godot's dependencies into our shared library.
 module_env['LIBS'] = []
-
 
 module_is_shared_lib = ARGUMENTS.get(module_shared_name, 'no') == "yes"
 
@@ -69,7 +70,3 @@ else:
     module_env.Append(CCFLAGS=['-O3'])
     # add sources to build here
     module_env.add_source_files(env.modules_sources, sources)
-
-
-# output to signal this has been done
-print('\x1b[6;30;42m' + "{} added as {} library".format(module_name, "dynamic" if module_is_shared_lib else "static")  + '\x1b[0m')

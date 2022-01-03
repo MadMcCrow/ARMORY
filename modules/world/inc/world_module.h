@@ -22,17 +22,17 @@ namespace armory
 
 
 /**
- *  @class WorldModuleCell
- *  a cell as defined for @see WorldModule
+ *  @class ModuleCell
+ *  a cell as defined for @see Module
  */
-class WorldModuleCell :  public RefCounted
+class ModuleCell :  public RefCounted
 {
-    GDCLASS(WorldModuleCell, RefCounted);
+    GDCLASS(ModuleCell, RefCounted);
 
 public:
 
     // Cell to use
-    Ref<WorldCell> cell;
+    Ref<Cell> cell;
         
     // North facing rotation [North, South, East, West, None]
     WorldStatics::Direction rotation;
@@ -40,8 +40,8 @@ public:
     // this is to make sure rotation shows as enum in the editor
     static void _bind_methods();
 
-    Ref<WorldCell> get_cell() const;
-    void set_cell(const Ref<WorldCell>& in_cell);
+    Ref<Cell> get_cell() const;
+    void set_cell(const Ref<Cell>& in_cell);
 
     int get_rotation() const;
     void set_rotation(const int& in_rotation);
@@ -49,14 +49,14 @@ public:
 };
 
 /**
- * 	@class WorldModule
+ * 	@class Module
  *	contains the definition of a WFC module
  *  A module has a name (acting as a key), and a pattern.
  *  the pattern is a small subset of tiles
  */
-class WorldModule :  public Resource
+class Module :  public Resource
 {
-    GDCLASS(WorldModule, Resource);
+    GDCLASS(Module, Resource);
 
 
     static void _bind_methods();
@@ -64,7 +64,7 @@ class WorldModule :  public Resource
 
 public:
 
-    WorldModule();
+    Module();
 
 private:
 
@@ -73,7 +73,7 @@ private:
     /**
      * cells contained in this module
      */
-    std::map<Vector2i, Ref<WorldModuleCell>> cells;
+    std::map<Vector2i, Ref<ModuleCell>> cells;
 
     /**
      *  dimension of this module
@@ -107,7 +107,7 @@ protected:
 public :
 
     /** Check if contains a certain cell, used for filtering out modules before testing them for compatibility */
-    bool contains_cell(Ref<WorldCell> cell) const;
+    bool contains_cell(Ref<Cell> cell) const;
 
     /** calculate size of the module - slow but always exact */ 
     Vector2i calculate_size() const;
@@ -116,13 +116,13 @@ public :
     const Vector2i& get_size() const {return size;}
 
     /** get the cells contained in this */
-    std::set<Ref<WorldCell>> get_world_cells() const;
+    std::set<Ref<Cell>> get_world_cells() const;
 
     /** get this module probability */
     _FORCE_INLINE_ const float& get_p() const {return probability;}
 
     /** get cell, in a const manner */
-    _FORCE_INLINE_ const std::map<Vector2i, Ref<WorldModuleCell>>& get_cell_map() const {return cells;}
+    _FORCE_INLINE_ const std::map<Vector2i, Ref<ModuleCell>>& get_cell_map() const {return cells;}
 
 };
         
