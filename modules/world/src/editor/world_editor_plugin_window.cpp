@@ -47,8 +47,13 @@ WorldEditorPluginWindow::WorldEditorPluginWindow() : PanelContainer()
 	//tab_container->connect("tab_selected", callable_mp(this, &InputEventConfigurationDialog::_tab_selected));
 	add_child(tab_container);
 
-    cell_editor     = memnew(WorldEditorPluginCell);
-    module_editor   = memnew(WorldEditorPluginModule);
+    cell_editor = memnew(WorldEditorPluginCell);
+    cell_editor->set_name(TTR("Cell"));
+    cell_editor->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+
+    module_editor = memnew(WorldEditorPluginModule);
+    module_editor->set_name(TTR("Module"));
+    module_editor->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 
     tab_container->add_child(module_editor);
     tab_container->add_child(cell_editor);
