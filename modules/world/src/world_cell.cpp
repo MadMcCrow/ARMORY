@@ -3,8 +3,12 @@
 
 // header
 #include "world_cell.h"
+
+// godot
+#include <scene/resources/texture.h>
+
+// armory
 #include "world_statics.h"
-#include "scene/resources/texture.h"
 
 using namespace armory;
 
@@ -27,7 +31,7 @@ void Cell::_bind_methods()
 }
 
 
-Cell::Cell() : Resource()
+Cell::Cell() : WorldResource()
 {
 
 }

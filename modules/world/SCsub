@@ -29,7 +29,6 @@ module_env = env_modules.Clone()
 # get all source files
 sources = [os.path.join(p, n) for p, s, f in os.walk(src_folder) for n in f if n.endswith('cpp')]
 sources += ["register_types.cpp"]
-print (sources)
 
 # Don't inject Godot's dependencies into our shared library.
 module_env['LIBS'] = []

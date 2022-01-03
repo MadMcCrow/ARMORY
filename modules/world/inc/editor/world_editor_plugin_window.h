@@ -7,13 +7,31 @@
 #if TOOLS_ENABLED
 
 // godot class
-#include <editor/editor_resource_preview.h>
+#include <scene/gui/box_container.h>
 
 namespace armory
 {
+
+
+// forward declaration :
+class WorldResource;
+
+/**
+ * 	@class WorldEditorPluginWindow
+ *	"window" that contains the buttons etc to edit world resources
+ */
 class WorldEditorPluginWindow : public VBoxContainer 
 {
 	GDCLASS(WorldEditorPluginWindow, VBoxContainer);
+
+public: 
+
+	/**
+	 * 	Edit said world resource :
+	 */
+	void edit(const Ref<WorldResource> &Res);
+
+
 	
 };
 };

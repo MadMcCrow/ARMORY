@@ -9,9 +9,8 @@
 #include <cstdint>
 #include <vector>
 
-// godot
-#include "core/object/class_db.h"
-#include "core/io/resource.h"
+// armory
+#include "world_resource.h"
 
 // forward declaration
 class Texture2D;
@@ -24,9 +23,9 @@ namespace armory
  *  @class Cell
  *  Describe a world cell type with all the necessary info layed on top
  */
-class Cell :  public Resource
+class Cell :  public WorldResource
 {
-    GDCLASS(Cell, Resource);
+    GDCLASS(Cell, WorldResource);
     static void _bind_methods();
 
 public:

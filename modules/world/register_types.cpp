@@ -11,17 +11,13 @@
 #include "world_statics.h"
 
 #if TOOLS_ENABLED
-#include "editor/world_module_preview_plugin.h"
 #include "editor/world_editor_plugin.h"
+#include "editor/world_editor_plugin_window.h"
 #endif //TOOLS_ENABLED
 
 // statics holds enums, names, functions, etc for world
 static armory::WorldStatics* world_statics = nullptr;
 
-
-#if TOOLS_ENABLED
-static armory::ModulePreviewPlugin* ModulePreview = nullptr;
-#endif // TOOLS_ENABLED
 
 void register_world_types() 
 {
@@ -30,10 +26,8 @@ void register_world_types()
 	ClassDB::register_class<armory::Module>();
 	ClassDB::register_class<armory::WorldStatics>();
 #if TOOLS_ENABLED
-	//ClassDB::register_class<armory::ModulePreviewPlugin>();
+	ClassDB::register_class<armory::WorldEditorPluginWindow>();
 	EditorPlugins::add_by_type<armory::WorldEditorPlugin>();
-	ModulePreview = memnew(armory::ModulePreviewPlugin);
-	EditorResourcePreview::get_singleton()->add_preview_generator(Ref<armory::ModulePreviewPlugin>(ModulePreview));
 #endif // TOOLS_ENABLED
 
 	// create world statics singleton
@@ -48,7 +42,6 @@ void unregister_world_types()
 	memdelete(world_statics);
 
 #if TOOLS_ENABLED
-	memdelete(ModulePreview);
 #endif // TOOLS_ENABLED
 }
 

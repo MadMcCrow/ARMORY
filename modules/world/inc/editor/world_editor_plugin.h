@@ -12,11 +12,21 @@
 namespace armory
 {
 
+// forward declaration :
+class WorldEditorPluginWindow;
+
+
+/**
+ * 	@class WorldEditorPlugin
+ *	plugin allowing to edit world resources "easily"
+ */
 class WorldEditorPlugin : public EditorPlugin
 {
 	GDCLASS(WorldEditorPlugin, EditorPlugin);
 
 	EditorNode *editor;
+	WorldEditorPluginWindow* world_editor;
+	Button *button;
 
 public:
 	virtual String get_name() const override { return "Armory World"; }

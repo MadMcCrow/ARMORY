@@ -8,10 +8,9 @@
 #include <cstdint> 
 #include <random>
 
-
 // godot
-#include "core/object/class_db.h"
-#include "core/object/ref_counted.h"
+#include <core/object/class_db.h>
+#include <core/object/ref_counted.h>
 
 namespace armory
 {
@@ -38,17 +37,6 @@ private:
     std::mt19937 random_gen;
 
 public:
-
-
-    // String Names for coordinates :
-
-    static const StringName north();
-    static const StringName south();
-    static const StringName east();
-    static const StringName west();
-    static const StringName north_south();
-    static const StringName west_east();
-    static const StringName all_directions();
 
     enum Direction : uint8_t
     {

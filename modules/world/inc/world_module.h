@@ -8,11 +8,8 @@
 #include <map>
 #include <set>
 
-// godot
-#include "core/object/class_db.h"
-#include "core/io/resource.h"
-
 //armory
+#include "world_resource.h"
 #include "world_statics.h"
 #include "world_cell.h"
 
@@ -20,43 +17,15 @@
 namespace armory
 {
 
-
-/**
- *  @class ModuleCell
- *  a cell as defined for @see Module
- */
-class ModuleCell :  public RefCounted
-{
-    GDCLASS(ModuleCell, RefCounted);
-
-public:
-
-    // Cell to use
-    Ref<Cell> cell;
-        
-    // North facing rotation [North, South, East, West, None]
-    WorldStatics::Direction rotation;
-
-    // this is to make sure rotation shows as enum in the editor
-    static void _bind_methods();
-
-    Ref<Cell> get_cell() const;
-    void set_cell(const Ref<Cell>& in_cell);
-
-    int get_rotation() const;
-    void set_rotation(const int& in_rotation);
-    
-};
-
 /**
  * 	@class Module
  *	contains the definition of a WFC module
  *  A module has a name (acting as a key), and a pattern.
  *  the pattern is a small subset of tiles
  */
-class Module :  public Resource
+class Module :  public WorldResource
 {
-    GDCLASS(Module, Resource);
+    GDCLASS(Module, WorldResource);
 
 
     static void _bind_methods();
@@ -68,12 +37,20 @@ public:
 
 private:
 
+    // simply append a rotation
+    struct ModuleCell : public Ref<Cell>
+    {
+        int rotation : 2;
+
+        ModuleCell() : Ref<Cell>(), rotation(0) {}
+        ModuleCell(const Ref<Cell>& in_cell, int in_rotation = 0): Ref<Cell>(in_cell), rotation(in_rotation % 4) {}
+    };
 
 
     /**
      * cells contained in this module
      */
-    std::map<Vector2i, Ref<ModuleCell>> cells;
+    std::map<Vector2i,ModuleCell> cells;
 
     /**
      *  dimension of this module
@@ -88,7 +65,6 @@ private:
     float probability;
 
 protected:
-
 
     /**
      *  setter and getter for modules
@@ -122,7 +98,7 @@ public :
     _FORCE_INLINE_ const float& get_p() const {return probability;}
 
     /** get cell, in a const manner */
-    _FORCE_INLINE_ const std::map<Vector2i, Ref<ModuleCell>>& get_cell_map() const {return cells;}
+    _FORCE_INLINE_ const std::map<Vector2i, ModuleCell>& get_cell_map() const {return cells;}
 
 };
         

@@ -4,32 +4,15 @@
 // header
 #include "world_module.h"
 
+// godot
 #include <core/object/class_db.h>
 #include <scene/resources/texture.h>
 
+// armory
 #include "world_statics.h"
 
 using namespace armory;
 
-void ModuleCell::_bind_methods()
-{
-    ADD_GROUP("Module", "world_module_");
-    // generation system
-	// ADD_SUBGROUP("system", "system_");
-    // cells
-    ClassDB::bind_method(D_METHOD("get_cell"), &ModuleCell::get_cell);
-    ClassDB::bind_method(D_METHOD("set_cell", "in_cell"), &ModuleCell::set_cell);
-    ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cell"), "set_cell", "get_cell");
-
-    ClassDB::bind_method(D_METHOD("get_rotation"), &ModuleCell::get_rotation);
-    ClassDB::bind_method(D_METHOD("set_rotation", "in_rotation"), &ModuleCell::set_rotation);
-    ADD_PROPERTY(PropertyInfo(Variant::INT, "cell"), "set_rotation", "get_rotation");
-}
-
-Ref<Cell> ModuleCell::get_cell() const { return cell;}
-void ModuleCell::set_cell(const Ref<Cell> & in_cell) {cell = in_cell;}
-int ModuleCell::get_rotation() const {return static_cast<int>(rotation);}
-void ModuleCell::set_rotation(const int& in_rotation) {rotation = static_cast<WorldStatics::Direction>(in_rotation);}
 
 void Module::_bind_methods()
 {
@@ -49,11 +32,9 @@ void Module::_bind_methods()
 }
 
 
-Module::Module() : Resource()
+Module::Module() : WorldResource()
 {
-
 }
-
 
 Array Module::get_cells() const
 {
@@ -62,27 +43,9 @@ Array Module::get_cells() const
     {
         // create dictionnary from struct:
         Dictionary dict;
-        dict["Cell"]        = cell_itr.second;
         dict["Position"]    = cell_itr.first;
-        if(cell_itr.second.is_valid())
-        {
-            switch(cell_itr.second->get_rotation())
-            {
-                default:
-                case WorldStatics::Direction::North :
-                dict["Rotation"] = WorldStatics::north();
-                break;
-                case WorldStatics::Direction::South:
-                dict["Rotation"] = WorldStatics::south();
-                break;
-                case WorldStatics::Direction::East :
-                dict["Rotation"] = WorldStatics::east();
-                break;
-                case WorldStatics::Direction::West :
-                dict["Rotation"] =  WorldStatics::west();
-                break;
-            }
-        }
+        dict["Rotation"]    = cell_itr.second.rotation * 90;
+        dict["Cell"]        = cell_itr.second;
         ret_val.append(dict);
     }
     return ret_val;
@@ -96,7 +59,7 @@ void Module::set_cells(const Array& in_modules)
     {
         Dictionary dict     = in_modules[idx];
         Vector2i pos        = dict["Position"];
-        cells[pos]          = dict["Cell"];
+        cells[pos]          = ModuleCell(Ref<Cell>(dict["Cell"]), int(dict["Rotation"]) / 90);
     }
     // update dimension 
     size = calculate_size();
@@ -117,9 +80,8 @@ bool Module::contains_cell(Ref<Cell> cell) const
     // Modules are usually no bigger than a 5*5 so it shouldn't take long, this could still be improved upon
     for (auto citr : cells)
     {
-        if(citr.second.is_valid())
-            if (citr.second->cell == cell)
-                return true;
+       if (Ref<Cell>(citr.second) == cell)
+            return true;
     }
     return false;
 }
@@ -147,6 +109,6 @@ std::set<Ref<Cell>> Module::get_world_cells() const
     for (auto itr : cells)
     {
         if(itr.second.is_valid())
-            ret_val.emplace(itr.second->cell);
+            ret_val.emplace(itr.second);
     }
 }
