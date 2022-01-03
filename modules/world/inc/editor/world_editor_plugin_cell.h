@@ -9,11 +9,15 @@
 // godot class
 #include <scene/gui/panel_container.h>
 
+
+// godot forward declaration
+class EditorInspector;
+
 namespace armory
 {
 
 
-// forward declaration :
+// armory forward declaration :
 class Cell;
 
 /**
@@ -34,6 +38,9 @@ public:
 	WorldEditorPluginCell();
 	~WorldEditorPluginCell();
 
+private:
+
+	EditorInspector * cell_inspector;
 };
 };
 

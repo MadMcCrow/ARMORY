@@ -42,7 +42,7 @@ WorldEditorPluginWindow::WorldEditorPluginWindow() : PanelContainer()
 
     tab_container = memnew(TabContainer);
 	tab_container->set_tab_alignment(TabContainer::ALIGNMENT_LEFT);
-	tab_container->set_use_hidden_tabs_for_min_size(true);
+	//tab_container->set_use_hidden_tabs_for_min_size(true);
 	tab_container->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	//tab_container->connect("tab_selected", callable_mp(this, &InputEventConfigurationDialog::_tab_selected));
 	add_child(tab_container);
@@ -50,10 +50,12 @@ WorldEditorPluginWindow::WorldEditorPluginWindow() : PanelContainer()
     cell_editor = memnew(WorldEditorPluginCell);
     cell_editor->set_name(TTR("Cell"));
     cell_editor->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+    cell_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 
     module_editor = memnew(WorldEditorPluginModule);
     module_editor->set_name(TTR("Module"));
     module_editor->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+    module_editor->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 
     tab_container->add_child(module_editor);
     tab_container->add_child(cell_editor);
