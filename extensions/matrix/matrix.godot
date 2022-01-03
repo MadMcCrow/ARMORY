@@ -1,5 +1,0 @@
-; Add This to your Project settings
-
-[native_extensions]
-
-paths=["res://matrix.gdextension"]

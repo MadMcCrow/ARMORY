@@ -11,12 +11,7 @@
 		{
 			"name": "Godot",
 			"path": "./godot"
-		},
-		{
-			"name": "Extensions",
-			"path": "./extensions",
 		}
-
 	],
 	"settings": {
 		"files.associations": {
@@ -86,7 +81,20 @@
 			"thread": "cpp",
 			"typeindex": "cpp",
 			"typeinfo": "cpp",
-			"type_traits": "cpp"
+			"type_traits": "cpp",
+			"*.ipp": "cpp",
+			"variant": "cpp",
+			"span": "cpp",
+			"cwchar": "cpp",
+			"any": "cpp",
+			"strstream": "cpp",
+			"codecvt": "cpp",
+			"complex": "cpp",
+			"exception": "cpp",
+			"numbers": "cpp",
+			"semaphore": "cpp",
+			"cfenv": "cpp",
+			"*.inc": "cpp"
 		},
 		"files.exclude": {
 			"**/__pycache__/**": true,
