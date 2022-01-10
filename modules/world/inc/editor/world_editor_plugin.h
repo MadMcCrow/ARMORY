@@ -13,7 +13,7 @@ namespace armory
 {
 
 // forward declaration :
-class WorldEditorPluginWindow;
+class WorldEditorPluginBase;
 
 
 /**
@@ -25,7 +25,7 @@ class WorldEditorPlugin : public EditorPlugin
 	GDCLASS(WorldEditorPlugin, EditorPlugin);
 
 	EditorNode *editor;
-	WorldEditorPluginWindow* world_editor;
+	WorldEditorPluginBase* world_editor;
 	Button *button;
 
 public:

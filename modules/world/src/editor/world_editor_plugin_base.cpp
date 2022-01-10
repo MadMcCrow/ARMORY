@@ -2,7 +2,7 @@
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 #if TOOLS_ENABLED
 
-#include "editor/world_editor_plugin_window.h"
+#include "editor/world_editor_plugin_base.h"
 
 #include <scene/gui/tab_container.h>
 
@@ -14,7 +14,7 @@
 
 using namespace armory;
 
-void WorldEditorPluginWindow::edit(const Ref<WorldResource> &Res)
+void WorldEditorPluginBase::edit(const Ref<WorldResource> &Res)
 {
     if (!tab_container)
         return;
@@ -37,7 +37,7 @@ void WorldEditorPluginWindow::edit(const Ref<WorldResource> &Res)
 }
 
 
-WorldEditorPluginWindow::WorldEditorPluginWindow() : PanelContainer()
+WorldEditorPluginBase::WorldEditorPluginBase() : PanelContainer()
 {
 
     tab_container = memnew(TabContainer);
@@ -61,7 +61,45 @@ WorldEditorPluginWindow::WorldEditorPluginWindow() : PanelContainer()
     tab_container->add_child(cell_editor);
 }
 
-WorldEditorPluginWindow::~WorldEditorPluginWindow()
+void WorldEditorPluginBase::gui_input(const Ref<InputEvent> &p_event)
+{
+    PanelContainer::gui_input(p_event);
+    if (p_event.is_valid())
+    {
+        if (p_event->is_action("ui_accept"))
+        {
+            input_validate();
+        }
+    }
+}
+
+void WorldEditorPluginBase::unhandled_key_input(const Ref<InputEvent> &p_event) 
+{
+    PanelContainer::unhandled_key_input(p_event);
+    if (p_event.is_valid())
+    {
+        if (p_event->is_action("ui_accept"))
+        {
+            input_validate();
+        }
+    }
+}
+
+
+void WorldEditorPluginBase::input_validate()
+{
+    if (tab_container)
+    {
+        auto active_node = tab_container->get_child(tab_container->get_current_tab());
+        if (auto cell_ed = Object::cast_to<WorldEditorPluginCell>(active_node))
+        {
+            cell_ed->apply_changes();
+        }
+    }
+}
+
+
+WorldEditorPluginBase::~WorldEditorPluginBase()
 {
 }
 

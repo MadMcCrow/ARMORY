@@ -12,7 +12,7 @@
 
 #if TOOLS_ENABLED
 #include "editor/world_editor_plugin.h"
-#include "editor/world_editor_plugin_window.h"
+#include "editor/world_editor_plugin_base.h"
 #endif //TOOLS_ENABLED
 
 // statics holds enums, names, functions, etc for world
@@ -26,7 +26,6 @@ void register_world_types()
 	ClassDB::register_class<armory::Module>();
 	ClassDB::register_class<armory::WorldStatics>();
 #if TOOLS_ENABLED
-	ClassDB::register_class<armory::WorldEditorPluginWindow>();
 	EditorPlugins::add_by_type<armory::WorldEditorPlugin>();
 #endif // TOOLS_ENABLED
 

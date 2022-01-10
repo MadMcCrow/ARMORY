@@ -7,11 +7,14 @@
 #if TOOLS_ENABLED
 
 // godot class
-#include <scene/gui/panel_container.h>
+#include <scene/gui/scroll_container.h>
+#include <core/templates/list.h>
 
 
 // godot forward declaration
 class EditorInspector;
+class EditorProperty;
+class VBoxContainer;
 
 namespace armory
 {
@@ -21,12 +24,12 @@ namespace armory
 class Cell;
 
 /**
- * 	@class WorldEditorPluginWindow
- *	"window" that contains the buttons etc to edit world resources
+ * 	@class WorldEditorPluginCell
+ *	editor for cells 
  */
-class WorldEditorPluginCell : public  PanelContainer
+class WorldEditorPluginCell : public  ScrollContainer
 {
-	GDCLASS(WorldEditorPluginCell, PanelContainer);
+	GDCLASS(WorldEditorPluginCell, ScrollContainer);
 
 public: 
 
@@ -38,9 +41,17 @@ public:
 	WorldEditorPluginCell();
 	~WorldEditorPluginCell();
 
+	/** save all local changes to the resource */
+	void apply_changes();
+
 private:
 
-	EditorInspector * cell_inspector;
+	VBoxContainer* 			editor_container;
+	List<EditorProperty*> 	property_editors; /** editors spawned by @see edit */
+
+
+	Ref<Cell> current_cell;	/** set via @see edit */
+
 };
 };
 

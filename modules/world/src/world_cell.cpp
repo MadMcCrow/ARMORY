@@ -22,12 +22,10 @@ void Cell::_bind_methods()
     ClassDB::bind_method(D_METHOD("get_cell_type"), &Cell::get_cell_type);
 	ClassDB::bind_method(D_METHOD("set_cell_type", "cell_type"), &Cell::set_cell_type);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING_NAME, "cell_type_name"), "set_cell_type", "get_cell_type");
-    // drawing 2d
-    ADD_SUBGROUP("2D", "draw_2d_");
     // 2d tile
-	ClassDB::bind_method(D_METHOD("get_tile_2d"), &Cell::get_tile_2d);
-	ClassDB::bind_method(D_METHOD("set_tile_2d", "in_tile_2d"), &Cell::set_tile_2d);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "tile_2d"), "set_tile_2d", "get_tile_2d");
+	ClassDB::bind_method(D_METHOD("get_cell_data"), &Cell::get_cell_data);
+	ClassDB::bind_method(D_METHOD("set_cell_data", "in_cell_data"), &Cell::set_cell_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cell_data"), "set_cell_data", "get_cell_data");
 }
 
 
@@ -47,12 +45,12 @@ void Cell::set_cell_type(const StringName &in_cell_type)
     cell_type_name = in_cell_type;
 }
 
-Ref<Texture2D> Cell::get_tile_2d() const
+Dictionary Cell::get_cell_data() const
 {
-    return tile_2d;
+    return cell_data;
 }
 
-void Cell::set_tile_2d(const  Ref<Texture2D> &in_tile_2d)
+void Cell::set_cell_data(const Dictionary &in_cell_data)
 {
-    tile_2d = in_tile_2d;
+    cell_data = in_cell_data;
 }

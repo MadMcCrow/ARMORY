@@ -23,7 +23,7 @@ namespace armory
  *  @class Cell
  *  Describe a world cell type with all the necessary info layed on top
  */
-class Cell :  public WorldResource
+class Cell:  public WorldResource
 {
     GDCLASS(Cell, WorldResource);
     static void _bind_methods();
@@ -40,9 +40,10 @@ private:
     StringName cell_type_name;
 
     /**
-     *  The 2D image to use to draw this tile
+     *  The cell type name, used as a tag/reference for allowed neighbours
      */
-    Ref<Texture2D> tile_2d;
+    Dictionary cell_data;
+
 
 
 public:
@@ -51,9 +52,10 @@ public:
 
     StringName get_cell_type() const;
     void       set_cell_type(const StringName &in_cell_type);
-    
-    Ref<Texture2D>  get_tile_2d() const;
-    void            set_tile_2d(const  Ref<Texture2D> &in_tile_2d);
+
+    Dictionary get_cell_data() const;
+    void       set_cell_data(const Dictionary &in_cell_data);
+
 
 };
 

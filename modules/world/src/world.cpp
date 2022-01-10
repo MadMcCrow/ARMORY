@@ -175,7 +175,7 @@ void World::export_to_image(Ref<Image> out_image, int cell_size)
     empty_tile_image.instantiate();
     empty_tile_image->create(cell_size, cell_size, false, Image::FORMAT_RGB8);
     empty_tile_image->fill(Color(.5, .5, .5, .5));
-
+    /*
     #pragma omp parallel for collapse(2)
     for (int y = 0; y < size.y; ++y) 
     {
@@ -202,6 +202,7 @@ void World::export_to_image(Ref<Image> out_image, int cell_size)
             out_image->blit_rect(cell_image, Rect2(0,0,cell_size,cell_size),Vector2i(x*cell_size, y*cell_size));
         }
     }
+    */
 }
 
 CellSet World::get_possible_cells() const

@@ -6,7 +6,7 @@
 
 #include <editor/editor_scale.h>
 
-#include "editor/world_editor_plugin_window.h"
+#include "editor/world_editor_plugin_base.h"
 
 #include "world_resource.h"
 
@@ -54,7 +54,7 @@ void WorldEditorPlugin::make_visible(bool p_visible)
 WorldEditorPlugin::WorldEditorPlugin(EditorNode *p_node) 
 {
 	editor = p_node;
-	world_editor = memnew(WorldEditorPluginWindow);
+	world_editor = memnew(WorldEditorPluginBase);
 	world_editor->set_custom_minimum_size(Size2(0, 300) * EDSCALE);
 	button = editor->add_bottom_panel_item(TTR("WorldEditor"), world_editor);
 	button->hide();
