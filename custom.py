@@ -6,7 +6,7 @@ module_armory_shared="yes"
 module_armory_tools_shared="yes"
 
 # global options
-platform="linuxbsd"
+# platform="linuxbsd" 
 target="release_debug"
 tools="yes"
 optimize="speed"

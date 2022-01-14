@@ -227,5 +227,5 @@ std::set<Ref<Module>> World::get_compatible_modules(const Vector2i& coord) const
 
         // TODO : continue here !
     }
-
+    return std::set<Ref<Module>>();
 }
