@@ -9,25 +9,24 @@ script = ExtResource( "1_8y3h1" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+min = 0.0
+max = 100.0
 val = 0.0
 display_name = ""
 
 [node name="Panel" type="PanelContainer" parent="."]
 offset_right = 1024.0
 offset_bottom = 600.0
-script = null
 
 [node name="VBox" type="VBoxContainer" parent="Panel"]
 offset_left = 7.0
 offset_top = 7.0
 offset_right = 1017.0
 offset_bottom = 593.0
-script = null
 
 [node name="ValueSlider" type="HSlider" parent="Panel/VBox"]
 offset_right = 1010.0
 offset_bottom = 16.0
-script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -37,21 +36,14 @@ offset_top = 20.0
 offset_right = 1010.0
 offset_bottom = 46.0
 collapsed = true
-script = null
 
 [node name="NameLabel" type="Label" parent="Panel/VBox/VSplit"]
-offset_right = 88.0
-offset_bottom = 26.0
-text = "ValueName"
-align = 2
-structured_text_bidi_override_options = []
-script = null
+offset_top = 1.0
+offset_right = 1.0
+offset_bottom = 24.0
 
 [node name="ValueLabel" type="Label" parent="Panel/VBox/VSplit"]
-offset_left = 100.0
+offset_left = 13.0
 offset_right = 1010.0
 offset_bottom = 26.0
-text = " 50"
-align = 2
-structured_text_bidi_override_options = []
-script = null
+text = "  0"

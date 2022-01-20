@@ -43,6 +43,7 @@ void Cell::set_cell_type(const StringName &in_cell_type)
 {
     // todo : extra checks
     cell_type_name = in_cell_type;
+    emit_changed();
 }
 
 Dictionary Cell::get_cell_data() const
@@ -53,4 +54,5 @@ Dictionary Cell::get_cell_data() const
 void Cell::set_cell_data(const Dictionary &in_cell_data)
 {
     cell_data = in_cell_data;
+    emit_changed();
 }

@@ -1,0 +1,540 @@
+scons: Reading SConscript files ...
+Automatically detected platform: linuxbsd
+Note: Building a debug binary (which will run slowly). Use `target=release_debug` to build an optimized release binary.
+Checking for C header file mntent.h... (cached) no
+scons: done reading SConscript files.
+
+p: Platform (alias for 'platform')
+    default: 
+    actual: 
+
+platform: Target platform (linuxbsd|windows)
+    default: 
+    actual: linuxbsd
+
+tools: Build the tools (a.k.a. the Godot editor) (yes|no)
+    default: True
+    actual: True
+
+target: Compilation target (debug|release_debug|release)
+    default: debug
+    actual: debug
+
+arch: Platform-dependent architecture (arm/arm64/x86/x64/mips/...)
+    default: 
+    actual: 
+
+bits: Target platform bits (default|32|64)
+    default: default
+    actual: default
+
+float: Floating-point precision (default|32|64)
+    default: default
+    actual: default
+
+optimize: Optimization type (speed|size|none)
+    default: speed
+    actual: speed
+
+production: Set defaults to build Godot for use in production (yes|no)
+    default: False
+    actual: False
+
+use_lto: Use link-time optimization (yes|no)
+    default: False
+    actual: False
+
+deprecated: Enable compatibility code for deprecated and removed features (yes|no)
+    default: True
+    actual: True
+
+minizip: Enable ZIP archive support using minizip (yes|no)
+    default: True
+    actual: True
+
+xaudio2: Enable the XAudio2 audio driver (yes|no)
+    default: False
+    actual: False
+
+vulkan: Enable the vulkan video driver (yes|no)
+    default: True
+    actual: True
+
+opengl3: Enable the OpenGL/GLES3 video driver (yes|no)
+    default: True
+    actual: True
+
+custom_modules: A list of comma-separated directory paths containing custom modules to build.
+    default: 
+    actual: 
+
+custom_modules_recursive: Detect custom modules recursively for each specified path. (yes|no)
+    default: True
+    actual: True
+
+use_volk: Use the volk library to load the Vulkan loader dynamically (yes|no)
+    default: True
+    actual: True
+
+dev: If yes, alias for verbose=yes warnings=extra werror=yes (yes|no)
+    default: False
+    actual: False
+
+progress: Show a progress indicator during compilation (yes|no)
+    default: True
+    actual: True
+
+tests: Build the unit tests (yes|no)
+    default: False
+    actual: False
+
+verbose: Enable verbose output for the compilation (yes|no)
+    default: False
+    actual: False
+
+warnings: Level of compilation warnings (extra|all|moderate|no)
+    default: all
+    actual: all
+
+werror: Treat compiler warnings as errors (yes|no)
+    default: False
+    actual: False
+
+extra_suffix: Custom extra suffix added to the base filename of all generated binary files
+    default: 
+    actual: 
+
+vsproj: Generate a Visual Studio solution (yes|no)
+    default: False
+    actual: False
+
+disable_3d: Disable 3D nodes for a smaller executable (yes|no)
+    default: False
+    actual: False
+
+disable_advanced_gui: Disable advanced GUI nodes and behaviors (yes|no)
+    default: False
+    actual: False
+
+disable_classes: Disable given classes (comma separated)
+    default: 
+    actual: 
+
+modules_enabled_by_default: If no, disable all modules except ones explicitly enabled (yes|no)
+    default: True
+    actual: True
+
+no_editor_splash: Don't use the custom splash screen for the editor (yes|no)
+    default: True
+    actual: True
+
+system_certs_path: Use this path as SSL certificates default for editor (for package maintainers)
+    default: 
+    actual: 
+
+use_precise_math_checks: Math checks use very precise epsilon (debug option) (yes|no)
+    default: False
+    actual: False
+
+builtin_bullet: Use the built-in Bullet library (yes|no)
+    default: True
+    actual: True
+
+builtin_certs: Use the built-in SSL certificates bundles (yes|no)
+    default: True
+    actual: True
+
+builtin_embree: Use the built-in Embree library (yes|no)
+    default: True
+    actual: True
+
+builtin_enet: Use the built-in ENet library (yes|no)
+    default: True
+    actual: True
+
+builtin_freetype: Use the built-in FreeType library (yes|no)
+    default: True
+    actual: True
+
+builtin_msdfgen: Use the built-in MSDFgen library (yes|no)
+    default: True
+    actual: True
+
+builtin_glslang: Use the built-in glslang library (yes|no)
+    default: True
+    actual: True
+
+builtin_graphite: Use the built-in Graphite library (yes|no)
+    default: True
+    actual: True
+
+builtin_harfbuzz: Use the built-in HarfBuzz library (yes|no)
+    default: True
+    actual: True
+
+builtin_icu: Use the built-in ICU library (yes|no)
+    default: True
+    actual: True
+
+builtin_libogg: Use the built-in libogg library (yes|no)
+    default: True
+    actual: True
+
+builtin_libpng: Use the built-in libpng library (yes|no)
+    default: True
+    actual: True
+
+builtin_libtheora: Use the built-in libtheora library (yes|no)
+    default: True
+    actual: True
+
+builtin_libvorbis: Use the built-in libvorbis library (yes|no)
+    default: True
+    actual: True
+
+builtin_libwebp: Use the built-in libwebp library (yes|no)
+    default: True
+    actual: True
+
+builtin_wslay: Use the built-in wslay library (yes|no)
+    default: True
+    actual: True
+
+builtin_mbedtls: Use the built-in mbedTLS library (yes|no)
+    default: True
+    actual: True
+
+builtin_miniupnpc: Use the built-in miniupnpc library (yes|no)
+    default: True
+    actual: True
+
+builtin_pcre2: Use the built-in PCRE2 library (yes|no)
+    default: True
+    actual: True
+
+builtin_pcre2_with_jit: Use JIT compiler for the built-in PCRE2 library (yes|no)
+    default: True
+    actual: True
+
+builtin_recast: Use the built-in Recast library (yes|no)
+    default: True
+    actual: True
+
+builtin_rvo2: Use the built-in RVO2 library (yes|no)
+    default: True
+    actual: True
+
+builtin_squish: Use the built-in squish library (yes|no)
+    default: True
+    actual: True
+
+builtin_xatlas: Use the built-in xatlas library (yes|no)
+    default: True
+    actual: True
+
+builtin_zlib: Use the built-in zlib library (yes|no)
+    default: True
+    actual: True
+
+builtin_zstd: Use the built-in Zstd library (yes|no)
+    default: True
+    actual: True
+
+CXX: C++ compiler
+    default: None
+    actual: g++
+
+CC: C compiler
+    default: None
+    actual: gcc
+
+LINK: Linker
+    default: None
+    actual: gcc
+
+CCFLAGS: Custom flags for both the C and C++ compilers
+    default: None
+    actual: 
+
+CFLAGS: Custom flags for the C compiler
+    default: None
+    actual: 
+
+CXXFLAGS: Custom flags for the C++ compiler
+    default: None
+    actual: 
+
+LINKFLAGS: Custom flags for the linker
+    default: None
+    actual: 
+
+use_llvm: Use the LLVM compiler (yes|no)
+    default: False
+    actual: False
+
+use_lld: Use the LLD linker (yes|no)
+    default: False
+    actual: False
+
+use_thinlto: Use ThinLTO (yes|no)
+    default: False
+    actual: False
+
+use_static_cpp: Link libgcc and libstdc++ statically for better portability (yes|no)
+    default: True
+    actual: True
+
+use_coverage: Test Godot coverage (yes|no)
+    default: False
+    actual: False
+
+use_ubsan: Use LLVM/GCC compiler undefined behavior sanitizer (UBSAN) (yes|no)
+    default: False
+    actual: False
+
+use_asan: Use LLVM/GCC compiler address sanitizer (ASAN) (yes|no)
+    default: False
+    actual: False
+
+use_lsan: Use LLVM/GCC compiler leak sanitizer (LSAN) (yes|no)
+    default: False
+    actual: False
+
+use_tsan: Use LLVM/GCC compiler thread sanitizer (TSAN) (yes|no)
+    default: False
+    actual: False
+
+use_msan: Use LLVM compiler memory sanitizer (MSAN) (yes|no)
+    default: False
+    actual: False
+
+pulseaudio: Detect and use PulseAudio (yes|no)
+    default: True
+    actual: True
+
+dbus: Detect and use D-Bus to handle screensaver (yes|no)
+    default: True
+    actual: True
+
+udev: Use udev for gamepad connection callbacks (yes|no)
+    default: True
+    actual: True
+
+x11: Enable X11 display (yes|no)
+    default: True
+    actual: True
+
+debug_symbols: Add debugging symbols to release/release_debug builds (yes|no)
+    default: True
+    actual: True
+
+separate_debug_symbols: Create a separate file containing debugging symbols (yes|no)
+    default: False
+    actual: False
+
+touch: Enable touch events (yes|no)
+    default: True
+    actual: True
+
+execinfo: Use libexecinfo on systems where glibc is not available (yes|no)
+    default: False
+    actual: False
+
+module_basis_universal_enabled: Enable module 'basis_universal' (yes|no)
+    default: True
+    actual: True
+
+module_bmp_enabled: Enable module 'bmp' (yes|no)
+    default: True
+    actual: True
+
+module_bullet_enabled: Enable module 'bullet' (yes|no)
+    default: True
+    actual: True
+
+module_camera_enabled: Enable module 'camera' (yes|no)
+    default: True
+    actual: True
+
+module_csg_enabled: Enable module 'csg' (yes|no)
+    default: True
+    actual: True
+
+module_cvtt_enabled: Enable module 'cvtt' (yes|no)
+    default: True
+    actual: True
+
+module_dds_enabled: Enable module 'dds' (yes|no)
+    default: True
+    actual: True
+
+module_denoise_enabled: Enable module 'denoise' (yes|no)
+    default: True
+    actual: True
+
+module_enet_enabled: Enable module 'enet' (yes|no)
+    default: True
+    actual: True
+
+module_etcpak_enabled: Enable module 'etcpak' (yes|no)
+    default: True
+    actual: True
+
+module_fbx_enabled: Enable module 'fbx' (yes|no)
+    default: True
+    actual: True
+
+module_freetype_enabled: Enable module 'freetype' (yes|no)
+    default: True
+    actual: True
+
+module_gdnative_enabled: Enable module 'gdnative' (yes|no)
+    default: True
+    actual: True
+
+module_gdscript_enabled: Enable module 'gdscript' (yes|no)
+    default: True
+    actual: True
+
+module_glslang_enabled: Enable module 'glslang' (yes|no)
+    default: True
+    actual: True
+
+module_gltf_enabled: Enable module 'gltf' (yes|no)
+    default: True
+    actual: True
+
+module_gridmap_enabled: Enable module 'gridmap' (yes|no)
+    default: True
+    actual: True
+
+module_hdr_enabled: Enable module 'hdr' (yes|no)
+    default: True
+    actual: True
+
+module_jpg_enabled: Enable module 'jpg' (yes|no)
+    default: True
+    actual: True
+
+module_jsonrpc_enabled: Enable module 'jsonrpc' (yes|no)
+    default: True
+    actual: True
+
+module_lightmapper_rd_enabled: Enable module 'lightmapper_rd' (yes|no)
+    default: True
+    actual: True
+
+module_mbedtls_enabled: Enable module 'mbedtls' (yes|no)
+    default: True
+    actual: True
+
+module_meshoptimizer_enabled: Enable module 'meshoptimizer' (yes|no)
+    default: True
+    actual: True
+
+module_minimp3_enabled: Enable module 'minimp3' (yes|no)
+    default: True
+    actual: True
+
+module_mobile_vr_enabled: Enable module 'mobile_vr' (yes|no)
+    default: True
+    actual: True
+
+module_mono_enabled: Enable module 'mono' (yes|no)
+    default: False
+    actual: False
+
+module_msdfgen_enabled: Enable module 'msdfgen' (yes|no)
+    default: True
+    actual: True
+
+module_navigation_enabled: Enable module 'navigation' (yes|no)
+    default: True
+    actual: True
+
+module_ogg_enabled: Enable module 'ogg' (yes|no)
+    default: True
+    actual: True
+
+module_opensimplex_enabled: Enable module 'opensimplex' (yes|no)
+    default: True
+    actual: True
+
+module_pvr_enabled: Enable module 'pvr' (yes|no)
+    default: True
+    actual: True
+
+module_raycast_enabled: Enable module 'raycast' (yes|no)
+    default: True
+    actual: True
+
+module_regex_enabled: Enable module 'regex' (yes|no)
+    default: True
+    actual: True
+
+module_squish_enabled: Enable module 'squish' (yes|no)
+    default: True
+    actual: True
+
+module_svg_enabled: Enable module 'svg' (yes|no)
+    default: True
+    actual: True
+
+module_text_server_adv_enabled: Enable module 'text_server_adv' (yes|no)
+    default: True
+    actual: True
+
+module_text_server_fb_enabled: Enable module 'text_server_fb' (yes|no)
+    default: False
+    actual: False
+
+module_tga_enabled: Enable module 'tga' (yes|no)
+    default: True
+    actual: True
+
+module_theora_enabled: Enable module 'theora' (yes|no)
+    default: True
+    actual: True
+
+module_tinyexr_enabled: Enable module 'tinyexr' (yes|no)
+    default: True
+    actual: True
+
+module_upnp_enabled: Enable module 'upnp' (yes|no)
+    default: True
+    actual: True
+
+module_vhacd_enabled: Enable module 'vhacd' (yes|no)
+    default: True
+    actual: True
+
+module_visual_script_enabled: Enable module 'visual_script' (yes|no)
+    default: True
+    actual: True
+
+module_vorbis_enabled: Enable module 'vorbis' (yes|no)
+    default: True
+    actual: True
+
+module_webp_enabled: Enable module 'webp' (yes|no)
+    default: True
+    actual: True
+
+module_webrtc_enabled: Enable module 'webrtc' (yes|no)
+    default: True
+    actual: True
+
+module_websocket_enabled: Enable module 'websocket' (yes|no)
+    default: True
+    actual: True
+
+module_webxr_enabled: Enable module 'webxr' (yes|no)
+    default: True
+    actual: True
+
+module_xatlas_unwrap_enabled: Enable module 'xatlas_unwrap' (yes|no)
+    default: True
+    actual: True
+
+Use scons -H for help about command-line options.
+[Time elapsed: 00:00:01.363]

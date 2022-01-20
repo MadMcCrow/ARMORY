@@ -46,11 +46,19 @@ public:
 
 private:
 
-	VBoxContainer* 			editor_container;
-	List<EditorProperty*> 	property_editors; /** editors spawned by @see edit */
+	/** update the whole widget */
+	void _update_properties();
 
+	/** cell property changed, need to update it*/
+	void _cell_property_changed(const String &p_path, const Variant &p_value, const String &p_name = "", bool p_changing = false);
+
+	VBoxContainer* 			editor_container;	/** vertical container where we add all our property editors */
+	EditorProperty*			cell_name_editor;	/** Editor for the cell name */
+	List<EditorProperty*> 	cell_data_editors;	/** editors for cell_data */
 
 	Ref<Cell> current_cell;	/** set via @see edit */
+
+
 
 };
 };
