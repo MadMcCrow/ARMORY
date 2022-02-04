@@ -1,8 +1,12 @@
 {
 	"folders": [
+	{
+			"name": "Data",
+			"path": "./data"
+		},
 		{
-			"name": "",
-			"path": "./"
+			"name": "Sources",
+			"path": "./modules"
 		},
 		{
 			"name": "Project",
@@ -94,7 +98,9 @@
 			"numbers": "cpp",
 			"semaphore": "cpp",
 			"cfenv": "cpp",
-			"*.inc": "cpp"
+			"*.inc": "cpp",
+			"hash_map": "cpp",
+			"hash_set": "cpp"
 		},
 		"files.exclude": {
 			"**/__pycache__/**": true,

@@ -16,7 +16,7 @@
 #endif //TOOLS_ENABLED
 
 // statics holds enums, names, functions, etc for world
-static armory::WorldStatics* world_statics = nullptr;
+static armory::WorldSingleton* world_statics = nullptr;
 
 
 void register_world_types() 
@@ -24,14 +24,14 @@ void register_world_types()
     ClassDB::register_class<armory::World>();
 	ClassDB::register_class<armory::Cell>();
 	ClassDB::register_class<armory::Module>();
-	ClassDB::register_class<armory::WorldStatics>();
+	ClassDB::register_class<armory::WorldSingleton>();
 #if TOOLS_ENABLED
 	EditorPlugins::add_by_type<armory::WorldEditorPlugin>();
 #endif // TOOLS_ENABLED
 
 	// create world statics singleton
-	world_statics = memnew(armory::WorldStatics);
-  	Engine::get_singleton()->add_singleton(Engine::Singleton("WorldStatics", armory::WorldStatics::get_singleton()));
+	world_statics = memnew(armory::WorldSingleton);
+  	Engine::get_singleton()->add_singleton(Engine::Singleton("WorldSingleton", armory::WorldSingleton::get_singleton()));
 
 }
 

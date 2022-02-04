@@ -16,22 +16,22 @@ namespace armory
 {
 
 /**
- * 	@class WorldStatics
+ * 	@class WorldSingleton
  *  Contains functions and data for scripts and objects
  */
-class WorldStatics :  public RefCounted
+class WorldSingleton :  public RefCounted
 {
-    GDCLASS(WorldStatics, RefCounted);
+    GDCLASS(WorldSingleton, RefCounted);
     static void _bind_methods();
 
 public:
 
-    WorldStatics();
-    static WorldStatics* get_singleton();
+    WorldSingleton();
+    static WorldSingleton* get_singleton();
 
 private:
 
-   static WorldStatics* singleton;
+   static WorldSingleton* singleton;
 
     /** Random values generator - mersenne twister */ 
     std::mt19937 random_gen;
@@ -55,7 +55,35 @@ public:
 
     static std::mt19937& get_random_gen() {return get_singleton()->random_gen;}
 
+    // random float
+    static const float randf(float min = 0.f, float max = 1.f)
+    {
+        std:: uniform_real_distribution<> dis(min, max);
+        return  dis(get_random_gen());
+    };
+
+    // random integer
+    static const int randi(int min, int max)
+    {
+        std:: uniform_int_distribution<> dis(min, max);
+        return  dis(WorldSingleton::get_random_gen());
+    };
+
+    // random boolean
+    static const bool randb(float p_true)
+    {
+        clampf(p_true, 0.f,1.f); 
+        std::discrete_distribution<> dis({1-p_true, p_true});
+        return static_cast<bool>(dis(WorldSingleton::get_random_gen()));
+    };
+
+
+
+
+
 };
+
+
     /**
      * Collection of helper functions !
      */
@@ -114,29 +142,13 @@ public:
         return (p >= 0 ? 0 : q) + p % q; 
     }
 
-    // random integer
-    static const int randi(int min, int max)
+    static constexpr float smoothstep(float edge0, float edge1, float x) 
     {
-        std:: uniform_int_distribution<> dis(min, max);
-        return  dis(WorldStatics::get_random_gen());
-    };
-
-
-    // random float
-    static const float randf(float min = 0.f, float max = 1.f)
-    {
-        std:: uniform_real_distribution<> dis(min, max);
-        return  dis(WorldStatics::get_random_gen());
-    };
-
-
-    // random boolean
-    static const bool randb(float p_true)
-    {
-        clampf(p_true, 0.f,1.f); 
-        std::discrete_distribution<> dis({1-p_true, p_true});
-        return static_cast<bool>(dis(WorldStatics::get_random_gen()));
-    };
+        // Scale, bias and saturate x to 0..1 range
+        x = clampf((x - edge0) / (edge1 - edge0), 0.0, 1.0); 
+        // Evaluate polynomial
+        return x * x * (3 - 2 * x);
+    }
 
 
 }; // namespace armory

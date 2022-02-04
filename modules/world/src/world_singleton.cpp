@@ -8,7 +8,7 @@ using namespace armory;
 
 // bindings
 
-void WorldStatics::_bind_methods()
+void WorldSingleton::_bind_methods()
 {
     // BIND_ENUM_CONSTANT(m_constant)
 	// ::ClassDB::bind_integer_constant(get_class_static(), StringName(), #m_constant, m_constant);
@@ -18,15 +18,15 @@ void WorldStatics::_bind_methods()
 
 // Singleton stuff :
 
-WorldStatics * WorldStatics::singleton;
+WorldSingleton * WorldSingleton::singleton;
 
-WorldStatics::WorldStatics() : RefCounted()
+WorldSingleton::WorldSingleton() : RefCounted()
 {
     singleton = this;
     reset_gen();
 }
 
-WorldStatics* WorldStatics::get_singleton()
+WorldSingleton* WorldSingleton::get_singleton()
 {
-    return  WorldStatics::singleton;
+    return  WorldSingleton::singleton;
 }
