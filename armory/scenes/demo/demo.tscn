@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://bi7v5judjv55e"]
+
+[ext_resource type="Script" path="res://scripts/demo/demo_world_map.gd" id="1_mm6dn"]
+[ext_resource type="Shader" path="res://shaders/demo.gdshader" id="2_7ndvd"]
+[ext_resource type="PackedScene" uid="uid://bpsu5sga4is8" path="res://scenes/gui/gui_world_config.tscn" id="2_pnajt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mq4p0"]
+shader = ExtResource( "2_7ndvd" )
+shader_param/positive_color = Plane(0, 0.1, 0, 1)
+shader_param/negative_color = Plane(0.1, 0, 0.1, 1)
+shader_param/zero_color = Plane(0.5, 0.1, 0, 1)
+
+[sub_resource type="ImageTexture" id="ImageTexture_wta7x"]
+size = Vector2(500, 500)
+
+[node name="WorldMap" type="WorldMap"]
+seed = 1056964608
+script = ExtResource( "1_mm6dn" )
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer"]
+offset_right = 1024.0
+offset_bottom = 600.0
+split_offset = 180
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/HSplitContainer"]
+offset_right = 686.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/HSplitContainer/ScrollContainer"]
+material = SubResource( "ShaderMaterial_mq4p0" )
+minimum_size = Vector2(200, 200)
+offset_right = 500.0
+offset_bottom = 500.0
+texture = SubResource( "ImageTexture_wta7x" )
+
+[node name="Config" parent="PanelContainer/HSplitContainer" instance=ExtResource( "2_pnajt" )]
+clip_contents = true
+offset_left = 698.0
+offset_right = 1024.0
+offset_bottom = 239.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[connection signal="on_generate" from="PanelContainer/HSplitContainer/Config" to="." method="_on_config_on_generate"]

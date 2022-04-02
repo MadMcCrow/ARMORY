@@ -10,14 +10,14 @@ void fragment() {
 	
 	if (value < .0)
 	{
-		COLOR = (COLOR + 1.0) * negative_color;
+		COLOR = (1.0 - value) * negative_color;
 	}
 	else if (value > .0)
 	{
-		COLOR = COLOR * positive_color;
+		COLOR = value * positive_color;
 	}
 	else
 	{
-		COLOR = COLOR * zero_color;
+		COLOR = value * zero_color;
 	}
 }

@@ -4,16 +4,16 @@
 
 #include "register_types.h"
 
-// world map
-#include "world_map.h"
+// ValueSlider
+#include "value_slider.h"
 
 
-void register_world_types() 
+void register_gui_types() 
 {
-    ClassDB::register_class<armory::WorldMap>();
+    ClassDB::register_class<armory::ValueSlider>();
 }
 
-void unregister_world_types() 
+void unregister_gui_types() 
 {
 }
 

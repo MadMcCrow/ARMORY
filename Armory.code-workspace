@@ -1,6 +1,10 @@
 {
 	"folders": [
-	{
+		{
+			"name": "Root",
+			"path": "./"
+		},
+	    {
 			"name": "Data",
 			"path": "./data"
 		},
@@ -114,5 +118,18 @@
 			"**/node_modules/**": true,
 			"**/.hg/store/**": true
 		}
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"type": "lldb",
+				"request": "launch",
+				"name": "Launch",
+				"program": "${workspaceFolder:Root}/godot/bin/godot.linuxbsd.opt.tools.64",
+				"args": ["armory/project.godot", "--editor", "--ups"],
+				"cwd": "${workspaceFolder:Root}"
+			}
+		]
 	}
 }

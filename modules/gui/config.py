@@ -10,7 +10,7 @@ def configure(env):
 
 def get_doc_classes():
     base_classes = [
-        "WorldMap",
+        "ValueSlider"
     ]
     return base_classes
 
