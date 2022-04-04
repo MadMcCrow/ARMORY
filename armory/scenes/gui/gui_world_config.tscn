@@ -1,0 +1,64 @@
+[gd_scene load_steps=3 format=3 uid="uid://bpsu5sga4is8"]
+
+[ext_resource type="PackedScene" uid="uid://bpns1lr50b3hr" path="res://scenes/gui/gui_value_selector.tscn" id="1_pgwk6"]
+[ext_resource type="Script" path="res://scripts/gui/gui_world_config.gd" id="1_yf3bt"]
+
+[node name="PanelContainer" type="PanelContainer"]
+offset_right = 272.0
+offset_bottom = 600.0
+script = ExtResource( "1_yf3bt" )
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 272.0
+offset_bottom = 600.0
+
+[node name="Seed" parent="VBoxContainer" instance=ExtResource( "1_pgwk6" )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 272.0
+offset_bottom = 50.0
+display_name = "Seed"
+min_value = 0.0
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+offset_top = 54.0
+offset_right = 272.0
+offset_bottom = 58.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+offset_top = 62.0
+offset_right = 272.0
+offset_bottom = 88.0
+text = "Size"
+
+[node name="X" parent="VBoxContainer" instance=ExtResource( "1_pgwk6" )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 92.0
+offset_right = 272.0
+offset_bottom = 142.0
+display_name = "X"
+min_value = 25.0
+
+[node name="Y" parent="VBoxContainer" instance=ExtResource( "1_pgwk6" )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 146.0
+offset_right = 272.0
+offset_bottom = 196.0
+display_name = "Y"
+min_value = 25.0
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+offset_top = 200.0
+offset_right = 272.0
+offset_bottom = 204.0
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+offset_top = 208.0
+offset_right = 272.0
+offset_bottom = 239.0
+text = "Generate"
+language = "en"

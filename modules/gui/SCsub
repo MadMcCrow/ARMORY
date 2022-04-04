@@ -13,20 +13,16 @@ Import("env_modules")
 # folders for headers and sources
 src_folder = 'src'
 inc_folder = 'inc'
-module_name = 'armory_world'
-module_shared_name = 'module_armory_world_shared'
+module_name = 'armory_gui'
+module_shared_name = 'module_armory_gui_shared'
 
 # Build it all as a library for other modules
-env.module_armory_world_sources = []
-lib = env.add_library(module_name, env.module_armory_world_sources)
+env.module_armory_gui_sources = []
+lib = env.add_library(module_name, env.module_armory_gui_sources)
 env.Prepend(LIBS=[lib])
-env.Prepend(CCFLAGS=["-fopenmp"]) 
-env.Prepend(LINKFLAGS=["-fopenmp"])
 
 # add our sources to the build environment
 module_env = env_modules.Clone()
-#module_obj = []
-#module_env.add_source_files(module_obj, "*.cpp")
 
 # get all source files
 sources = [os.path.join(p, n) for p, s, f in os.walk(src_folder) for n in f if n.endswith('cpp')]
@@ -42,12 +38,12 @@ if env["platform"] == "windows" :
     cc_flags  = ['/O2'] + ["-EHsc", "-MD"]
 else :
     # godot is not yet fully compatible with '-std=c++20' so we stay at 17 with padded
-    cxx_flags =  ['-std=c++17', '-fopenmp', '-Wpadded']
+    cxx_flags =  ['-std=c++17', '-Wpadded']
     # Position Independent Code , requiered for unix shared libs
-    cc_flags  = ['-O3', '-fPIC', '-fopenmp'] if module_is_shared_lib else ['-O3', '-fopenmp', '-static']
+    cc_flags  = ['-O3', '-fPIC'] if module_is_shared_lib else ['-O3', '-static']
 
 #dict = module_env.ParseFlags('-openmp')
-module_env['LIBS'] = ['-fopenmp']  # Don't inject Godot's dependencies into our shared library.
+module_env['LIBS'] = []  # Don't inject Godot's dependencies into our shared library.
 module_env.Append(CPPPATH=[inc_folder]) # pass flags for compiler
 module_env.Append(CXXFLAGS=cxx_flags)
 module_env.Append(CCFLAGS=cc_flags)

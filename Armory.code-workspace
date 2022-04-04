@@ -1,8 +1,16 @@
 {
 	"folders": [
 		{
-			"name": "",
+			"name": "Root",
 			"path": "./"
+		},
+	    {
+			"name": "Data",
+			"path": "./data"
+		},
+		{
+			"name": "Sources",
+			"path": "./modules"
 		},
 		{
 			"name": "Project",
@@ -94,7 +102,9 @@
 			"numbers": "cpp",
 			"semaphore": "cpp",
 			"cfenv": "cpp",
-			"*.inc": "cpp"
+			"*.inc": "cpp",
+			"hash_map": "cpp",
+			"hash_set": "cpp"
 		},
 		"files.exclude": {
 			"**/__pycache__/**": true,
@@ -108,5 +118,18 @@
 			"**/node_modules/**": true,
 			"**/.hg/store/**": true
 		}
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"type": "lldb",
+				"request": "launch",
+				"name": "Launch",
+				"program": "${workspaceFolder:Root}/godot/bin/godot.linuxbsd.opt.tools.64",
+				"args": ["armory/project.godot", "--editor", "--ups"],
+				"cwd": "${workspaceFolder:Root}"
+			}
+		]
 	}
 }

@@ -1,16 +1,13 @@
 /* Copyright © Noé Perard-Gayot 2021. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-// godot
-#include "core/object/class_db.h"
-#include "world_resource.h"
+#ifndef ARMORY_GUI_REGISTER_TYPES_H
+#define ARMORY_GUI_REGISTER_TYPES_H
 
 
-using namespace armory;
+void register_gui_types();
+
+void unregister_gui_types(); 
 
 
-
-void WorldResource::_bind_methods()
-{
-
-}
+#endif // ARMORY_GUI_REGISTER_TYPES_H

@@ -1,6 +1,3 @@
-[gd_resource type="Cell" load_steps=2 format=3 uid="uid://c1dqa2j82r3fe"]
-
-[sub_resource type="Image" id="Image_diydk"]
+[gd_resource type="Cell" format=3 uid="uid://c1dqa2j82r3fe"]
 
 [resource]
-tile_2d = SubResource( "Image_diydk" )
