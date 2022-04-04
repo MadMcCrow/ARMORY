@@ -15,6 +15,9 @@ BASEDIR := $(realpath $(CURDIR))
 Godot :
 	@cd godot && scons -j$(THREADS) profile="../custom.py" ;
 
+Export:
+	@cd godot && scons -j$(THREADS) profile="../custom_template.py" ;
+
 godot: Godot
 
 # get everything ready

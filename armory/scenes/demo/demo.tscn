@@ -6,9 +6,9 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mq4p0"]
 shader = ExtResource( "2_7ndvd" )
-shader_param/positive_color = Plane(0, 0.1, 0, 1)
-shader_param/negative_color = Plane(0.1, 0, 0.1, 1)
-shader_param/zero_color = Plane(0.5, 0.1, 0, 1)
+shader_param/land_color = Plane(0.4, 0.75, 0.5, 1)
+shader_param/sea_color = Plane(0.2, 0.2, 0.9, 1)
+shader_param/sea_level = 0.5
 
 [sub_resource type="ImageTexture" id="ImageTexture_wta7x"]
 size = Vector2(500, 500)
