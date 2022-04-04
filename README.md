@@ -14,12 +14,8 @@ to set the project up on your device just clone this repository and run the foll
    
 ```
 git submodule update --init --recursive # update/get Godot and it's modules
-cd godot
-scons -j profile=/custom.py
-cd ../godot-cpp
-scons target=debug
-cd ../extensions/matrix # build matrix extension
-scons -j target=debug
+make 
+make launch
 ```
 
 alternatively you can use [./setup.sh]
