@@ -1,0 +1,11 @@
+[gd_resource type="WorldTile" load_steps=2 format=3 uid="uid://bnj1yvirp8bjd"]
+
+[ext_resource type="Texture2D" uid="uid://b2utt2hm56lg5" path="res://resources/cells/images/plain.png" id="1_bsxcp"]
+
+[resource]
+left = "land"
+right = "land"
+up = "land"
+down = "land"
+weight = 0.5
+tile_2d = ExtResource( "1_bsxcp" )

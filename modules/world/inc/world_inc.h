@@ -75,10 +75,12 @@ static constexpr double fast_pow(double a, double b)
  * natural log on [0x1.f7a5ecp-127, 0x1.fffffep127]. Maximum relative error 9.4529e-5 
  * from https://stackoverflow.com/a/39822314 answer
  */
-float faster_logf (float a)
+static constexpr float faster_logf (float a)
 {
-    float i, m, r, s, t;
-    int e;
+    // define variables (init to 0 for constexpr)
+    float i = 0, m = 0, r = 0, s = 0, t = 0;
+    int e = 0;
+
     m = frexpf (a, &e);
     if (m < 0.666666667f) {
         m = m + m;
