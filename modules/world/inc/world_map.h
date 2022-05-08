@@ -1,12 +1,11 @@
-/* Copyright © Noé Perard-Gayot 2021. */
+/* Copyright © Noé Perard-Gayot 2022. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
 #ifndef WORLD_CLASS_H
 #define WORLD_CLASS_H
 
-// std
-#include <vector>
-#include <cstdint>
+// world
+#include "world_inc.h"
 
 // godot-cpp
 #include "scene/main/node.h"
@@ -19,6 +18,10 @@ using namespace godot;
 // make sure we do not override
 namespace armory
 {
+
+// forward declaration :
+class WorldTile;
+class WorldCell;
 
 /**
  * 	@class WorldMap
@@ -35,41 +38,18 @@ public:
     // default CTR
     WorldMap();
 
-    /** how to represent it on the map */
-    enum Cell : uint16_t
-    {
-        // base height
-        min          = 0x00,   // min. for iteration
-        deep_sea     = 0x00,   // sea visual only
-        sea          = 0x01,   // sea visual only
-        shoreline    = 0x02,   // sea visual only
-        land         = 0x05,   // sea transition
-        plain        = 0x06,   // level 0
-        mound        = 0x07,   // level 1
-        hill         = 0x09,   // level 2
-        mountain     = 0x0a,   // blocks land unit
-        mountain_top = 0x0b,   // blocks planes
-        max          = 0x0b,   // max, for iteration
 
-        // modifiers
-        sea_oil      = 0x10,   // on deep sea, spawns a offshore platform building
-        beach        = 0x15,   // sea transition, allows unloading
-        river        = 0x25,   // spawns on level 1 goes to sea
-        hill_tree    = 0x19,  // prevents building, stops vehicules
-        hill_rock    = 0x29,  // prevents building, does not stop tanks
-        ore_mine     = 0x39,  // on hills, spawns a ore mine building
-
-        // other
-        error        = 0xff,  // error value, something went wrong, out of bound
-    };
 
 private:
 
     /** size property (stored as a godot Vector2i directly) */
     Vector2i size;
 
-    /** the final cells */
-	std::vector<Cell> cell_vector;
+    /** the various tiles we can have */
+	std::vector<Ref<WorldTile>> tile_set;
+
+    /** the cells generated */
+	std::vector<Ref<WorldCell>> cell_vector;
 
     /** the seed you requested */
     size_t seed;
@@ -77,22 +57,27 @@ private:
 
 protected:
 
-    /** default voronoi implementation */
-    virtual void generate_voronoi();
+    /** core of wfc loop */
+    void iterate_wfc();
 
-    /** distance implementation for voronoi */
+    /** is there a final valid solution ? */
+    bool is_collapsed() const;
+
+    /** get cell entropy ( ie. found how many tiles this could be) */
+    float get_cell_entropy(int x, int y) const;
+
+    /** distance  between to cell */
     virtual float distance(int ax, int ay, int bx, int by) const;
-
 
     /** convert 2d coordinate to unique index for accessing @see cell_vector*/
     size_t get_index(int x, int y) const;
 
     /** get stored value at coordinate, with extra safety */
-    const Cell& get_cell(size_t x, size_t y) const;
-    Cell&       get_cell(size_t x, size_t y);
+    const Ref<WorldCell>& get_cell(size_t x, size_t y) const;
+    Ref<WorldCell>&       get_cell(size_t x, size_t y);
 
     /** set Cell of cell */
-    virtual void set_cell(size_t x, size_t y, const WorldMap::Cell &in_cell);
+    virtual void set_cell(size_t x, size_t y, const Ref<WorldCell> &in_cell);
 
 public:
 
@@ -104,8 +89,11 @@ public:
     /** generate cells based on last set seed and size */
     void generate_cells();
 
-    /** clean cells to respect rules */
-    void clean_cells();
+    /** getter for @see tile_set */
+    Array get_tile_set() const;
+
+    /** setter for @see tile_set */
+    void set_tile_set(const Array& in_tile_set);
 
     /** setter for @see seed */
     void set_seed(const int& in_seed) {seed = in_seed;}
@@ -125,7 +113,5 @@ public:
     //<\GDScript interface>
 };
 }; // namespace armory
-
-VARIANT_ENUM_CAST(armory::WorldMap::Cell);
 
 #endif // ! WORLD_CLASS_H

@@ -1,11 +1,10 @@
-/* Copyright © Noé Perard-Gayot 2021. */
+/* Copyright © Noé Perard-Gayot 2022. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
 // header
 #include "world_map.h"
-
-// world
-#include "world_inc.h"
+#include "world_cell.h"
+#include "world_tile.h"
 
 // godot
 #include <core/object/class_db.h>
@@ -14,8 +13,10 @@
 
 
 using namespace armory;
-		
-static WorldMap::Cell error_Cell = WorldMap::Cell::error;
+
+// for error return
+static Ref<WorldCell> error_Cell = nullptr;
+
 
 void WorldMap::_bind_methods()
 {
@@ -26,6 +27,8 @@ void WorldMap::_bind_methods()
     ClassDB::bind_method(D_METHOD("get_seed"),  &WorldMap::get_seed);
     ClassDB::bind_method(D_METHOD("set_size", "in_size"),  &WorldMap::set_size);
     ClassDB::bind_method(D_METHOD("get_size"),  &WorldMap::get_size);
+    ClassDB::bind_method(D_METHOD("set_tile_set", "in_tile_set"),  &WorldMap::set_tile_set);
+    ClassDB::bind_method(D_METHOD("get_tile_set"),  &WorldMap::get_tile_set);
     ClassDB::bind_method(D_METHOD("init_cells"), &WorldMap::init_cells);
     ClassDB::bind_method(D_METHOD("generate_cells"),  &WorldMap::generate_cells);
     ClassDB::bind_method(D_METHOD("export_to_image", "out_image"),  &WorldMap::export_to_image);
@@ -35,7 +38,7 @@ void WorldMap::_bind_methods()
     ADD_SUBGROUP("WORLD", "world_");
     ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "size"), "set_size", "get_size");
     ADD_PROPERTY(PropertyInfo(Variant::INT,      "seed"), "set_seed", "get_seed");
-
+    ADD_PROPERTY(PropertyInfo(Variant::ARRAY,   "tile_set", PROPERTY_HINT_ARRAY_TYPE, "WorldTile"), "set_tile_set", "get_tile_set");
 }
 
 WorldMap::WorldMap() : Node()
@@ -44,105 +47,108 @@ WorldMap::WorldMap() : Node()
 
 void WorldMap::init_cells()
 {
-    cell_vector.resize( size.x * size.y, Cell::min);
-}
+    cell_vector.resize( size.x * size.y, nullptr);
 
-void WorldMap::generate_cells()
-{
-    // todo : do each step async :)
-    init_cells();
-    set_rand_seed(seed);
-    generate_voronoi();
-    clean_cells();
-}
-
-void WorldMap::clean_cells()
-{
-    // se simply perform a gaussian blur
-    // with a matrix of size (max-min) (+1 if pair)
-    // this should be constexpr
-    static const int matrix_size = ceil((Cell::max - Cell::min)/2.0)/2;
-    static float     factor      = (matrix_size * 2 + 1) * (matrix_size * 2 +1);
-    // copy values
-    std::vector<float> cell_values;
-    cell_values.resize( size.x * size.y, 0.f);
-
-    // get the blurred values
     #pragma omp parallel for collapse(2)
     for (int y = 0; y < size.y; ++y)
     {
         for (int x = 0; x < size.x; ++x)
         {
             const auto index = get_index(x,y);
-            const float value  = 0.f;
-            for (int fy = - matrix_size; fy < matrix_size; ++fy)
+            cell_vector[index].instantiate();
+            if (cell_vector[index].is_valid())
             {
-                for (int fx = - matrix_size; fx < matrix_size; ++fx)
-                {
-                    cell_values[index] += static_cast<int>(cell_vector[get_index(x + fx,y + fy)]) / factor;
-                }
+                cell_vector[index]->set_tile_set(tile_set);
             }
-    
         }
     }
+}
 
-    // apply calculated values
-    #pragma omp parallel for collapse(2)
-    for (int y = 0; y < size.y; ++y)
+void WorldMap::generate_cells()
+{
+    init_cells();
+    set_rand_seed(seed);
+    while (!is_collapsed())
     {
-        for (int x = 0; x < size.x; ++x)
-        {
-            const auto index   = get_index(x,y);
-            cell_vector[index] = static_cast<Cell>(ceil(cell_values[index]));
-        }
+        iterate_wfc();
     }
-
-
-
 }
 
 
-
-void WorldMap::generate_voronoi()
+void WorldMap::iterate_wfc()
 {
-    using Attractor = std::tuple<Vector2i,WorldMap::Cell>;
-
-    const auto dimension = abs(size.x*size.y);
-    const size_t attractor_num = rand_int(dimension/16, dimension/8);
-    std::vector<Attractor> attractors;
-    // must be done in a linear (not parallel) fashion to allow mersene to generate valid numbers
-    attractors.reserve(attractor_num);
-    for (int i = 0; i < attractor_num; i++)
-    {
-        const auto x = rand_int(0,size.x);
-        const auto y = rand_int(0,size.y);
-        const auto cell = static_cast<Cell>(rand_int(Cell::min, Cell::max));
-        attractors.emplace_back(Vector2i(x,y),cell);
-    }
-
-    // now we can do a brute force voronoi :
+    // first pick a cell : either random or lower entropy
+    auto low    = Vector2i(rand_int(0,size.x), rand_int(0, size.y));
+    float low_e = get_cell_entropy(low.x, low.y);
+    
     #pragma omp parallel for collapse(2)
-    for (int y = 0; y < size.y; ++y)
+    for (int y = 0; y < size.y; y++)
     {
-        for (int x = 0; x < size.x; ++x)
+        for (int x = 0; x < size.x; x++)
         {
-            // Lambda for Comparing distance
-            const auto compare_less_distance = [this, x, y](const Attractor& a, const  Attractor& b)
+            auto e = get_cell_entropy(x,y);
+            if (e < low_e)
             {
-                const auto a_coord = std::get<0>(a);
-                const auto b_coord = std::get<0>(b);
-                const float dist_a = distance(a_coord.x,a_coord.y, x, y);
-                const float dist_b = distance(b_coord.x,b_coord.y, x, y);
-                return dist_a < dist_b;
-            };
-            // find closest attractor:
-            const auto find_closest = min_element(attractors.begin(), attractors.end(), compare_less_distance);
-
-            // Cell is the value of the closest attractor :
-            Cell value = std::get<1>(Attractor(*find_closest));
-            set_cell(x,y,value);
+                #pragma omp critical
+                {
+                    // perform check again, other thread could have changed it
+                    if (e < low_e)
+                    {
+                        low_e = e;
+                        low.x = x;
+                        low.y = y;
+                    }
+                }
+            }
         }
     }
+
+    // neighbouring cells
+    auto left  = Vector2i(repeat(low.x -1, size.x), low.y);
+    auto right = Vector2i(repeat(low.x +1, size.x), low.y);
+    auto up    = Vector2i(low.x, repeat(low.y -1, size.y));
+    auto down  = Vector2i(low.x, repeat(low.y +1, size.y));
+    
+}
+
+/** is there a final valid solution ? */
+bool WorldMap::is_collapsed() const
+{
+    volatile bool stop_flag=false;
+    bool is_collapsed = true;
+    #pragma omp parallel for collapse(2) shared(stop_flag)
+    for (int y = 0; y < size.y; ++y) 
+    {
+        for (int x = 0; x < size.x; ++x) 
+        {
+            if(stop_flag) continue;
+            // a cell is not collapsed
+            auto cell = get_cell(x,y);
+            if(cell.is_valid())
+            {
+                if (cell->is_collapsed())
+                {
+                    #pragma omp critical
+                    {
+                    is_collapsed = false;
+                    }
+                    stop_flag=true;
+                }
+            }
+        }
+    }
+    return is_collapsed;
+}
+
+
+float WorldMap::get_cell_entropy(int x, int y) const
+{
+    const Ref<WorldCell>& xy_cell = get_cell(x,y);
+    if (xy_cell.is_valid())
+    {
+        return xy_cell->get_entropy();
+    }
+    return 0; 
 }
 
 float WorldMap::distance(int ax, int ay, int bx, int by) const
@@ -161,7 +167,7 @@ size_t WorldMap::get_index(int x, int y) const
     return repeat(x, size.x) + repeat(y, size.y) * size.x;
 }
 
-const WorldMap::Cell& WorldMap::get_cell(size_t x, size_t y) const
+const Ref<WorldCell>& WorldMap::get_cell(size_t x, size_t y) const
 {
     try
     {
@@ -174,7 +180,7 @@ const WorldMap::Cell& WorldMap::get_cell(size_t x, size_t y) const
 
 }
 
-WorldMap::Cell&  WorldMap::get_cell(size_t x, size_t y)
+Ref<WorldCell>&   WorldMap::get_cell(size_t x, size_t y)
 {
     try
     {
@@ -186,7 +192,7 @@ WorldMap::Cell&  WorldMap::get_cell(size_t x, size_t y)
     }
 }
 
-void WorldMap::set_cell(size_t x, size_t y, const WorldMap::Cell& in_cell)
+void WorldMap::set_cell(size_t x, size_t y, const Ref<WorldCell>& in_cell)
 {
     try
     {
@@ -213,13 +219,39 @@ void WorldMap::export_to_image(Ref<Image> out_image)
     {
         for (int x = 0; x < size.x; ++x) 
         {
+            /*
             const float cell = static_cast<uint8_t>(get_cell(x,y) & 0x0f) * 1.f;
             constexpr float min = static_cast<uint8_t>(Cell::min & 0x0f) * 1.f;
             constexpr float max = static_cast<uint8_t>(Cell::max & 0x0f) * 1.f;
             float value = remap(cell, min , max, 0.f,1.f);
             Color col = Color::from_hsv(0.f, 0.f, value, 1.f);
             out_image->set_pixel(x,y,col);
+            */
         }
     }
 }
 
+Array WorldMap::get_tile_set() const
+{
+    Array ret_val;
+    int count = tile_set.size();
+    ret_val.resize(count);
+    #pragma omp parrallel for
+    for (int i = 0; i < count; ++i) 
+    {
+        ret_val[i] = tile_set.at(i);
+    }
+    return ret_val;
+}
+
+void WorldMap::set_tile_set(const Array& in_tile_set)
+{
+    tile_set.clear();
+    int count = in_tile_set.size();
+    tile_set.resize(count);
+    #pragma omp parrallel for
+    for (int i = 0; i < count; ++i) 
+    {
+        tile_set[i] = in_tile_set[i];
+    }
+}
