@@ -4,10 +4,9 @@
 #ifndef ARMORY_WORLD_REGISTER_TYPES_H
 #define ARMORY_WORLD_REGISTER_TYPES_H
 
+#include "modules/register_module_types.h"
 
-void register_world_types();
-
-void unregister_world_types(); 
-
+void initialize_world_module(ModuleInitializationLevel p_level);
+void uninitialize_world_module(ModuleInitializationLevel p_level);
 
 #endif // ARMORY_WORLD_REGISTER_TYPES_H

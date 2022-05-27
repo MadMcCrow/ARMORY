@@ -8,12 +8,6 @@
 // world
 #include "world_inc.h"
 
-// godot-cpp
-#include "core/io/resource.h"
-#include "core/io/image.h"
-#include "scene/resources/texture.h"
-#include "scene/resources/mesh.h"
-#include "core/object/ref_counted.h"
 
 // we must use this namespace if we want to compile against godot
 using namespace godot;
@@ -24,9 +18,8 @@ namespace armory
 {
 
 /**
- * 	@class WorldMap
- *	Base Matrix functions
- *	Offers function for child classes
+ *  @class WorldTile
+ *  defines a type of ground
  */
 class WorldTile :  public Resource
 {

@@ -4,6 +4,11 @@
 #ifndef WORLD_INC_H
 #define WORLD_INC_H
 
+/**
+ * @file world_inc.h
+ * @brief Contains all the includes for the world module, as well as helper functions
+ */
+
 // std
 #include <stack>
 #include <cmath>
@@ -22,7 +27,10 @@
 #include <core/math/color.h>
 #include <core/io/image.h>
 #include <core/object/ref_counted.h>
-
+#include <scene/main/node.h>
+#include <core/io/resource.h>
+#include <scene/resources/texture.h>
+#include <scene/resources/mesh.h>
 
 namespace armory
 {

@@ -14,6 +14,8 @@ using namespace armory;
 // for error return
 static WorldCell error_Cell = WorldCell();
 
+// singleton ptr default value 
+WorldMap *WorldMap::singleton = nullptr;
 
 void add_custom_project_setting(String name, Variant default_value, Variant::Type type, const PropertyHint hint, String hint_string = "")
 {
@@ -30,7 +32,6 @@ void add_custom_project_setting(String name, Variant default_value, Variant::Typ
 	
 	PropertyInfo setting_info(type, name, hint, hint_string);
   
-
 	PS->set_setting(name, default_value);
 	PS->set_custom_property_info(setting_info.name, setting_info);
 	PS->set_initial_value(name, default_value);
@@ -68,7 +69,7 @@ const std::vector<Ref<WorldTile>>& WorldMap::get_tile_set() const
 }
 
 
-WorldMap::WorldMap() : Object()
+WorldMap::WorldMap() : Node()
 {
 }
 

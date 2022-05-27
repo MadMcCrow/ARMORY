@@ -24,23 +24,23 @@ class WorldCell;
  *	Base Matrix functions
  *	Offers function for child classes
  */
-class WorldMap :  public Object
+class WorldMap :  public Node
 {
-    GDCLASS(WorldMap, Object);
+    GDCLASS(WorldMap, Node);
     static void _bind_methods();
 
 public:
 
     // default CTR
     WorldMap();
-    _ALWAYS_INLINE_ static WorldMap* get_singleton() {return singleton;}
 
     const std::vector<Ref<WorldTile>>& get_tile_set() const;
+
+    _ALWAYS_INLINE_ static WorldMap* get_singleton() {return singleton;}
 
 private:
 
     static WorldMap *singleton;
-
 
     /** size property (stored as a godot Vector2i directly) */
     Vector2i size;
