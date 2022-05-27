@@ -9,50 +9,29 @@
 #include "world_inc.h"
 
 
-// godot-cpp
-#include "core/io/resource.h"
-#include "core/object/ref_counted.h"
-
-// we must use this namespace if we want to compile against godot
-using namespace godot;
-
-
-// make sure we do not override
 namespace armory
 {
 
-
-//forward declaration:
-class WorldTile;
-
 /**
- * 	@class WorldCell
+ * 	@struct WorldCell
  *	a cell reference a tile and contain info about what's on it
- *  @todo maybe make it a node
+ *  it's only valid within a @see WorldMap
  */
-class WorldCell : public RefCounted
+struct WorldCell
 {
-    GDCLASS(WorldCell, RefCounted);
-    static void _bind_methods();
 
-
-public:
+    /** bitset corresponding to the tile_set in the WorldMap. if t */
+    std::vector<bool> bit_tile_set;
 
     // default CTR
-    WorldCell() 
-    : RefCounted()
-    {}
+    WorldCell();
 
-    const Ref<WorldTile>& get_collapsed_tile() const;
-
-    // reduced to one cell
-    bool is_collapsed() const {return tile_set.size() == 1;}
-
-    // no more valid cells
-    bool is_error() const {return tile_set.size() < 1;}
-
-    // how close to one cell are we (collapsed is 0)
-    float get_entropy() const;
+    // WFC functions  
+    _ALWAYS_INLINE_ size_t tile_set_count() const {return std::count(bit_tile_set.begin(), bit_tile_set.end(), true);} /** number of compatible cells */
+    _ALWAYS_INLINE_ bool is_collapsed() const { return tile_set_count() == 1;}      /** reduced to one cell */
+    _ALWAYS_INLINE_ bool is_error() const     { return tile_set_count() < 1;}       /** no more valid cells */
+    std::vector<float> get_normalized_weights() const;  /** get the weight of all the tiles, but normalized. keep order and indices */
+    float get_entropy() const;                          /** how close to one cell are we (collapsed is 0) */
 
     /**
      * @brief  remove incompabilities with neighbours
@@ -60,38 +39,19 @@ public:
      * @param right_cell        ==
      * @param up_cell           ==
      * @param down_cell         ==
-     * @todo : make calculate the entropy and store it when editing tile set :)
+     * @return true if made a change
+     * @todo : make calculate the entropy and store it when editing tile set
+     * @todo : rewrite this function
      */
-    void remove_incompatible_tiles(const Ref<WorldCell>& left_cell, const Ref<WorldCell>& right_cell, const Ref<WorldCell>& up_cell, const Ref<WorldCell>& down_cell);
+
+    bool remove_incompatible_tiles(const WorldCell& left_cell, const WorldCell& right_cell, const WorldCell& up_cell, const WorldCell& down_cell);
+
     /**
      * @brief restrict tile set to only the final tile
      * @param value the random value to make our selection [0.f-1.f]
      */
     void collapse(float value);
 
-    /**
-     * @brief Set the tile set vector
-     * @param in_tile_set 
-     * @todo : make calculate the entropy and store it when editing tile set :)
-     */
-    void set_tile_set(const std::vector<Ref<WorldTile>>& in_tile_set);
-
-    /** const getter */
-    const std::vector<Ref<WorldTile>>& get_tile_set() const {return tile_set;}
-
-private:
-
-    /** possible tiles */
-    std::vector<Ref<WorldTile>> tile_set;
-
-
-    /** get the weight of all the tiles, but normalized. keep order and indices */
-    std::vector<float> get_normalized_weights() const;
-
-public:
-
-    //<GDScript interface>
-    //<\GDScript interface>
 };
 }; // namespace armory
 

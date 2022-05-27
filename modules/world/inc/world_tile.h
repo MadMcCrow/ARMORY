@@ -41,6 +41,9 @@ public:
     {}
 
 
+    /** create a rotated copy (Clockwise) */
+    Ref<WorldTile> rotate() const;
+
 private:
 
     /** border codes */

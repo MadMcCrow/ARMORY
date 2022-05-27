@@ -7,16 +7,36 @@
 #include "world_tile.h"
 
 // godot
-#include <core/object/class_db.h>
-#include <core/error/error_macros.h>
-#include <core/math/color.h>
-
+#include "core/config/project_settings.h"
 
 using namespace armory;
 
 // for error return
-static Ref<WorldCell> error_Cell = nullptr;
+static WorldCell error_Cell = WorldCell();
 
+
+void add_custom_project_setting(String name, Variant default_value, Variant::Type type, const PropertyHint hint, String hint_string = "")
+{
+    auto PS = ProjectSettings::get_singleton();
+    if (!PS)
+    {
+        ERR_FAIL_MSG("Failed to get project settings singleton, some module initialisation order error maybe !");
+        return;
+    }
+
+	if (PS->has_setting(name))
+        return;
+
+	
+	PropertyInfo setting_info(type, name, hint, hint_string);
+  
+
+	PS->set_setting(name, default_value);
+	PS->set_custom_property_info(setting_info.name, setting_info);
+	PS->set_initial_value(name, default_value);
+    
+	ERR_FAIL_COND_EDMSG(PS->save(), "Failed to save project settings");
+}
 
 void WorldMap::_bind_methods()
 {
@@ -27,47 +47,55 @@ void WorldMap::_bind_methods()
     ClassDB::bind_method(D_METHOD("get_seed"),  &WorldMap::get_seed);
     ClassDB::bind_method(D_METHOD("set_size", "in_size"),  &WorldMap::set_size);
     ClassDB::bind_method(D_METHOD("get_size"),  &WorldMap::get_size);
-    ClassDB::bind_method(D_METHOD("set_tile_set", "in_tile_set"),  &WorldMap::set_tile_set);
-    ClassDB::bind_method(D_METHOD("get_tile_set"),  &WorldMap::get_tile_set);
     ClassDB::bind_method(D_METHOD("init_cells"), &WorldMap::init_cells);
     ClassDB::bind_method(D_METHOD("generate_cells"),  &WorldMap::generate_cells);
-    ClassDB::bind_method(D_METHOD("export_to_image", "out_image"),  &WorldMap::export_to_image);
+    ClassDB::bind_method(D_METHOD("export_to_image", "out_image", "tile_size"),  &WorldMap::export_to_image);
 
 	// Properties
 	ADD_GROUP("ARMORY", "armory_");
     ADD_SUBGROUP("WORLD", "world_");
     ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "size"), "set_size", "get_size");
     ADD_PROPERTY(PropertyInfo(Variant::INT,      "seed"), "set_seed", "get_seed");
-    ADD_PROPERTY(PropertyInfo(Variant::ARRAY,   "tile_set", PROPERTY_HINT_ARRAY_TYPE, "WorldTile"), "set_tile_set", "get_tile_set");
+
+    add_custom_project_setting("WorldTileSet", Array(),  Variant::ARRAY, PROPERTY_HINT_ARRAY_TYPE, "WorldTile");
 }
 
-WorldMap::WorldMap() : Node()
+const std::vector<Ref<WorldTile>>& WorldMap::get_tile_set() const
+{
+    if (gen_tile_set.size() >0)
+        return gen_tile_set;
+    return tile_set;
+}
+
+
+WorldMap::WorldMap() : Object()
 {
 }
 
 void WorldMap::init_cells()
 {
-    cell_vector.resize( size.x * size.y, nullptr);
-
-    #pragma omp parallel for collapse(2)
-    for (int y = 0; y < size.y; ++y)
-    {
-        for (int x = 0; x < size.x; ++x)
-        {
-            const auto index = get_index(x,y);
-            cell_vector[index].instantiate();
-            if (cell_vector[index].is_valid())
-            {
-                cell_vector[index]->set_tile_set(tile_set);
-            }
-        }
-    }
+    cell_vector.clear();
+    cell_vector.resize( size.x * size.y, WorldCell()); 
 }
 
 void WorldMap::generate_cells()
 {
     init_cells();
     set_rand_seed(seed);
+
+
+    // for each element of tile_set, add new ones :)
+    for (const auto &tile : tile_set)
+    {
+        // copy each rotation (data*4)
+        Ref<WorldTile> n,e,s,w;
+        n = tile;
+        w = n->rotate();
+        s = w->rotate();
+        e = s->rotate();
+        gen_tile_set.insert(gen_tile_set.end(), { n, s, e, w });
+    }
+
     while (!is_collapsed())
     {
         iterate_wfc();
@@ -87,11 +115,12 @@ void WorldMap::iterate_wfc()
         for (int x = 0; x < size.x; x++)
         {
             auto e = get_cell_entropy(x,y);
-            if (e < low_e)
+            if (e < low_e && e > 0)
             {
                 #pragma omp critical
                 {
-                    // perform check again, other thread could have changed it
+                    // perform check again, other thread could have changed low_e
+                    // above zero cannot change
                     if (e < low_e)
                     {
                         low_e = e;
@@ -103,13 +132,65 @@ void WorldMap::iterate_wfc()
         }
     }
 
-    // neighbouring cells
+    // neighbouring cells (coord)
     auto left  = Vector2i(repeat(low.x -1, size.x), low.y);
     auto right = Vector2i(repeat(low.x +1, size.x), low.y);
     auto up    = Vector2i(low.x, repeat(low.y -1, size.y));
     auto down  = Vector2i(low.x, repeat(low.y +1, size.y));
     
+    auto& cell       = get_cell(low.x, low.y);
+    auto& left_cell  = get_cell(left.x, left.y);
+    auto& right_cell = get_cell(right.x, right.y);
+    auto& up_cell    = get_cell(up.x, up.y);
+    auto& down_cell  = get_cell(down.x, down.y);
+    if (!cell.is_collapsed() && !cell.is_error())
+    {
+        cell.remove_incompatible_tiles(left_cell, right_cell, up_cell, down_cell);
+        cell.collapse(rand_float(0.f,1.f));
+        propagate_change(low.x, low.y);
+    }
+
 }
+
+bool WorldMap::propagate_change(int x, int y)
+{
+    const auto left  = [this](auto lx,auto ly){return Vector2i(repeat(lx -1, size.x), ly);};
+    const auto right = [this](auto rx,auto ry){return Vector2i(repeat(rx +1, size.x), ry);};
+    const auto up    = [this](auto ux,auto uy){return Vector2i(ux, repeat(uy -1, size.y));};
+    const auto down  = [this](auto dx,auto dy){return Vector2i(dx, repeat(dy +1, size.y));};
+
+    std::stack<Vector2i> modified; 
+
+    modified.emplace(Vector2i(x,y));
+
+    while (!modified.empty())
+    {
+        // cannot use tie with C-style array :(
+        x = modified.top().coord[0];
+        y = modified.top().coord[1];
+        modified.pop();
+
+        auto cell = get_cell(x,y);
+
+        bool removed = cell.remove_incompatible_tiles(
+            get_cell(left (x,y)),
+            get_cell(right(x,y)),
+            get_cell(up   (x,y)),
+            get_cell(down (x,y)));
+
+        if (removed)
+        {
+            modified.push(left (x,y));
+            modified.push(right(x,y));
+            modified.push(up   (x,y));
+            modified.push(down (x,y));
+        }
+        
+    }
+    
+    
+}
+
 
 /** is there a final valid solution ? */
 bool WorldMap::is_collapsed() const
@@ -124,16 +205,13 @@ bool WorldMap::is_collapsed() const
             if(stop_flag) continue;
             // a cell is not collapsed
             auto cell = get_cell(x,y);
-            if(cell.is_valid())
+            if (cell.is_collapsed())
             {
-                if (cell->is_collapsed())
+                #pragma omp critical
                 {
-                    #pragma omp critical
-                    {
-                    is_collapsed = false;
-                    }
-                    stop_flag=true;
+                is_collapsed = false;
                 }
+                stop_flag=true;
             }
         }
     }
@@ -143,12 +221,21 @@ bool WorldMap::is_collapsed() const
 
 float WorldMap::get_cell_entropy(int x, int y) const
 {
-    const Ref<WorldCell>& xy_cell = get_cell(x,y);
-    if (xy_cell.is_valid())
+     // {\displaystyle \mathrm {H} (X)=-\sum _{i=1}^{n}{\mathrm {P} (x_{i})\log _{b}\mathrm {P} (x_{i})}}
+    // Entropy = sum{i[0->n]}(Pxi *logb(Pxi))
+    auto normalized_weights = get_cell(x,y).get_normalized_weights();
+    float entropy = 0;
+    #pragma omp parallel for
+    for (auto & weight: normalized_weights)
     {
-        return xy_cell->get_entropy();
+        float local_ent_sum = weight * faster_logf(weight);
+        // section to make the sum
+        #pragma omp critical
+        {
+            entropy+=local_ent_sum;
+        }
     }
-    return 0; 
+    return entropy;
 }
 
 float WorldMap::distance(int ax, int ay, int bx, int by) const
@@ -161,13 +248,13 @@ float WorldMap::distance(int ax, int ay, int bx, int by) const
     return abs(bx-ax) + abs(by-ay);
 }
 
-size_t WorldMap::get_index(int x, int y) const
+size_t WorldMap::get_index(const int &x, const int &y) const
 {
     // beware negative numbers
     return repeat(x, size.x) + repeat(y, size.y) * size.x;
 }
 
-const Ref<WorldCell>& WorldMap::get_cell(size_t x, size_t y) const
+const WorldCell& WorldMap::get_cell(const int &x, const int &y) const
 {
     try
     {
@@ -180,7 +267,7 @@ const Ref<WorldCell>& WorldMap::get_cell(size_t x, size_t y) const
 
 }
 
-Ref<WorldCell>&   WorldMap::get_cell(size_t x, size_t y)
+WorldCell& WorldMap::get_cell(const int &x, const int &y)
 {
     try
     {
@@ -192,7 +279,7 @@ Ref<WorldCell>&   WorldMap::get_cell(size_t x, size_t y)
     }
 }
 
-void WorldMap::set_cell(size_t x, size_t y, const Ref<WorldCell>& in_cell)
+void WorldMap::set_cell(const int &x, const int &y, const WorldCell& in_cell)
 {
     try
     {
@@ -205,14 +292,16 @@ void WorldMap::set_cell(size_t x, size_t y, const Ref<WorldCell>& in_cell)
 }
 
 
-void WorldMap::export_to_image(Ref<Image> out_image)
+void WorldMap::export_to_image(Ref<Image> out_image, int tile_size)
 {
     if (out_image.is_null())
     {
         out_image.instantiate();
     }
+
+    
     // set the image
-    out_image->create( size.x, size.y, false, Image::FORMAT_L8);
+    out_image->create( size.x * tile_size, size.y *tile_size, false, Image::FORMAT_L8);
 
     #pragma omp parallel for collapse(2)
     for (int y = 0; y < size.y; ++y) 
@@ -228,30 +317,5 @@ void WorldMap::export_to_image(Ref<Image> out_image)
             out_image->set_pixel(x,y,col);
             */
         }
-    }
-}
-
-Array WorldMap::get_tile_set() const
-{
-    Array ret_val;
-    int count = tile_set.size();
-    ret_val.resize(count);
-    #pragma omp parrallel for
-    for (int i = 0; i < count; ++i) 
-    {
-        ret_val[i] = tile_set.at(i);
-    }
-    return ret_val;
-}
-
-void WorldMap::set_tile_set(const Array& in_tile_set)
-{
-    tile_set.clear();
-    int count = in_tile_set.size();
-    tile_set.resize(count);
-    #pragma omp parrallel for
-    for (int i = 0; i < count; ++i) 
-    {
-        tile_set[i] = in_tile_set[i];
     }
 }

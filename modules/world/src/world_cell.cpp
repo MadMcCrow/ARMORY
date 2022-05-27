@@ -4,23 +4,33 @@
 // header
 #include "world_cell.h"
 #include "world_tile.h"
+#include "world_map.h"
 
-// godot
-#include <core/object/class_db.h>
 
 using namespace armory;
 		
 
-void WorldCell::_bind_methods()
+
+//helper function to retrieve the data from the WorldMap singleton 
+const std::vector<Ref<WorldTile>>& get_tile_set()
 {
+    const auto* map = WorldMap::get_singleton();
+    return map->get_tile_set();
+}
+
+
+WorldCell::WorldCell() 
+{
+    // get WorldMap singleton
+    // set tile set 
 
 }
+
 
 float WorldCell::get_entropy() const
 {
     // {\displaystyle \mathrm {H} (X)=-\sum _{i=1}^{n}{\mathrm {P} (x_{i})\log _{b}\mathrm {P} (x_{i})}}
     // Entropy = sum{i[0->n]}(Pxi *logb(Pxi))
-
     auto normalized_weights = get_normalized_weights();
     float entropy = 0;
     #pragma omp parallel for
@@ -36,56 +46,68 @@ float WorldCell::get_entropy() const
     return entropy;
 }
 
-void WorldCell::remove_incompatible_tiles(const Ref<WorldCell>& left_cell, const Ref<WorldCell>& right_cell, const Ref<WorldCell>& up_cell, const Ref<WorldCell>& down_cell)
+bool WorldCell::remove_incompatible_tiles( const WorldCell& left_cell, const WorldCell& right_cell, const WorldCell& up_cell, const WorldCell& down_cell)
 {
-    std::set<Ref<WorldTile>> new_tile_set;
+    bool removed = false;
+    // every one uses the same number of bits
+    const auto num = bit_tile_set.size();
 
-     #pragma omp parallel for collapse(4)
-    for (unsigned l = 0; l < left_cell->get_tile_set().size(); ++l)
+    // for each bits in bitset
+    for (unsigned i = 0; i < num; ++i)
     {
-        for (unsigned r = 0; r < right_cell->get_tile_set().size(); ++r)
+        bool has_valid_combination = false;
+        std::vector<bool>::reference tile = bit_tile_set[i];
+        if (!tile)
+            continue;
+
+        // check every combinations with neighbours. if one combination is valid : just continue
+        #pragma omp parallel for collapse(4)
+        for (unsigned l = 0; l < num; ++l)
         {
-            for (unsigned u = 0; u < up_cell->get_tile_set().size(); ++u)
+            for (unsigned r = 0; r < num; ++r)
             {
-                for (unsigned d = 0; d < down_cell->get_tile_set().size(); ++d)
+                for (unsigned u = 0; u < num; ++u)
                 {
-                    auto left   = left_cell->get_tile_set()[l];
-                    auto right  = right_cell->get_tile_set()[r];
-                    auto up     = up_cell->get_tile_set()[u];
-                    auto down   = down_cell->get_tile_set()[d];
-
-                    auto local_tile_set = tile_set;
-
-                    for (unsigned i=tile_set.size(); i-->0;)
+                    for (unsigned d = 0; d < num; ++d)
                     {
-                        const auto& tile = tile_set[i];
-                        bool compat = false;
-                        if (tile.is_valid())
-                        {
-                            bool compat = false;
-                            compat |= tile->is_compatible(left,  right,  up,     down);
-                            compat |= tile->is_compatible(up,    down,   right,  left);  // 90  degrees clockwise
-                            compat |= tile->is_compatible(right, left,   down,   up);    // 180 degrees clockwise
-                            compat |= tile->is_compatible(down,  up,     left,   right); // 270 degrees clockwise
-                        }
+                        // quick get out of loop if one combination succeeded
+                        if (has_valid_combination)
+                            continue;
+            
+                        const auto& left    = left_cell.bit_tile_set[l];
+                        const auto& right   = right_cell.bit_tile_set[r];
+                        const auto& up      = up_cell.bit_tile_set[u];
+                        const auto& down    = down_cell.bit_tile_set[d];
+                        
+
+                        if (!left || !right || !up || !down)
+                            continue;
+
+                        const std::vector<Ref<WorldTile>>& tile_set = get_tile_set();
+                        bool compat =  tile_set[i]->is_compatible(tile_set[l], tile_set[r], tile_set[u], tile_set[d]);
+                    
                         // at least a compination worked
                         if (compat)
                         {
                             #pragma omp critical
                             {
-                                new_tile_set.insert(tile);
+                                has_valid_combination = true;
                             }
                         }
                     }
-                
+
                 }
             }
         }
-    }
 
-    // copy back in tile_set
-    tile_set.clear();
-    std::copy(new_tile_set.begin(), new_tile_set.end(), std::back_inserter(tile_set));
+        // not successfully found a valid configuration for this tile : remove it from tileset
+        if (!has_valid_combination)
+        {
+            tile = false;
+            removed = true;
+        }
+    }
+    return removed;// true if removed something
 }
 
 
@@ -101,13 +123,8 @@ void WorldCell::collapse(float value)
             continue;
         else
         {
-            auto selected_tile = tile_set[idx];
-            if (selected_tile.is_valid())
-            {
-                tile_set.clear();
-                tile_set.push_back(selected_tile);
-                break; // we're done !
-            }
+            bit_tile_set.resize(bit_tile_set.size(), false); // set all to false
+            bit_tile_set[idx] = true;                        // set to true;
         }
     }
 }
@@ -118,7 +135,7 @@ std::vector<float> WorldCell::get_normalized_weights() const
     float total_weight;
 
     // no parallel : make sure to keep indices and order
-    for (const auto & tile: tile_set)
+    for (const auto & tile: get_tile_set())
     {
         if (tile.is_valid())
         {
@@ -142,8 +159,3 @@ std::vector<float> WorldCell::get_normalized_weights() const
     return normalized_weights;
 }
 
-
-void WorldCell::set_tile_set(const std::vector<Ref<WorldTile>>& in_tile_set)
-{
-
-}

@@ -55,6 +55,19 @@ void WorldTile::_bind_methods()
 }
 
 
+Ref<WorldTile> WorldTile::rotate() const
+{
+    Ref<WorldTile> ret_val;
+    ret_val.instantiate();
+    *ret_val.ptr() = *this; // copy
+    // rotate :
+    ret_val->left = up;
+    ret_val->up  = right;
+    ret_val->right = down;
+    ret_val->down = left;
+    return ret_val;
+}
+
 bool WorldTile::is_compatible(const Ref<WorldTile> &left_tile, const Ref<WorldTile> &right_tile, const Ref<WorldTile> &up_tile, const Ref<WorldTile> &down_tile) const
 {
     if (left_tile.is_valid())

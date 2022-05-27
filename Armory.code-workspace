@@ -104,7 +104,8 @@
 			"cfenv": "cpp",
 			"*.inc": "cpp",
 			"hash_map": "cpp",
-			"hash_set": "cpp"
+			"hash_set": "cpp",
+			"source_location": "cpp"
 		},
 		"files.exclude": {
 			"**/__pycache__/**": true,

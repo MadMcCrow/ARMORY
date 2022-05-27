@@ -4,6 +4,8 @@
 #ifndef WORLD_INC_H
 #define WORLD_INC_H
 
+// std
+#include <stack>
 #include <cmath>
 #include <cstdint>
 #include <random>
@@ -12,6 +14,15 @@
 #include <set>
 #include <algorithm>
 #include <utility>
+
+// godot :
+#include <core/typedefs.h>
+#include <core/object/class_db.h>
+#include <core/error/error_macros.h>
+#include <core/math/color.h>
+#include <core/io/image.h>
+#include <core/object/ref_counted.h>
+
 
 namespace armory
 {
@@ -124,6 +135,14 @@ static const void set_rand_seed(size_t random_seed)
     mersene_generator = std::mt19937(random_seed);
 };
 
+
+/** generate a float between min and max (based on last set seed) */
+static const int rand_float(float min, float max)
+{
+    std::uniform_real_distribution<float> dis(min, max);
+    return  dis(mersene_generator);
+};
+
 /** generate a int between min and max (based on last set seed) */
 static const int rand_int(int min, int max)
 {
@@ -139,7 +158,6 @@ static const bool rand_bool(float true_probability)
     return static_cast<bool>(dis(mersene_generator));
 };
 
-
 };
 
-#endif // ! WORLD_FUNC_H
+#endif // ! WORLD_INC_H
