@@ -6,38 +6,11 @@
 #include "world_cell.h"
 #include "world_tile.h"
 
-// godot
-#include "core/config/project_settings.h"
 
 using namespace armory;
 
 // for error return
 static WorldCell error_Cell = WorldCell();
-
-// singleton ptr default value 
-WorldMap *WorldMap::singleton = nullptr;
-
-void add_custom_project_setting(String name, Variant default_value, Variant::Type type, const PropertyHint hint, String hint_string = "")
-{
-    auto PS = ProjectSettings::get_singleton();
-    if (!PS)
-    {
-        ERR_FAIL_MSG("Failed to get project settings singleton, some module initialisation order error maybe !");
-        return;
-    }
-
-	if (PS->has_setting(name))
-        return;
-
-	
-	PropertyInfo setting_info(type, name, hint, hint_string);
-  
-	PS->set_setting(name, default_value);
-	PS->set_custom_property_info(setting_info.name, setting_info);
-	PS->set_initial_value(name, default_value);
-    
-	ERR_FAIL_COND_EDMSG(PS->save(), "Failed to save project settings");
-}
 
 void WorldMap::_bind_methods()
 {
@@ -48,6 +21,8 @@ void WorldMap::_bind_methods()
     ClassDB::bind_method(D_METHOD("get_seed"),  &WorldMap::get_seed);
     ClassDB::bind_method(D_METHOD("set_size", "in_size"),  &WorldMap::set_size);
     ClassDB::bind_method(D_METHOD("get_size"),  &WorldMap::get_size);
+    ClassDB::bind_method(D_METHOD("set_tile_set", "in_tile_set"),  &WorldMap::set_tile_set);
+    ClassDB::bind_method(D_METHOD("get_tile_set"),  &WorldMap::get_tile_set);
     ClassDB::bind_method(D_METHOD("init_cells"), &WorldMap::init_cells);
     ClassDB::bind_method(D_METHOD("generate_cells"),  &WorldMap::generate_cells);
     ClassDB::bind_method(D_METHOD("export_to_image", "out_image", "tile_size"),  &WorldMap::export_to_image);
@@ -57,21 +32,19 @@ void WorldMap::_bind_methods()
     ADD_SUBGROUP("WORLD", "world_");
     ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "size"), "set_size", "get_size");
     ADD_PROPERTY(PropertyInfo(Variant::INT,      "seed"), "set_seed", "get_seed");
-
-    add_custom_project_setting("WorldTileSet", Array(),  Variant::ARRAY, PROPERTY_HINT_ARRAY_TYPE, "WorldTile");
+    ADD_PROPERTY(PropertyInfo(Variant::OBJECT,   "tile_set_resource",  PROPERTY_HINT_RESOURCE_TYPE, "WorldTileSet"), "set_tile_set", "get_tile_set");
 }
-
-const std::vector<Ref<WorldTile>>& WorldMap::get_tile_set() const
-{
-    if (gen_tile_set.size() >0)
-        return gen_tile_set;
-    return tile_set;
-}
-
 
 WorldMap::WorldMap() : Node()
 {
 }
+
+TypedArray<String> WorldMap::get_configuration_warnings() const
+{
+    // for now no added errors
+    return Node::get_configuration_warnings();
+}
+
 
 void WorldMap::init_cells()
 {
@@ -84,25 +57,38 @@ void WorldMap::generate_cells()
     init_cells();
     set_rand_seed(seed);
 
-
-    // for each element of tile_set, add new ones :)
-    for (const auto &tile : tile_set)
-    {
-        // copy each rotation (data*4)
-        Ref<WorldTile> n,e,s,w;
-        n = tile;
-        w = n->rotate();
-        s = w->rotate();
-        e = s->rotate();
-        gen_tile_set.insert(gen_tile_set.end(), { n, s, e, w });
-    }
-
+    generate_tile_set();
+   
     while (!is_collapsed())
     {
         iterate_wfc();
     }
 }
 
+void WorldMap::generate_tile_set()
+{
+    gen_tile_set.clear();
+    total_weight = 0.f;
+    if (tile_set_resource.is_null())
+        return;
+
+    auto& tile_set = tile_set_resource->get_tile_set();
+    gen_tile_set.reserve(tile_set.size() *4);
+    for (const auto &tile : tile_set)
+    {
+        if (tile.is_valid())
+        {
+            // copy each rotation (data*4)
+            Ref<WorldTile> n,e,s,w;
+            n = tile;
+            w = n->rotate();
+            s = w->rotate();
+            e = s->rotate();
+            gen_tile_set.insert(gen_tile_set.end(), { n, s, e, w });
+            total_weight += tile->get_weight() * 4.f;
+        }
+    }
+}
 
 void WorldMap::iterate_wfc()
 {
@@ -146,14 +132,12 @@ void WorldMap::iterate_wfc()
     auto& down_cell  = get_cell(down.x, down.y);
     if (!cell.is_collapsed() && !cell.is_error())
     {
-        cell.remove_incompatible_tiles(left_cell, right_cell, up_cell, down_cell);
-        cell.collapse(rand_float(0.f,1.f));
+        collapse(low.x,low.y);
         propagate_change(low.x, low.y);
     }
-
 }
 
-bool WorldMap::propagate_change(int x, int y)
+void WorldMap::propagate_change(int x, int y)
 {
     const auto left  = [this](auto lx,auto ly){return Vector2i(repeat(lx -1, size.x), ly);};
     const auto right = [this](auto rx,auto ry){return Vector2i(repeat(rx +1, size.x), ry);};
@@ -161,7 +145,6 @@ bool WorldMap::propagate_change(int x, int y)
     const auto down  = [this](auto dx,auto dy){return Vector2i(dx, repeat(dy +1, size.y));};
 
     std::stack<Vector2i> modified; 
-
     modified.emplace(Vector2i(x,y));
 
     while (!modified.empty())
@@ -171,27 +154,94 @@ bool WorldMap::propagate_change(int x, int y)
         y = modified.top().coord[1];
         modified.pop();
 
-        auto cell = get_cell(x,y);
+        //currently modified cell :
+        auto &cell = get_cell(x,y);
+        bool removed = false;
+        // every one uses the same number of bits
+        const auto num = cell.get_tile_bitset().size();
 
-        bool removed = cell.remove_incompatible_tiles(
-            get_cell(left (x,y)),
-            get_cell(right(x,y)),
-            get_cell(up   (x,y)),
-            get_cell(down (x,y)));
+        // for each bits in bitset
+        for (unsigned i = 0; i < num; ++i)
+        {
+            // this serve has an early exit. we don't care if there's only one configuration that will fit or thousands
+            bool has_valid_combination = false;
+            // each bit correspond to a tile in the tileset : if true, it's compatible
+            std::vector<bool>::reference tile_bit = cell.get_tile_bitset()[i];
 
+            // early exit : we previously established this does not work
+            if (!tile_bit)
+                continue;
+
+            // check every combinations with neighbours. if one combination is already valid : just continue
+            #pragma omp parallel for collapse(4)
+            for (unsigned l = 0; l < num; ++l)
+            {
+                for (unsigned r = 0; r < num; ++r)
+                {
+                    for (unsigned u = 0; u < num; ++u)
+                    {
+                        for (unsigned d = 0; d < num; ++d)
+                        {
+                            // quick get out of loop if one combination previously succeeded
+                            if (has_valid_combination)
+                                continue;
+                            const std::vector<bool>::reference left_bit    = get_cell(left(x,y)  ).get_tile_bitset()[l];
+                            const std::vector<bool>::reference right_bit   = get_cell(right(x,y) ).get_tile_bitset()[r];
+                            const std::vector<bool>::reference up_bit      = get_cell(up(x,y)    ).get_tile_bitset()[u];
+                            const std::vector<bool>::reference down_bit    = get_cell(down(x,y)  ).get_tile_bitset()[d];
+                            // at least one of these bit are not valid, it can't count has a valid combination 
+                            if (!left_bit || !right_bit || !up_bit || !down_bit)
+                                continue;
+                            bool compat = gen_tile_set[i]->is_compatible(gen_tile_set[l], gen_tile_set[r], gen_tile_set[u], gen_tile_set[d]);
+                            // at least a compination worked
+                            if (compat)
+                            {
+                                #pragma omp critical
+                                {
+                                    has_valid_combination = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }  
+            // we failed to find a valid combination, we set that bit to false
+            if (!has_valid_combination)
+            {
+                tile_bit = false;
+                removed = true;
+            }
+        }
+        // this cell was changed, update neighbours 
         if (removed)
         {
             modified.push(left (x,y));
             modified.push(right(x,y));
             modified.push(up   (x,y));
             modified.push(down (x,y));
-        }
-        
+        }   
     }
-    
-    
 }
 
+void WorldMap::collapse(int x, int y)
+{
+    float value = rand_float(0.f,1.f);
+    const auto weights = get_cell_normalized_weights(x,y);
+    // value must be between 0 and 1
+    float sum = 0;
+    for (int idx = 0; idx < weights.size(); idx++)
+    {
+        sum += weights[idx];
+        if (sum < value)
+            continue;
+        else
+        {
+            auto& cell = get_cell(x,y);
+            cell.get_tile_bitset().resize(cell.get_tile_bitset().size(), false); // set all to false
+            cell.get_tile_bitset()[idx] = true;                        // set to true;
+        }
+    }
+}
 
 /** is there a final valid solution ? */
 bool WorldMap::is_collapsed() const
@@ -224,7 +274,7 @@ float WorldMap::get_cell_entropy(int x, int y) const
 {
      // {\displaystyle \mathrm {H} (X)=-\sum _{i=1}^{n}{\mathrm {P} (x_{i})\log _{b}\mathrm {P} (x_{i})}}
     // Entropy = sum{i[0->n]}(Pxi *logb(Pxi))
-    auto normalized_weights = get_cell(x,y).get_normalized_weights();
+    auto normalized_weights = get_cell_normalized_weights(x,y);
     float entropy = 0;
     #pragma omp parallel for
     for (auto & weight: normalized_weights)
@@ -237,6 +287,46 @@ float WorldMap::get_cell_entropy(int x, int y) const
         }
     }
     return entropy;
+}
+
+
+std::vector<float> WorldMap::get_cell_normalized_weights(int x, int y) const
+{
+    std::vector<float> normalized_weights;
+    normalized_weights.resize(gen_tile_set.size(), 0.f);
+    float local_total_weight = total_weight;
+
+    const auto& cell = get_cell(x,y);
+    const auto& bitset = cell.get_tile_bitset();
+    ERR_FAIL_COND_V_MSG(bitset.size() != gen_tile_set.size(),{}, "Cell has a a different amount of bits than world has tiles");
+
+    #pragma omp parallel for
+    for (int idx = 0; idx< gen_tile_set.size(); idx++)
+    {
+        if (gen_tile_set[idx].is_valid())
+        {
+            const float weight = gen_tile_set[idx]->get_weight();
+            if (!bitset[idx])
+            {
+                // this one has to be removed from the total weight
+                #pragma omp critical
+                {
+                    local_total_weight -= weight;
+                }
+            }
+            else
+            {
+                normalized_weights[idx] = weight;
+            }
+        }
+        // leave at 0
+    }
+    #pragma omp parallel for
+    for (auto & weight: normalized_weights)
+    {
+        weight/=local_total_weight;
+    }
+    return normalized_weights;
 }
 
 float WorldMap::distance(int ax, int ay, int bx, int by) const

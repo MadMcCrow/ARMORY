@@ -16,9 +16,9 @@ we should focus on two points for the game design :
 
 ### System
 
-[] Map generation as a singleton
-[] tile set data definition
+[X] Map generation entirely in WorldMap
+[X] tile set data definition
 [] tile content as an object class (must be derivable for custom behaviour)
-[] static GDscript function to control generation
+[] GDscript function to control generation
 
 ## 

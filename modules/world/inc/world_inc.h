@@ -23,14 +23,15 @@
 // godot :
 #include <core/typedefs.h>
 #include <core/object/class_db.h>
+#include <core/object/ref_counted.h>
 #include <core/error/error_macros.h>
 #include <core/math/color.h>
-#include <core/io/image.h>
-#include <core/object/ref_counted.h>
-#include <scene/main/node.h>
 #include <core/io/resource.h>
+#include <core/io/image.h>
+#include <core/config/project_settings.h>
 #include <scene/resources/texture.h>
 #include <scene/resources/mesh.h>
+#include <scene/main/node.h>
 
 namespace armory
 {
@@ -165,6 +166,30 @@ static const bool rand_bool(float true_probability)
     std::discrete_distribution<> dis({1-true_probability, true_probability});
     return static_cast<bool>(dis(mersene_generator));
 };
+
+
+static const void add_custom_project_setting(String name, Variant default_value, Variant::Type type, const PropertyHint hint, String hint_string = "")
+{
+    auto PS = ProjectSettings::get_singleton();
+    if (!PS)
+    {
+        ERR_FAIL_MSG("Failed to get project settings singleton, some module initialisation order error maybe !");
+        return;
+    }
+
+	if (PS->has_setting(name))
+        return;
+
+	
+	PropertyInfo setting_info(type, name, hint, hint_string);
+  
+	PS->set_setting(name, default_value);
+	PS->set_custom_property_info(setting_info.name, setting_info);
+	PS->set_initial_value(name, default_value);
+    
+	ERR_FAIL_COND_EDMSG(PS->save(), "Failed to save project settings");
+}
+
 
 };
 

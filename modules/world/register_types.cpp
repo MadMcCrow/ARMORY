@@ -18,8 +18,6 @@ void initialize_world_module(ModuleInitializationLevel p_level)
       GDREGISTER_CLASS(armory::WorldTile);
       GDREGISTER_CLASS(armory::WorldTileSet);
 	  }
-    // make sure we have only one WorldMap.
-    Engine::get_singleton()->add_singleton(Engine::Singleton("WorldMap", armory::WorldMap::get_singleton()));
 }
 
 void uninitialize_world_module(ModuleInitializationLevel p_level)

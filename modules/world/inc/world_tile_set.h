@@ -38,6 +38,9 @@ private:
 
 public:
 
+    // function for the CPP system
+    _ALWAYS_INLINE_ const std::vector<Ref<WorldTile>>& get_tile_set() const {return tiles; }
+
     //<GDScript interface>
 
     /** getter for @see tiles */
