@@ -48,15 +48,15 @@ TypedArray<String> WorldMap::get_configuration_warnings() const
 
 void WorldMap::init_cells()
 {
-    WARN_PRINT_ED("Cell Initialisation");
     // TODO : emit signal
     cell_vector.clear();
     cell_vector.resize( size.x * size.y, WorldCell(gen_tile_set.size())); 
+    WARN_PRINT_ED("init cells : size is " + String(size) + " with " + itos(gen_tile_set.size()) + " tiles");
 }
 
 void WorldMap::generate_cells()
 {
-    WARN_PRINT_ED("Generate Cell");
+    WARN_PRINT_ED("generate cell ");
     // TODO : make every step async and emit signals
     generate_tile_set();
     init_cells();
@@ -66,11 +66,11 @@ void WorldMap::generate_cells()
     {
         iterate_wfc();
     }
+
 }
 
 void WorldMap::generate_tile_set()
 {
-    WARN_PRINT_ED("Tile set initialisation");
     // TODO : emit signal
 
     gen_tile_set.clear();
@@ -94,11 +94,12 @@ void WorldMap::generate_tile_set()
             total_weight += tile->get_weight() * 4.f;
         }
     }
+    
+    WARN_PRINT_ED("Tile set initialisation : "+ itos(gen_tile_set.size()) + " tiles");
 }
 
 void WorldMap::iterate_wfc()
 {
-    WARN_PRINT_ED("WFC step");
     // TODO : emit signal
 
     // first pick a cell : either random or lower entropy
@@ -128,22 +129,15 @@ void WorldMap::iterate_wfc()
         }
     }
 
-    // neighbouring cells (coord)
-    auto left  = Vector2i(repeat(low.x -1, size.x), low.y);
-    auto right = Vector2i(repeat(low.x +1, size.x), low.y);
-    auto up    = Vector2i(low.x, repeat(low.y -1, size.y));
-    auto down  = Vector2i(low.x, repeat(low.y +1, size.y));
-    
+    WARN_PRINT_ED("WFC step : collapsing cell " + String(low));   
     auto& cell       = get_cell(low.x, low.y);
-    auto& left_cell  = get_cell(left.x, left.y);
-    auto& right_cell = get_cell(right.x, right.y);
-    auto& up_cell    = get_cell(up.x, up.y);
-    auto& down_cell  = get_cell(down.x, down.y);
-    if (!cell.is_collapsed() && !cell.is_error())
+    if (!cell.is_collapsed())
     {
         collapse(low.x,low.y);
         propagate_change(low.x, low.y);
     }
+    // error check and report
+    ERR_FAIL_COND_MSG(cell.is_error(), "Cell " + String(low) + " is invalid");
 }
 
 void WorldMap::propagate_change(int x, int y)
@@ -255,23 +249,20 @@ void WorldMap::collapse(int x, int y)
 /** is there a final valid solution ? */
 bool WorldMap::is_collapsed() const
 {
-    volatile bool stop_flag=false;
     bool is_collapsed = true;
-    #pragma omp parallel for collapse(2) shared(stop_flag)
+    #pragma omp parallel for collapse(2)
     for (int y = 0; y < size.y; ++y) 
     {
         for (int x = 0; x < size.x; ++x) 
         {
-            if(stop_flag) continue;
-            // a cell is not collapsed
+            if(!is_collapsed) continue; // we already found a non collapsed cell
             auto cell = get_cell(x,y);
-            if (cell.is_collapsed())
+            if (!cell.is_collapsed())
             {
                 #pragma omp critical
                 {
-                is_collapsed = false;
+                    is_collapsed = false;
                 }
-                stop_flag=true;
             }
         }
     }
