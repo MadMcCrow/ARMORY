@@ -23,8 +23,8 @@ struct WorldCell
     /** bitset corresponding to the tile_set in the WorldMap. if t */
     std::vector<bool> bit_tile_set;
 
-    // default CTR
-    WorldCell();
+    // please use this CTR
+    WorldCell(size_t bitset_size);
 
     // WFC functions  
     _ALWAYS_INLINE_ std::vector<bool>&       get_tile_bitset()       {return bit_tile_set;}

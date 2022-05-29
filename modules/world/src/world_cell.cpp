@@ -6,7 +6,8 @@
 
 using namespace armory;
 
-WorldCell::WorldCell() 
+WorldCell::WorldCell(size_t bitset_size) 
 {
+    bit_tile_set.resize(bitset_size, true);
 }
 

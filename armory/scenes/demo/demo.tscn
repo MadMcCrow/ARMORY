@@ -14,7 +14,6 @@ shader_param/sea_level = 0.5
 size = Vector2(500, 500)
 
 [node name="WorldMap" type="WorldMap"]
-seed = -282371040
 tile_set_resource = ExtResource( "1_sr1s4" )
 script = ExtResource( "1_mm6dn" )
 

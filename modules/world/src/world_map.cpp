@@ -10,7 +10,7 @@
 using namespace armory;
 
 // for error return
-static WorldCell error_Cell = WorldCell();
+static WorldCell error_Cell = WorldCell(0);
 
 void WorldMap::_bind_methods()
 {
@@ -48,16 +48,19 @@ TypedArray<String> WorldMap::get_configuration_warnings() const
 
 void WorldMap::init_cells()
 {
+    WARN_PRINT_ED("Cell Initialisation");
+    // TODO : emit signal
     cell_vector.clear();
-    cell_vector.resize( size.x * size.y, WorldCell()); 
+    cell_vector.resize( size.x * size.y, WorldCell(gen_tile_set.size())); 
 }
 
 void WorldMap::generate_cells()
 {
+    WARN_PRINT_ED("Generate Cell");
+    // TODO : make every step async and emit signals
+    generate_tile_set();
     init_cells();
     set_rand_seed(seed);
-
-    generate_tile_set();
    
     while (!is_collapsed())
     {
@@ -67,6 +70,9 @@ void WorldMap::generate_cells()
 
 void WorldMap::generate_tile_set()
 {
+    WARN_PRINT_ED("Tile set initialisation");
+    // TODO : emit signal
+
     gen_tile_set.clear();
     total_weight = 0.f;
     if (tile_set_resource.is_null())
@@ -92,6 +98,9 @@ void WorldMap::generate_tile_set()
 
 void WorldMap::iterate_wfc()
 {
+    WARN_PRINT_ED("WFC step");
+    // TODO : emit signal
+
     // first pick a cell : either random or lower entropy
     auto low    = Vector2i(rand_int(0,size.x), rand_int(0, size.y));
     float low_e = get_cell_entropy(low.x, low.y);
