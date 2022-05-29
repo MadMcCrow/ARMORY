@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3ydgx2glngyo"
-path="res://.godot/imported/beach_right.png-a3544ab2595c6b252c5d13b916a058a0.ctex"
+uid="uid://c7s4bd3iio7qe"
+path="res://.godot/imported/beach_center.png-82ba84127d9f2160f468427c08207467.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/cells/images/beach_right.png"
-dest_files=["res://.godot/imported/beach_right.png-a3544ab2595c6b252c5d13b916a058a0.ctex"]
+source_file="res://resources/tiles/images/beach_center.png"
+dest_files=["res://.godot/imported/beach_center.png-82ba84127d9f2160f468427c08207467.ctex"]
 
 [params]
 
@@ -29,5 +29,6 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1

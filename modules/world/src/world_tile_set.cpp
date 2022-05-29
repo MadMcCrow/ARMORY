@@ -23,11 +23,13 @@ Array WorldTileSet::get_tiles() const
 {
     Array retval;
     const auto num = tiles.size();
-    retval.resize(num);
-    #pragma omp parallel for
-    for (int idx = 0; idx < num; ++idx)
+    if (retval.resize(num) == Error::OK)
     {
-        retval[idx] = tiles[idx];
+        #pragma omp parallel for
+        for (int idx = 0; idx < num; ++idx)
+        {
+            retval[idx] = tiles[idx];
+        }
     }
     return retval;
 }
@@ -35,7 +37,7 @@ Array WorldTileSet::get_tiles() const
 void WorldTileSet::set_tiles(const Array& in_tiles)
 {
     const size_t num = in_tiles.size();
-    tiles.reserve(num);
+    tiles.resize(num, Ref<WorldTile>());
     #pragma omp parallel for
     for (size_t idx = 0; idx < num; ++idx)
     {

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://vohemnucfse2"
-path="res://.godot/imported/mountain_corner_in_left.png-a666780b51aabb0c45edb452f7d5db01.ctex"
+uid="uid://ksyhiau4ciw"
+path="res://.godot/imported/hill_corner_in_left.png-5a62ef57b118acd3c7bde9e09e893c34.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/cells/images/mountain_corner_in_left.png"
-dest_files=["res://.godot/imported/mountain_corner_in_left.png-a666780b51aabb0c45edb452f7d5db01.ctex"]
+source_file="res://resources/tiles/images/hill_corner_in_left.png"
+dest_files=["res://.godot/imported/hill_corner_in_left.png-5a62ef57b118acd3c7bde9e09e893c34.ctex"]
 
 [params]
 
@@ -29,5 +29,6 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1

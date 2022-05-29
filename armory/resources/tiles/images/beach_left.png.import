@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://brx5dweok1qnk"
-path="res://.godot/imported/sea_corner_out_left.png-664008cab41b37bae53e7ee0bbbeca37.ctex"
+uid="uid://c0hpygq3t4a1t"
+path="res://.godot/imported/beach_left.png-3e7ae92b5fb88e5f2152b2ccea6eee48.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/cells/images/sea_corner_out_left.png"
-dest_files=["res://.godot/imported/sea_corner_out_left.png-664008cab41b37bae53e7ee0bbbeca37.ctex"]
+source_file="res://resources/tiles/images/beach_left.png"
+dest_files=["res://.godot/imported/beach_left.png-3e7ae92b5fb88e5f2152b2ccea6eee48.ctex"]
 
 [params]
 
@@ -29,5 +29,6 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1

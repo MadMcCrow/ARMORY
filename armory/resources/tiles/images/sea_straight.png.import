@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpi4wpauu3hrh"
-path="res://.godot/imported/hill_corner_in_right.png-fb46e9063ddcbdb51880c08b00964873.ctex"
+uid="uid://8i358vheg4xo"
+path="res://.godot/imported/sea_straight.png-ae3a22f18a4526ef7af662060769bd77.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/cells/images/hill_corner_in_right.png"
-dest_files=["res://.godot/imported/hill_corner_in_right.png-fb46e9063ddcbdb51880c08b00964873.ctex"]
+source_file="res://resources/tiles/images/sea_straight.png"
+dest_files=["res://.godot/imported/sea_straight.png-ae3a22f18a4526ef7af662060769bd77.ctex"]
 
 [params]
 
@@ -29,5 +29,6 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1

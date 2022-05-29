@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://bi7v5judjv55e"]
 
 [ext_resource type="Script" path="res://scripts/demo/demo_world_map.gd" id="1_mm6dn"]
+[ext_resource type="WorldTileSet" uid="uid://cthxcmg8i6mfs" path="res://resources/tiles/base_world_set.tres" id="1_sr1s4"]
 [ext_resource type="Shader" path="res://shaders/demo.gdshader" id="2_7ndvd"]
-[ext_resource type="PackedScene" uid="uid://bpsu5sga4is8" path="res://scenes/gui/gui_world_config.tscn" id="2_pnajt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mq4p0"]
 shader = ExtResource( "2_7ndvd" )
@@ -13,7 +13,9 @@ shader_param/sea_level = 0.5
 [sub_resource type="ImageTexture" id="ImageTexture_wta7x"]
 size = Vector2(500, 500)
 
-[node name="WorldMap" type="Node"]
+[node name="WorldMap" type="WorldMap"]
+seed = -282371040
+tile_set_resource = ExtResource( "1_sr1s4" )
 script = ExtResource( "1_mm6dn" )
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
@@ -26,7 +28,7 @@ offset_bottom = 600.0
 split_offset = 180
 
 [node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/HSplitContainer"]
-offset_right = 686.0
+offset_right = 1024.0
 offset_bottom = 600.0
 size_flags_horizontal = 3
 
@@ -36,11 +38,3 @@ minimum_size = Vector2(200, 200)
 offset_right = 500.0
 offset_bottom = 500.0
 texture = SubResource( "ImageTexture_wta7x" )
-
-[node name="Config" parent="PanelContainer/HSplitContainer" instance=ExtResource( "2_pnajt" )]
-clip_contents = true
-offset_left = 698.0
-offset_right = 1024.0
-offset_bottom = 77.0
-size_flags_horizontal = 3
-size_flags_vertical = 0

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c5j2yd6lafjgo"
-path="res://.godot/imported/cliff.png-46998c0a8234a8ef057e14f17d129243.ctex"
+uid="uid://c0rbcnbdudbkl"
+path="res://.godot/imported/sea_corner_in_left.png-04a88e7f9d472194274966c7aeaf02f4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/cells/images/cliff.png"
-dest_files=["res://.godot/imported/cliff.png-46998c0a8234a8ef057e14f17d129243.ctex"]
+source_file="res://resources/tiles/images/sea_corner_in_left.png"
+dest_files=["res://.godot/imported/sea_corner_in_left.png-04a88e7f9d472194274966c7aeaf02f4.ctex"]
 
 [params]
 
@@ -29,5 +29,6 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1

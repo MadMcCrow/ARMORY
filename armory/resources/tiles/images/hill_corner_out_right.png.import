@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://guxw53rui8pb"
-path="res://.godot/imported/sea_deep.png-89d0b3851ab96317844896b9f6a215d6.ctex"
+uid="uid://cqkjiukq1ep7m"
+path="res://.godot/imported/hill_corner_out_right.png-8bbe44886ed1c16df8247e0c6d94c1a5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/cells/images/sea_deep.png"
-dest_files=["res://.godot/imported/sea_deep.png-89d0b3851ab96317844896b9f6a215d6.ctex"]
+source_file="res://resources/tiles/images/hill_corner_out_right.png"
+dest_files=["res://.godot/imported/hill_corner_out_right.png-8bbe44886ed1c16df8247e0c6d94c1a5.ctex"]
 
 [params]
 
@@ -29,5 +29,6 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1

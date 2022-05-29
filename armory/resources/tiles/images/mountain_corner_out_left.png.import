@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://j807yw7skfh6"
-path="res://.godot/imported/mountain_straight.png-7afef7f551c3646f714a93ba02e25495.ctex"
+uid="uid://dysk76uvm5ope"
+path="res://.godot/imported/mountain_corner_out_left.png-6f3aa0188e71c825de2a5e89224218ce.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/cells/images/mountain_straight.png"
-dest_files=["res://.godot/imported/mountain_straight.png-7afef7f551c3646f714a93ba02e25495.ctex"]
+source_file="res://resources/tiles/images/mountain_corner_out_left.png"
+dest_files=["res://.godot/imported/mountain_corner_out_left.png-6f3aa0188e71c825de2a5e89224218ce.ctex"]
 
 [params]
 
@@ -29,5 +29,6 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1

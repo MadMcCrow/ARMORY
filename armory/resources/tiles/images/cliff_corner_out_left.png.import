@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyudujiwweh34"
-path="res://.godot/imported/mountain.png-d5c785560423eb7969e79a6b802ad598.ctex"
+uid="uid://b7ht746rwf8c6"
+path="res://.godot/imported/cliff_corner_out_left.png-72e8c671a9ce833e36bdb7f7695b76ab.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/cells/images/mountain.png"
-dest_files=["res://.godot/imported/mountain.png-d5c785560423eb7969e79a6b802ad598.ctex"]
+source_file="res://resources/tiles/images/cliff_corner_out_left.png"
+dest_files=["res://.godot/imported/cliff_corner_out_left.png-72e8c671a9ce833e36bdb7f7695b76ab.ctex"]
 
 [params]
 
@@ -29,5 +29,6 @@ process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1

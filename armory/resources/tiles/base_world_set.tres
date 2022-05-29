@@ -1,0 +1,6 @@
+[gd_resource type="WorldTileSet" load_steps=2 format=3 uid="uid://cthxcmg8i6mfs"]
+
+[ext_resource type="WorldTile" path="res://resources/tiles/land_tile.tres" id="1_4fr3r"]
+
+[resource]
+tiles = [ExtResource( "1_4fr3r" ), null]
