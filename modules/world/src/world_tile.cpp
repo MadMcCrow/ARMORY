@@ -57,9 +57,8 @@ void WorldTile::_bind_methods()
 
 Ref<WorldTile> WorldTile::rotate() const
 {
-    Ref<WorldTile> ret_val;
-    ret_val.instantiate();
-    *ret_val.ptr() = *this; // copy
+    // copy but subresources stays the same :
+    Ref<WorldTile> ret_val = duplicate(false);
     // rotate :
     ret_val->left = up;
     ret_val->up  = right;

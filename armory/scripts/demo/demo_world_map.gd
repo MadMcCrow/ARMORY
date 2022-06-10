@@ -5,8 +5,8 @@ extends WorldMap
 @onready var tex_rect = $PanelContainer/HSplitContainer/ScrollContainer/TextureRect
 
 var in_seed = 156412
-var in_x = 10
-var in_y = 10 
+var in_x = 100
+var in_y = 100
 
 # set image
 func _ready():

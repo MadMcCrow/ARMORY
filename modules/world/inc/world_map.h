@@ -64,7 +64,7 @@ protected:
     void generate_tile_set();
 
     /** core of wfc loop */
-    void iterate_wfc();
+    bool iterate_wfc();
 
     /** propagate the changes made in a collapse event */
     void propagate_change(int x, int y);

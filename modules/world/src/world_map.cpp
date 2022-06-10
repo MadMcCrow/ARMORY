@@ -50,8 +50,14 @@ void WorldMap::init_cells()
 {
     // TODO : emit signal
     cell_vector.clear();
-    cell_vector.resize( size.x * size.y, WorldCell(gen_tile_set.size())); 
-    WARN_PRINT_ED("init cells : size is " + String(size) + " with " + itos(gen_tile_set.size()) + " tiles");
+    const auto size_2d = size.x * size.y;
+    const auto tile_count = gen_tile_set.size();
+    // init cell vector :
+    cell_vector.reserve(size_2d);
+    for (int idx = 0; idx < size_2d; ++idx)
+        cell_vector.emplace_back(tile_count);
+
+    WARN_PRINT_ED("init cells : size is " + String(size) + " with " + itos(tile_count) + " tiles");
 }
 
 void WorldMap::generate_cells()
@@ -61,11 +67,14 @@ void WorldMap::generate_cells()
     generate_tile_set();
     init_cells();
     set_rand_seed(seed);
-   
-    while (!is_collapsed())
-    {
-        iterate_wfc();
-    }
+    auto start = std::chrono::system_clock::now();
+    while (!is_collapsed() && iterate_wfc())
+    {;}
+    auto end = std::chrono::system_clock::now();
+
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
+    
+    WARN_PRINT_ED("generate cell : generation took : " + itos(elapsed.count()) + "ms");
 
 }
 
@@ -95,15 +104,15 @@ void WorldMap::generate_tile_set()
         }
     }
     
-    WARN_PRINT_ED("Tile set initialisation : "+ itos(gen_tile_set.size()) + " tiles");
+    WARN_PRINT_ED("Tile set initialisation : "+ itos(gen_tile_set.size()) + " tiles with a total weight of " + rtos(total_weight));
 }
 
-void WorldMap::iterate_wfc()
+bool WorldMap::iterate_wfc()
 {
     // TODO : emit signal
 
     // first pick a cell : either random or lower entropy
-    auto low    = Vector2i(rand_int(0,size.x), rand_int(0, size.y));
+    auto low    = Vector2i(rand_int(0,size.x-1), rand_int(0, size.y-1));
     float low_e = get_cell_entropy(low.x, low.y);
     
     #pragma omp parallel for collapse(2)
@@ -111,7 +120,11 @@ void WorldMap::iterate_wfc()
     {
         for (int x = 0; x < size.x; x++)
         {
-            auto e = get_cell_entropy(x,y);
+            // early exit for already collapsed cells
+            if (get_cell(x,y).is_collapsed())
+                continue;
+            
+            const auto e = get_cell_entropy(x,y);
             if (e < low_e && e > 0)
             {
                 #pragma omp critical
@@ -129,7 +142,6 @@ void WorldMap::iterate_wfc()
         }
     }
 
-    WARN_PRINT_ED("WFC step : collapsing cell " + String(low));   
     auto& cell       = get_cell(low.x, low.y);
     if (!cell.is_collapsed())
     {
@@ -137,7 +149,8 @@ void WorldMap::iterate_wfc()
         propagate_change(low.x, low.y);
     }
     // error check and report
-    ERR_FAIL_COND_MSG(cell.is_error(), "Cell " + String(low) + " is invalid");
+    ERR_FAIL_COND_V_EDMSG(cell.is_error(),false , "Cell " + String(low) + " is invalid :" + cell.to_string());
+    return true;
 }
 
 void WorldMap::propagate_change(int x, int y)
@@ -160,8 +173,8 @@ void WorldMap::propagate_change(int x, int y)
         //currently modified cell :
         auto &cell = get_cell(x,y);
         bool removed = false;
-        // every one uses the same number of bits
-        const auto num = cell.get_tile_bitset().size();
+        // every one uses the same number of bits : the number of tile in tileset
+        const auto num = gen_tile_set.size();
 
         // for each bits in bitset
         for (unsigned i = 0; i < num; ++i)
@@ -169,10 +182,9 @@ void WorldMap::propagate_change(int x, int y)
             // this serve has an early exit. we don't care if there's only one configuration that will fit or thousands
             bool has_valid_combination = false;
             // each bit correspond to a tile in the tileset : if true, it's compatible
-            std::vector<bool>::reference tile_bit = cell.get_tile_bitset()[i];
 
             // early exit : we previously established this does not work
-            if (!tile_bit)
+            if (!cell.get_tile_bitset().test(i))
                 continue;
 
             // check every combinations with neighbours. if one combination is already valid : just continue
@@ -188,13 +200,15 @@ void WorldMap::propagate_change(int x, int y)
                             // quick get out of loop if one combination previously succeeded
                             if (has_valid_combination)
                                 continue;
-                            const std::vector<bool>::reference left_bit    = get_cell(left(x,y)  ).get_tile_bitset()[l];
-                            const std::vector<bool>::reference right_bit   = get_cell(right(x,y) ).get_tile_bitset()[r];
-                            const std::vector<bool>::reference up_bit      = get_cell(up(x,y)    ).get_tile_bitset()[u];
-                            const std::vector<bool>::reference down_bit    = get_cell(down(x,y)  ).get_tile_bitset()[d];
+
+
                             // at least one of these bit are not valid, it can't count has a valid combination 
-                            if (!left_bit || !right_bit || !up_bit || !down_bit)
+                            if (    !get_cell(left(x,y)  ).get_tile_bitset().test(l) ||
+                                    !get_cell(right(x,y) ).get_tile_bitset().test(r) ||
+                                    !get_cell(up(x,y)    ).get_tile_bitset().test(u) ||
+                                    !get_cell(down(x,y)  ).get_tile_bitset().test(d)    )
                                 continue;
+
                             bool compat = gen_tile_set[i]->is_compatible(gen_tile_set[l], gen_tile_set[r], gen_tile_set[u], gen_tile_set[d]);
                             // at least a compination worked
                             if (compat)
@@ -211,7 +225,8 @@ void WorldMap::propagate_change(int x, int y)
             // we failed to find a valid combination, we set that bit to false
             if (!has_valid_combination)
             {
-                tile_bit = false;
+                WARN_PRINT_ED("propagate_change :" + String(Vector2i(x,y)) +" does not have a combination for : " + itos(i));
+                cell.get_tile_bitset().reset(i);
                 removed = true;
             }
         }
@@ -230,20 +245,18 @@ void WorldMap::collapse(int x, int y)
 {
     float value = rand_float(0.f,1.f);
     const auto weights = get_cell_normalized_weights(x,y);
+    auto& cell   = get_cell(x,y);
+   
     // value must be between 0 and 1
-    float sum = 0;
-    for (int idx = 0; idx < weights.size(); idx++)
+    float sum = 0.f;
+    int idx = 0;
+    while  (sum <= value && idx < weights.size() - 1)
     {
         sum += weights[idx];
-        if (sum < value)
-            continue;
-        else
-        {
-            auto& cell = get_cell(x,y);
-            cell.get_tile_bitset().resize(cell.get_tile_bitset().size(), false); // set all to false
-            cell.get_tile_bitset()[idx] = true;                        // set to true;
-        }
+        ++idx;
     }
+    cell.get_tile_bitset().reset();     // set all to false
+    cell.get_tile_bitset().set(idx);    // set idx to true;
 }
 
 /** is there a final valid solution ? */
@@ -295,18 +308,16 @@ std::vector<float> WorldMap::get_cell_normalized_weights(int x, int y) const
     std::vector<float> normalized_weights;
     normalized_weights.resize(gen_tile_set.size(), 0.f);
     float local_total_weight = total_weight;
-
-    const auto& cell = get_cell(x,y);
-    const auto& bitset = cell.get_tile_bitset();
-    ERR_FAIL_COND_V_MSG(bitset.size() != gen_tile_set.size(),{}, "Cell has a a different amount of bits than world has tiles");
-
+    
+    const auto& bitset = get_cell(x,y).get_tile_bitset();
+    
     #pragma omp parallel for
-    for (int idx = 0; idx< gen_tile_set.size(); idx++)
+    for (int idx = 0; idx< gen_tile_set.size(); ++idx)
     {
         if (gen_tile_set[idx].is_valid())
         {
             const float weight = gen_tile_set[idx]->get_weight();
-            if (!bitset[idx])
+            if (!bitset.test(idx))
             {
                 // this one has to be removed from the total weight
                 #pragma omp critical
@@ -321,6 +332,7 @@ std::vector<float> WorldMap::get_cell_normalized_weights(int x, int y) const
         }
         // leave at 0
     }
+
     #pragma omp parallel for
     for (auto & weight: normalized_weights)
     {

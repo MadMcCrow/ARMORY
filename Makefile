@@ -25,7 +25,7 @@ all: godot extensions
 
 # `make launch` calls launch script
 launch:
-	@godot/bin/godot.*.tools* armory/project.godot --editor --ups;
+	@godot/bin/godot.*.tools* armory/project.godot  -d ;
 
 # clean everything
 clean:

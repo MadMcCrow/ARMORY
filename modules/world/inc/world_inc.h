@@ -4,12 +4,17 @@
 #ifndef WORLD_INC_H
 #define WORLD_INC_H
 
+#define WORLD_MAX_TILE_SET 128
+
 /**
  * @file world_inc.h
  * @brief Contains all the includes for the world module, as well as helper functions
  */
 
 // std
+#include <iostream>
+#include <bitset>
+#include <cstdlib>
 #include <stack>
 #include <cmath>
 #include <cstdint>
@@ -19,6 +24,8 @@
 #include <set>
 #include <algorithm>
 #include <utility>
+#include <chrono>
+#include <ctime>    
 
 // godot :
 #include <core/typedefs.h>
@@ -146,7 +153,7 @@ static const void set_rand_seed(size_t random_seed)
 
 
 /** generate a float between min and max (based on last set seed) */
-static const int rand_float(float min, float max)
+static const float rand_float(float min, float max)
 {
     std::uniform_real_distribution<float> dis(min, max);
     return  dis(mersene_generator);

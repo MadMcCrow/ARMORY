@@ -21,17 +21,19 @@ struct WorldCell
 {
 
     /** bitset corresponding to the tile_set in the WorldMap. if t */
-    std::vector<bool> bit_tile_set;
+    std::bitset<WORLD_MAX_TILE_SET> bit_tile_set;
 
     // please use this CTR
     WorldCell(size_t bitset_size);
 
     // WFC functions  
-    _ALWAYS_INLINE_ std::vector<bool>&       get_tile_bitset()       {return bit_tile_set;}
-    _ALWAYS_INLINE_ const std::vector<bool>& get_tile_bitset() const {return bit_tile_set;}
-    _ALWAYS_INLINE_ size_t tile_set_count() const {return std::count(bit_tile_set.begin(), bit_tile_set.end(), true);} /** number of compatible cells */
-    _ALWAYS_INLINE_ bool is_collapsed() const { return tile_set_count() == 1;}      /** reduced to one cell */
-    _ALWAYS_INLINE_ bool is_error() const     { return tile_set_count() < 1;}       /** no more valid cells */
+    _ALWAYS_INLINE_ auto&       get_tile_bitset()       {return bit_tile_set;}
+    _ALWAYS_INLINE_ const auto& get_tile_bitset() const {return bit_tile_set;}
+    _ALWAYS_INLINE_ bool is_collapsed() const { return bit_tile_set.count() == 1;}      /** reduced to one cell */
+    _ALWAYS_INLINE_ bool is_error() const     { return bit_tile_set.none();}            /** no more valid cells */
+
+
+    String to_string() const;
 
 };
 }; // namespace armory
