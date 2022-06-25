@@ -25,7 +25,8 @@
 #include <algorithm>
 #include <utility>
 #include <chrono>
-#include <ctime>    
+#include <ctime>   
+#include <optional> 
 
 // godot :
 #include <core/typedefs.h>
@@ -139,6 +140,29 @@ static constexpr float faster_logf (float a)
     return r;
 }
 
+// This is a fast approximation to log2()
+// Y = C[0]*F*F*F + C[1]*F*F + C[2]*F + C[3] + E;
+static constexpr float fast_log2 (float X)
+{
+    float Y = 1.23149591368684f;
+    int E = 0;
+    float F = frexpf(fabsf(X), &E);
+    Y *= F;
+    Y += -4.11852516267426f;
+    Y *= F;
+    Y += 6.02197014179219f;
+    Y *= F;
+    Y += -3.13396450166353f;
+    Y += E;
+    return Y;
+}
+
+//log10f is exactly log2(x)/log2(10.0f)
+static constexpr float  fast_log10f(float x) 
+{
+  return  fast_log2(x)*0.3010299956639812f;
+}
+
 /** torus-world modulo-like function */
 static constexpr int repeat(int p, int q)
 {
@@ -197,6 +221,28 @@ static const void add_custom_project_setting(String name, Variant default_value,
 	ERR_FAIL_COND_EDMSG(PS->save(), "Failed to save project settings");
 }
 
+
+struct _Benchmark
+{
+    _Benchmark(String InName) : Name(InName)
+    {
+        begin = std::chrono::system_clock::now();
+    }
+    ~_Benchmark()
+    {
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()-begin);
+        //WARN_PRINT_ED( Name + " : Benchmark duration : " + itos(elapsed.count()) + "ms");
+    }
+private:
+    std::chrono::time_point<std::chrono::system_clock> begin;
+    String Name;
+};
+
+#define BENCHMARK_FUNC() \
+_Benchmark benchy__FUNCTION__(__FUNCTION__);
+
+#define BENCHMARK_SCOPE(Name) \
+_Benchmark benchy#Name(#Name);
 
 };
 

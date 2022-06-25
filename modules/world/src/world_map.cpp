@@ -6,7 +6,6 @@
 #include "world_cell.h"
 #include "world_tile.h"
 
-
 using namespace armory;
 
 // for error return
@@ -14,25 +13,25 @@ static WorldCell error_Cell = WorldCell(0);
 
 void WorldMap::_bind_methods()
 {
-	// Methods.
+    // Methods.
 
     // WorldMap Methods
-    ClassDB::bind_method(D_METHOD("set_seed", "in_seed"),  &WorldMap::set_seed);
-    ClassDB::bind_method(D_METHOD("get_seed"),  &WorldMap::get_seed);
-    ClassDB::bind_method(D_METHOD("set_size", "in_size"),  &WorldMap::set_size);
-    ClassDB::bind_method(D_METHOD("get_size"),  &WorldMap::get_size);
-    ClassDB::bind_method(D_METHOD("set_tile_set", "in_tile_set"),  &WorldMap::set_tile_set);
-    ClassDB::bind_method(D_METHOD("get_tile_set"),  &WorldMap::get_tile_set);
+    ClassDB::bind_method(D_METHOD("set_seed", "in_seed"), &WorldMap::set_seed);
+    ClassDB::bind_method(D_METHOD("get_seed"), &WorldMap::get_seed);
+    ClassDB::bind_method(D_METHOD("set_size", "in_size"), &WorldMap::set_size);
+    ClassDB::bind_method(D_METHOD("get_size"), &WorldMap::get_size);
+    ClassDB::bind_method(D_METHOD("set_tile_set", "in_tile_set"), &WorldMap::set_tile_set);
+    ClassDB::bind_method(D_METHOD("get_tile_set"), &WorldMap::get_tile_set);
     ClassDB::bind_method(D_METHOD("init_cells"), &WorldMap::init_cells);
-    ClassDB::bind_method(D_METHOD("generate_cells"),  &WorldMap::generate_cells);
-    ClassDB::bind_method(D_METHOD("export_to_image", "out_image", "tile_size"),  &WorldMap::export_to_image);
+    ClassDB::bind_method(D_METHOD("generate_cells"), &WorldMap::generate_cells);
+    ClassDB::bind_method(D_METHOD("export_to_image", "out_image", "tile_size"), &WorldMap::export_to_image);
 
-	// Properties
-	ADD_GROUP("ARMORY", "armory_");
+    // Properties
+    ADD_GROUP("ARMORY", "armory_");
     ADD_SUBGROUP("WORLD", "world_");
     ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "size"), "set_size", "get_size");
-    ADD_PROPERTY(PropertyInfo(Variant::INT,      "seed"), "set_seed", "get_seed");
-    ADD_PROPERTY(PropertyInfo(Variant::OBJECT,   "tile_set_resource",  PROPERTY_HINT_RESOURCE_TYPE, "WorldTileSet"), "set_tile_set", "get_tile_set");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "seed"), "set_seed", "get_seed");
+    ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "tile_set_resource", PROPERTY_HINT_RESOURCE_TYPE, "WorldTileSet"), "set_tile_set", "get_tile_set");
 }
 
 WorldMap::WorldMap() : Node()
@@ -45,9 +44,9 @@ TypedArray<String> WorldMap::get_configuration_warnings() const
     return Node::get_configuration_warnings();
 }
 
-
 void WorldMap::init_cells()
 {
+    BENCHMARK_FUNC()
     // TODO : emit signal
     cell_vector.clear();
     const auto size_2d = size.x * size.y;
@@ -55,27 +54,169 @@ void WorldMap::init_cells()
     // init cell vector :
     cell_vector.reserve(size_2d);
     for (int idx = 0; idx < size_2d; ++idx)
+    {
         cell_vector.emplace_back(tile_count);
-
+    }
     WARN_PRINT_ED("init cells : size is " + String(size) + " with " + itos(tile_count) + " tiles");
 }
 
 void WorldMap::generate_cells()
 {
     WARN_PRINT_ED("generate cell ");
+
     // TODO : make every step async and emit signals
     generate_tile_set();
     init_cells();
     set_rand_seed(seed);
     auto start = std::chrono::system_clock::now();
-    while (!is_collapsed() && iterate_wfc())
-    {;}
+    // costly operation:
+    wfc_loop();
     auto end = std::chrono::system_clock::now();
-
-    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
-    
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     WARN_PRINT_ED("generate cell : generation took : " + itos(elapsed.count()) + "ms");
+}
 
+void WorldMap::wfc_loop()
+{
+    BENCHMARK_FUNC()
+
+    std::stack<Vector2i> low_candidates;
+    // first pick a cell : either random or lower entropy
+    {
+        auto start = Vector2i(rand_int(0, size.x - 1), rand_int(0, size.y - 1));
+        low_candidates.emplace(start);
+    }
+     
+
+    // WFC main loop :
+    while (true)
+    {
+        //
+        // WFC STEP : Find lowest entropy or finish
+        //
+        std::optional<Vector2i> lowest;
+        {
+            float lowest_e = 0.f;
+            if (!low_candidates.empty())
+            {
+                // one of our candidates is the lowest entropy :
+                while (!low_candidates.empty())
+                {
+                    Vector2i low = low_candidates.top();
+                    low_candidates.pop();
+                    
+                    if (!lowest)
+                    {
+                        lowest = low;
+                        lowest_e =  get_cell_entropy(lowest->x, lowest->y);
+                    }
+                    else
+                    {
+                        if (get_cell_entropy(low.x, low.y) < lowest_e)
+                        {
+                            lowest   = low;
+                        }
+                    }
+                }    
+            }
+            else
+            {
+                #pragma omp parallel for collapse(2) shared(lowest_e)
+                for (size_t x = 0; x < size.x; ++x)
+                {
+                    for (size_t y = 0; y < size.y; ++y)
+                    {
+                        auto cell_e = get_cell_entropy(x,y);
+                        if (cell_e <= 0.f)
+                            continue;
+
+                        if (!lowest)
+                        {
+                            #pragma omp critical
+                            {
+                                if (!lowest)
+                                {
+                                    lowest = Vector2i(x,y);
+                                    lowest_e = cell_e;
+                                }
+                            } 
+                            // OMP exit : 
+                            if (lowest->x == x && lowest->y == y)
+                                continue;
+                        }
+
+                        if ( cell_e < lowest_e )
+                        {
+                    
+                            #pragma omp critical
+                            {
+                                // re-check, another thread may have changed it
+                                if ( cell_e < lowest_e )
+                                {
+                                    lowest = Vector2i(x,y);
+                                    lowest_e = cell_e;
+                                
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // did not find new low -> we are collapsed
+                if (!lowest)
+                {
+                    break; // we're done !
+                }
+            }
+        }
+        
+        // low_candidates.swap(std::stack<Vector2i>());
+
+        //
+        // WFC STEP : collapse lost entropy cell :
+        //
+        {
+            float value = rand_float(0.f, total_weight);
+            auto &cell = get_cell(lowest->x, lowest->y);
+            auto &bitset = cell.get_tile_bitset();
+
+            // value must be between 0 and 1
+            float sum = 0.f;
+            int idx = 0;
+            while (true)
+            {
+                if (sum >= value)
+                {
+                    break;
+                }
+                auto weight = gen_tile_set[idx]->get_weight();
+                if (!bitset.test(idx))
+                {
+                    value -= weight;
+                }
+                else
+                {
+                    sum += weight;
+                }
+                ++idx;
+            }
+            cell.collapse(idx);
+            WARN_PRINT_ED("wfc loop :  collapsed " + String(lowest.value_or(Vector2i(-1,-1))) + " with idx : " + itos(idx));
+        }
+
+        //
+        // WFC STEP : propagate change :
+        //
+        propagate_change(lowest->x, lowest->y, low_candidates);
+
+        //
+        // WFC STEP : get the low candidates in :
+        //
+        low_candidates.push(left(lowest->x, lowest->y));
+        low_candidates.push(right(lowest->x, lowest->y));
+        low_candidates.push(up(lowest->x, lowest->y));
+        low_candidates.push(down(lowest->x, lowest->y));
+    }
 }
 
 void WorldMap::generate_tile_set()
@@ -87,91 +228,41 @@ void WorldMap::generate_tile_set()
     if (tile_set_resource.is_null())
         return;
 
-    auto& tile_set = tile_set_resource->get_tile_set();
-    gen_tile_set.reserve(tile_set.size() *4);
+    auto &tile_set = tile_set_resource->get_tile_set();
+    gen_tile_set.reserve(tile_set.size() * 4);
     for (const auto &tile : tile_set)
     {
         if (tile.is_valid())
         {
             // copy each rotation (data*4)
-            Ref<WorldTile> n,e,s,w;
+            Ref<WorldTile> n, e, s, w;
             n = tile;
             w = n->rotate();
             s = w->rotate();
             e = s->rotate();
-            gen_tile_set.insert(gen_tile_set.end(), { n, s, e, w });
+            gen_tile_set.insert(gen_tile_set.end(), {n, s, e, w});
             total_weight += tile->get_weight() * 4.f;
         }
     }
-    
-    WARN_PRINT_ED("Tile set initialisation : "+ itos(gen_tile_set.size()) + " tiles with a total weight of " + rtos(total_weight));
+
+    WARN_PRINT_ED("Tile set initialisation : " + itos(gen_tile_set.size()) + " tiles with a total weight of " + rtos(total_weight));
 }
 
-bool WorldMap::iterate_wfc()
+void WorldMap::propagate_change(int x, int y, std::stack<Vector2i> &changed)
 {
-    // TODO : emit signal
 
-    // first pick a cell : either random or lower entropy
-    auto low    = Vector2i(rand_int(0,size.x-1), rand_int(0, size.y-1));
-    float low_e = get_cell_entropy(low.x, low.y);
-    
-    #pragma omp parallel for collapse(2)
-    for (int y = 0; y < size.y; y++)
-    {
-        for (int x = 0; x < size.x; x++)
-        {
-            // early exit for already collapsed cells
-            if (get_cell(x,y).is_collapsed())
-                continue;
-            
-            const auto e = get_cell_entropy(x,y);
-            if (e < low_e && e > 0)
-            {
-                #pragma omp critical
-                {
-                    // perform check again, other thread could have changed low_e
-                    // above zero cannot change
-                    if (e < low_e)
-                    {
-                        low_e = e;
-                        low.x = x;
-                        low.y = y;
-                    }
-                }
-            }
-        }
-    }
-
-    auto& cell       = get_cell(low.x, low.y);
-    if (!cell.is_collapsed())
-    {
-        collapse(low.x,low.y);
-        propagate_change(low.x, low.y);
-    }
-    // error check and report
-    ERR_FAIL_COND_V_EDMSG(cell.is_error(),false , "Cell " + String(low) + " is invalid :" + cell.to_string());
-    return true;
-}
-
-void WorldMap::propagate_change(int x, int y)
-{
-    const auto left  = [this](auto lx,auto ly){return Vector2i(repeat(lx -1, size.x), ly);};
-    const auto right = [this](auto rx,auto ry){return Vector2i(repeat(rx +1, size.x), ry);};
-    const auto up    = [this](auto ux,auto uy){return Vector2i(ux, repeat(uy -1, size.y));};
-    const auto down  = [this](auto dx,auto dy){return Vector2i(dx, repeat(dy +1, size.y));};
-
-    std::stack<Vector2i> modified; 
-    modified.emplace(Vector2i(x,y));
+    std::stack<Vector2i> modified;
+    modified.emplace(Vector2i(x, y));
 
     while (!modified.empty())
     {
-        // cannot use tie with C-style array :(
-        x = modified.top().coord[0];
-        y = modified.top().coord[1];
+        const auto& coord = modified.top();
+        x = coord.x;
+        y = coord.y;
         modified.pop();
 
-        //currently modified cell :
-        auto &cell = get_cell(x,y);
+        // currently modified cell :
+        auto &cell = get_cell(x, y);
         bool removed = false;
         // every one uses the same number of bits : the number of tile in tileset
         const auto num = gen_tile_set.size();
@@ -187,8 +278,8 @@ void WorldMap::propagate_change(int x, int y)
             if (!cell.get_tile_bitset().test(i))
                 continue;
 
-            // check every combinations with neighbours. if one combination is already valid : just continue
-            #pragma omp parallel for collapse(4)
+// check every combinations with neighbours. if one combination is already valid : just continue
+#pragma omp parallel for collapse(4)
             for (unsigned l = 0; l < num; ++l)
             {
                 for (unsigned r = 0; r < num; ++r)
@@ -201,19 +292,18 @@ void WorldMap::propagate_change(int x, int y)
                             if (has_valid_combination)
                                 continue;
 
-
-                            // at least one of these bit are not valid, it can't count has a valid combination 
-                            if (    !get_cell(left(x,y)  ).get_tile_bitset().test(l) ||
-                                    !get_cell(right(x,y) ).get_tile_bitset().test(r) ||
-                                    !get_cell(up(x,y)    ).get_tile_bitset().test(u) ||
-                                    !get_cell(down(x,y)  ).get_tile_bitset().test(d)    )
+                            // at least one of these bit are not valid, it can't count has a valid combination
+                            if (!get_cell(left(x, y)).get_tile_bitset().test(l) ||
+                                !get_cell(right(x, y)).get_tile_bitset().test(r) ||
+                                !get_cell(up(x, y)).get_tile_bitset().test(u) ||
+                                !get_cell(down(x, y)).get_tile_bitset().test(d))
                                 continue;
 
                             bool compat = gen_tile_set[i]->is_compatible(gen_tile_set[l], gen_tile_set[r], gen_tile_set[u], gen_tile_set[d]);
                             // at least a compination worked
                             if (compat)
                             {
-                                #pragma omp critical
+#pragma omp critical
                                 {
                                     has_valid_combination = true;
                                 }
@@ -221,124 +311,63 @@ void WorldMap::propagate_change(int x, int y)
                         }
                     }
                 }
-            }  
+            }
             // we failed to find a valid combination, we set that bit to false
             if (!has_valid_combination)
             {
-                WARN_PRINT_ED("propagate_change :" + String(Vector2i(x,y)) +" does not have a combination for : " + itos(i));
                 cell.get_tile_bitset().reset(i);
                 removed = true;
             }
         }
-        // this cell was changed, update neighbours 
+        // this cell was changed, update neighbours
         if (removed)
         {
-            modified.push(left (x,y));
-            modified.push(right(x,y));
-            modified.push(up   (x,y));
-            modified.push(down (x,y));
-        }   
-    }
-}
-
-void WorldMap::collapse(int x, int y)
-{
-    float value = rand_float(0.f,1.f);
-    const auto weights = get_cell_normalized_weights(x,y);
-    auto& cell   = get_cell(x,y);
-   
-    // value must be between 0 and 1
-    float sum = 0.f;
-    int idx = 0;
-    while  (sum <= value && idx < weights.size() - 1)
-    {
-        sum += weights[idx];
-        ++idx;
-    }
-    cell.get_tile_bitset().reset();     // set all to false
-    cell.get_tile_bitset().set(idx);    // set idx to true;
-}
-
-/** is there a final valid solution ? */
-bool WorldMap::is_collapsed() const
-{
-    bool is_collapsed = true;
-    #pragma omp parallel for collapse(2)
-    for (int y = 0; y < size.y; ++y) 
-    {
-        for (int x = 0; x < size.x; ++x) 
-        {
-            if(!is_collapsed) continue; // we already found a non collapsed cell
-            auto cell = get_cell(x,y);
-            if (!cell.is_collapsed())
-            {
-                #pragma omp critical
-                {
-                    is_collapsed = false;
-                }
-            }
+            changed.push(coord);
+            modified.push(left(x, y));
+            modified.push(right(x, y));
+            modified.push(up(x, y));
+            modified.push(down(x, y));
         }
     }
-    return is_collapsed;
 }
-
 
 float WorldMap::get_cell_entropy(int x, int y) const
 {
-     // {\displaystyle \mathrm {H} (X)=-\sum _{i=1}^{n}{\mathrm {P} (x_{i})\log _{b}\mathrm {P} (x_{i})}}
+    BENCHMARK_FUNC()
+    // we could use shannon entropy, but using a function with similar variation (sign of derivative)
+    // improves performance a lot.
+    //
+    // Shannon :
+    // {\displaystyle \mathrm {H} (X)=-\sum _{i=1}^{n}{\mathrm {P} (x_{i})\log _{b}\mathrm {P} (x_{i})}}
     // Entropy = sum{i[0->n]}(Pxi *logb(Pxi))
-    auto normalized_weights = get_cell_normalized_weights(x,y);
-    float entropy = 0;
-    #pragma omp parallel for
-    for (auto & weight: normalized_weights)
+    //
+    // Ours :
+    //  Entropy = sum{i[0->n]}(Pxi)
+    //
+    const auto &cell = get_cell(x,y);
+    const auto &bitset = cell.get_tile_bitset();
+    // collapsed :
+    if (bitset.count() <= 1)
+    {   
+        return 0.f;
+    }
+    float entropy = 0.f;
+    #pragma omp parallel for shared(entropy)
+    for (int idx = 0; idx < gen_tile_set.size(); ++idx)
     {
-        float local_ent_sum = weight * faster_logf(weight);
-        // section to make the sum
-        #pragma omp critical
-        {
-            entropy+=local_ent_sum;
-        }
+            if (gen_tile_set[idx].is_valid())
+            {
+                const float weight = bitset.test(idx) ? gen_tile_set[idx]->get_weight() : 0.f;
+                if (weight != 0)
+                {
+                    #pragma omp critical
+                    {
+                        entropy += weight;
+                    }
+                }
+            } 
     }
     return entropy;
-}
-
-
-std::vector<float> WorldMap::get_cell_normalized_weights(int x, int y) const
-{
-    std::vector<float> normalized_weights;
-    normalized_weights.resize(gen_tile_set.size(), 0.f);
-    float local_total_weight = total_weight;
-    
-    const auto& bitset = get_cell(x,y).get_tile_bitset();
-    
-    #pragma omp parallel for
-    for (int idx = 0; idx< gen_tile_set.size(); ++idx)
-    {
-        if (gen_tile_set[idx].is_valid())
-        {
-            const float weight = gen_tile_set[idx]->get_weight();
-            if (!bitset.test(idx))
-            {
-                // this one has to be removed from the total weight
-                #pragma omp critical
-                {
-                    local_total_weight -= weight;
-                }
-            }
-            else
-            {
-                normalized_weights[idx] = weight;
-            }
-        }
-        // leave at 0
-    }
-
-    #pragma omp parallel for
-    for (auto & weight: normalized_weights)
-    {
-        weight/=local_total_weight;
-    }
-    return normalized_weights;
 }
 
 float WorldMap::distance(int ax, int ay, int bx, int by) const
@@ -348,7 +377,7 @@ float WorldMap::distance(int ax, int ay, int bx, int by) const
     bx = repeat(bx, size.x);
     by = repeat(by, size.y);
     // manhattan distance ?
-    return abs(bx-ax) + abs(by-ay);
+    return abs(bx - ax) + abs(by - ay);
 }
 
 size_t WorldMap::get_index(const int &x, const int &y) const
@@ -357,24 +386,11 @@ size_t WorldMap::get_index(const int &x, const int &y) const
     return repeat(x, size.x) + repeat(y, size.y) * size.x;
 }
 
-const WorldCell& WorldMap::get_cell(const int &x, const int &y) const
+const WorldCell &WorldMap::get_cell(const int &x, const int &y) const
 {
     try
     {
-        return cell_vector.at(get_index(x,y));
-    }
-    catch (std::out_of_range oor)
-    {
-        ERR_FAIL_V_MSG(error_Cell, "index is out_of_range");
-    }
-
-}
-
-WorldCell& WorldMap::get_cell(const int &x, const int &y)
-{
-    try
-    {
-        return cell_vector.at(get_index(x,y));
+        return cell_vector.at(get_index(x, y));
     }
     catch (std::out_of_range oor)
     {
@@ -382,18 +398,29 @@ WorldCell& WorldMap::get_cell(const int &x, const int &y)
     }
 }
 
-void WorldMap::set_cell(const int &x, const int &y, const WorldCell& in_cell)
+WorldCell &WorldMap::get_cell(const int &x, const int &y)
 {
     try
     {
-        cell_vector.at(get_index(x,y)) = in_cell;
+        return cell_vector.at(get_index(x, y));
+    }
+    catch (std::out_of_range oor)
+    {
+        ERR_FAIL_V_MSG(error_Cell, "index is out_of_range");
+    }
+}
+
+void WorldMap::set_cell(const int &x, const int &y, const WorldCell &in_cell)
+{
+    try
+    {
+        cell_vector.at(get_index(x, y)) = in_cell;
     }
     catch (std::out_of_range oor)
     {
         ERR_FAIL_MSG("index is out_of_range");
     }
 }
-
 
 void WorldMap::export_to_image(Ref<Image> out_image, int tile_size)
 {
@@ -402,14 +429,13 @@ void WorldMap::export_to_image(Ref<Image> out_image, int tile_size)
         out_image.instantiate();
     }
 
-    
     // set the image
-    out_image->create( size.x * tile_size, size.y *tile_size, false, Image::FORMAT_L8);
+    out_image->create(size.x * tile_size, size.y * tile_size, false, Image::FORMAT_L8);
 
     #pragma omp parallel for collapse(2)
-    for (int y = 0; y < size.y; ++y) 
+    for (int y = 0; y < size.y; ++y)
     {
-        for (int x = 0; x < size.x; ++x) 
+        for (int x = 0; x < size.x; ++x)
         {
             /*
             const float cell = static_cast<uint8_t>(get_cell(x,y) & 0x0f) * 1.f;

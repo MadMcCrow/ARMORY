@@ -63,23 +63,18 @@ protected:
 
     void generate_tile_set();
 
-    /** core of wfc loop */
-    bool iterate_wfc();
-
-    /** propagate the changes made in a collapse event */
-    void propagate_change(int x, int y);
-
-    /** collapse a cell */
-    void collapse(int x, int y);
-
-    /** is there a final valid solution ? */
-    bool is_collapsed() const;
+    /**
+     * @brief           take the constrain into account. 
+     * 
+     * @param x         x axis of the first modified cell
+     * @param y         y axis of the first modified cell
+     * @param changed   the list of modified cells  
+     * @return * propagate* 
+     */
+    void propagate_change(int x, int y, std::stack<Vector2i> &changed);
 
     /** get cell entropy ( ie. found how many tiles this could be) */
     float get_cell_entropy(int x, int y) const;
-
-    /** based on tile weights, recalculate for each possible tile the probability for the cell */ 
-    std::vector<float> get_cell_normalized_weights(int x, int y) const;
 
     /** distance  between to cell */
     virtual float distance(int ax, int ay, int bx, int by) const;
@@ -98,6 +93,12 @@ protected:
     /** set Cell of cell */
     virtual void set_cell(const int &x, const int &y, const WorldCell &in_cell);
 
+    /**  Helper functions to get neighbours of cells */ 
+    _ALWAYS_INLINE_ Vector2i left (auto lx,auto ly) {return Vector2i(repeat(lx -1, size.x), ly);};
+    _ALWAYS_INLINE_ Vector2i right(auto rx,auto ry) {return Vector2i(repeat(rx +1, size.x), ry);};
+    _ALWAYS_INLINE_ Vector2i up   (auto ux,auto uy) {return Vector2i(ux, repeat(uy -1, size.y));};
+    _ALWAYS_INLINE_ Vector2i down (auto dx,auto dy) {return Vector2i(dx, repeat(dy +1, size.y));};
+
 public:
 
     //<GDScript interface>
@@ -107,6 +108,9 @@ public:
 
     /** generate cells based on last set seed and size */
     void generate_cells();
+
+    /** generate cells based on last set seed and size */
+    void wfc_loop();
 
     /** setter for @see tile_set_resource */
     void set_tile_set(const Ref<WorldTileSet>& in_tile_set) {tile_set_resource = in_tile_set;}

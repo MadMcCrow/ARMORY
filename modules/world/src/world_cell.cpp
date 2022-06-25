@@ -8,7 +8,6 @@ using namespace armory;
 
 WorldCell::WorldCell(size_t bitset_size) 
 {
-    bit_tile_set.reset();
     size_t padding = WORLD_MAX_TILE_SET - bitset_size;
     bit_tile_set.set();
     bit_tile_set >>= padding;
