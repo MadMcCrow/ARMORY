@@ -94,10 +94,10 @@ protected:
     virtual void set_cell(const int &x, const int &y, const WorldCell &in_cell);
 
     /**  Helper functions to get neighbours of cells */ 
-    _ALWAYS_INLINE_ Vector2i left (auto lx,auto ly) {return Vector2i(repeat(lx -1, size.x), ly);};
-    _ALWAYS_INLINE_ Vector2i right(auto rx,auto ry) {return Vector2i(repeat(rx +1, size.x), ry);};
-    _ALWAYS_INLINE_ Vector2i up   (auto ux,auto uy) {return Vector2i(ux, repeat(uy -1, size.y));};
-    _ALWAYS_INLINE_ Vector2i down (auto dx,auto dy) {return Vector2i(dx, repeat(dy +1, size.y));};
+    _ALWAYS_INLINE_ constexpr Vector2i left (auto lx,auto ly) const {return Vector2i(repeat(lx -1, size.x), ly);};
+    _ALWAYS_INLINE_ constexpr Vector2i right(auto rx,auto ry) const {return Vector2i(repeat(rx +1, size.x), ry);};
+    _ALWAYS_INLINE_ constexpr Vector2i up   (auto ux,auto uy) const {return Vector2i(ux, repeat(uy -1, size.y));};
+    _ALWAYS_INLINE_ constexpr Vector2i down (auto dx,auto dy) const {return Vector2i(dx, repeat(dy +1, size.y));};
 
 public:
 

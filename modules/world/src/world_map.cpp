@@ -74,6 +74,9 @@ void WorldMap::generate_cells()
     auto end = std::chrono::system_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     WARN_PRINT_ED("generate cell : generation took : " + itos(elapsed.count()) + "ms");
+
+    // auto exit for now
+    CRASH_NOW();
 }
 
 void WorldMap::wfc_loop()
@@ -87,7 +90,7 @@ void WorldMap::wfc_loop()
         low_candidates.emplace(start);
     }
      
-
+    // TODO : replace while with function and separate thread 
     // WFC main loop :
     while (true)
     {
@@ -104,58 +107,45 @@ void WorldMap::wfc_loop()
                 {
                     Vector2i low = low_candidates.top();
                     low_candidates.pop();
-                    
-                    if (!lowest)
+                    auto low_e = get_cell_entropy(low.x, low.y);
+                    if (!lowest && low_e > 0.f)
                     {
                         lowest = low;
-                        lowest_e =  get_cell_entropy(lowest->x, lowest->y);
+                        lowest_e = low_e;
                     }
                     else
                     {
                         if (get_cell_entropy(low.x, low.y) < lowest_e)
                         {
-                            lowest   = low;
+                            lowest = low;
                         }
                     }
                 }    
             }
-            else
+            
+            // either no low candidates, or all of those were collapsed already
+            if (!lowest)
             {
-                #pragma omp parallel for collapse(2) shared(lowest_e)
+                WARN_PRINT_ED("wfc loop : no candidates found");
+                //#pragma omp parallel for collapse(2) shared(lowest_e)
                 for (size_t x = 0; x < size.x; ++x)
                 {
                     for (size_t y = 0; y < size.y; ++y)
                     {
                         auto cell_e = get_cell_entropy(x,y);
-                        if (cell_e <= 0.f)
+
+                        WARN_PRINT_ED("wfc loop :" + String(Vector2i(x,y)) + "entropy = " + rtos(cell_e));
+                        if (cell_e <= 0.f) // collapsed
                             continue;
 
-                        if (!lowest)
+                        if (!lowest || lowest_e > cell_e)
                         {
-                            #pragma omp critical
+                            //#pragma omp critical
                             {
-                                if (!lowest)
+                                if (!lowest || lowest_e > cell_e)
                                 {
                                     lowest = Vector2i(x,y);
                                     lowest_e = cell_e;
-                                }
-                            } 
-                            // OMP exit : 
-                            if (lowest->x == x && lowest->y == y)
-                                continue;
-                        }
-
-                        if ( cell_e < lowest_e )
-                        {
-                    
-                            #pragma omp critical
-                            {
-                                // re-check, another thread may have changed it
-                                if ( cell_e < lowest_e )
-                                {
-                                    lowest = Vector2i(x,y);
-                                    lowest_e = cell_e;
-                                
                                 }
                             }
                         }
@@ -165,6 +155,7 @@ void WorldMap::wfc_loop()
                 // did not find new low -> we are collapsed
                 if (!lowest)
                 {
+                    WARN_PRINT_ED("wfc loop : all cells are collapsed");
                     break; // we're done !
                 }
             }
@@ -278,8 +269,8 @@ void WorldMap::propagate_change(int x, int y, std::stack<Vector2i> &changed)
             if (!cell.get_tile_bitset().test(i))
                 continue;
 
-// check every combinations with neighbours. if one combination is already valid : just continue
-#pragma omp parallel for collapse(4)
+            // check every combinations with neighbours. if one combination is already valid : just continue
+            #pragma omp parallel for collapse(4)
             for (unsigned l = 0; l < num; ++l)
             {
                 for (unsigned r = 0; r < num; ++r)
@@ -303,7 +294,7 @@ void WorldMap::propagate_change(int x, int y, std::stack<Vector2i> &changed)
                             // at least a compination worked
                             if (compat)
                             {
-#pragma omp critical
+                                #pragma omp critical
                                 {
                                     has_valid_combination = true;
                                 }
