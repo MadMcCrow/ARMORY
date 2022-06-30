@@ -69,9 +69,15 @@ protected:
      * @param x         x axis of the first modified cell
      * @param y         y axis of the first modified cell
      * @param changed   the list of modified cells  
-     * @return * propagate* 
      */
     void propagate_change(int x, int y, std::stack<Vector2i> &changed);
+
+    /**
+     * @brief           use a random value to make a cell have only one bit valid in tileset
+     * @param x         x axis
+     * @param y         y axis
+     */
+    void collapse_cell(int x, int y);
 
     /** get cell entropy ( ie. found how many tiles this could be) */
     float get_cell_entropy(int x, int y) const;

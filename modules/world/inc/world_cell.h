@@ -32,7 +32,7 @@ struct WorldCell
     _ALWAYS_INLINE_ bool is_collapsed() const { return bit_tile_set.count() == 1;}               /** reduced to one cell */
     _ALWAYS_INLINE_ bool is_error() const     { return bit_tile_set.none();}                     /** no more valid cells */
     _ALWAYS_INLINE_ void collapse(size_t idx) {bit_tile_set.reset(); bit_tile_set.set(idx);}     /** set all to false, set idx to true */
-
+    _ALWAYS_INLINE_ bool is_valid(size_t idx) {return bit_tile_set[idx];}
     String to_string() const;
 
 };

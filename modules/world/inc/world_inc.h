@@ -11,13 +11,16 @@
  * @brief Contains all the includes for the world module, as well as helper functions
  */
 
-// std
-#include <iostream>
-#include <bitset>
+// std c
 #include <cstdlib>
-#include <stack>
+#include <ctime>
+#include <cstring>
 #include <cmath>
 #include <cstdint>
+// std c++
+#include <iostream>
+#include <bitset>
+#include <stack>
 #include <random>
 #include <string>
 #include <vector>
@@ -25,7 +28,6 @@
 #include <algorithm>
 #include <utility>
 #include <chrono>
-#include <ctime>   
 #include <optional> 
 
 // godot :

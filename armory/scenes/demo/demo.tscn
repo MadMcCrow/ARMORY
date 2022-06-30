@@ -5,18 +5,17 @@
 [ext_resource type="Shader" path="res://shaders/demo.gdshader" id="2_7ndvd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mq4p0"]
-shader = ExtResource( "2_7ndvd" )
+shader = ExtResource("2_7ndvd")
 shader_param/land_color = Plane(0.4, 0.75, 0.5, 1)
 shader_param/sea_color = Plane(0.2, 0.2, 0.9, 1)
 shader_param/sea_level = 0.5
 
 [sub_resource type="ImageTexture" id="ImageTexture_wta7x"]
-size = Vector2(500, 500)
 
 [node name="WorldMap" type="WorldMap"]
 seed = 2
-tile_set_resource = ExtResource( "1_sr1s4" )
-script = ExtResource( "1_mm6dn" )
+tile_set_resource = ExtResource("1_sr1s4")
+script = ExtResource("1_mm6dn")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchor_right = 1.0
@@ -33,8 +32,5 @@ offset_bottom = 600.0
 size_flags_horizontal = 3
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/HSplitContainer/ScrollContainer"]
-material = SubResource( "ShaderMaterial_mq4p0" )
-minimum_size = Vector2(200, 200)
-offset_right = 500.0
-offset_bottom = 500.0
-texture = SubResource( "ImageTexture_wta7x" )
+material = SubResource("ShaderMaterial_mq4p0")
+texture = SubResource("ImageTexture_wta7x")

@@ -133,10 +133,10 @@ void WorldMap::wfc_loop()
                     for (size_t y = 0; y < size.y; ++y)
                     {
                         auto cell_e = get_cell_entropy(x,y);
-
-                        WARN_PRINT_ED("wfc loop :" + String(Vector2i(x,y)) + "entropy = " + rtos(cell_e));
                         if (cell_e <= 0.f) // collapsed
+                        {
                             continue;
+                        }
 
                         if (!lowest || lowest_e > cell_e)
                         {
@@ -166,34 +166,7 @@ void WorldMap::wfc_loop()
         //
         // WFC STEP : collapse lost entropy cell :
         //
-        {
-            float value = rand_float(0.f, total_weight);
-            auto &cell = get_cell(lowest->x, lowest->y);
-            auto &bitset = cell.get_tile_bitset();
-
-            // value must be between 0 and 1
-            float sum = 0.f;
-            int idx = 0;
-            while (true)
-            {
-                if (sum >= value)
-                {
-                    break;
-                }
-                auto weight = gen_tile_set[idx]->get_weight();
-                if (!bitset.test(idx))
-                {
-                    value -= weight;
-                }
-                else
-                {
-                    sum += weight;
-                }
-                ++idx;
-            }
-            cell.collapse(idx);
-            WARN_PRINT_ED("wfc loop :  collapsed " + String(lowest.value_or(Vector2i(-1,-1))) + " with idx : " + itos(idx));
-        }
+        collapse_cell(lowest->x, lowest->y);
 
         //
         // WFC STEP : propagate change :
@@ -235,22 +208,20 @@ void WorldMap::generate_tile_set()
             total_weight += tile->get_weight() * 4.f;
         }
     }
-
     WARN_PRINT_ED("Tile set initialisation : " + itos(gen_tile_set.size()) + " tiles with a total weight of " + rtos(total_weight));
 }
 
 void WorldMap::propagate_change(int x, int y, std::stack<Vector2i> &changed)
 {
-
-    std::stack<Vector2i> modified;
-    modified.emplace(Vector2i(x, y));
-
-    while (!modified.empty())
+    WARN_PRINT_ED("propagate_change : " + String(Vector2i(x,y)));
+    std::stack<Vector2i> to_check;
+    to_check.emplace(Vector2i(x, y));
+    while (!to_check.empty())
     {
-        const auto& coord = modified.top();
+        const auto& coord = to_check.top();
         x = coord.x;
         y = coord.y;
-        modified.pop();
+        to_check.pop();
 
         // currently modified cell :
         auto &cell = get_cell(x, y);
@@ -261,16 +232,15 @@ void WorldMap::propagate_change(int x, int y, std::stack<Vector2i> &changed)
         // for each bits in bitset
         for (unsigned i = 0; i < num; ++i)
         {
-            // this serve has an early exit. we don't care if there's only one configuration that will fit or thousands
-            bool has_valid_combination = false;
-            // each bit correspond to a tile in the tileset : if true, it's compatible
-
             // early exit : we previously established this does not work
-            if (!cell.get_tile_bitset().test(i))
+            if (cell.get_tile_bitset()[i] == false)
                 continue;
 
+            // this serve has an early exit. we don't care if there's only one configuration that will fit or thousands
+            bool has_valid_combination = false;
+
             // check every combinations with neighbours. if one combination is already valid : just continue
-            #pragma omp parallel for collapse(4)
+            //#pragma omp parallel for collapse(4)
             for (unsigned l = 0; l < num; ++l)
             {
                 for (unsigned r = 0; r < num; ++r)
@@ -283,18 +253,20 @@ void WorldMap::propagate_change(int x, int y, std::stack<Vector2i> &changed)
                             if (has_valid_combination)
                                 continue;
 
-                            // at least one of these bit are not valid, it can't count has a valid combination
-                            if (!get_cell(left(x, y)).get_tile_bitset().test(l) ||
-                                !get_cell(right(x, y)).get_tile_bitset().test(r) ||
-                                !get_cell(up(x, y)).get_tile_bitset().test(u) ||
-                                !get_cell(down(x, y)).get_tile_bitset().test(d))
+                            // all neighbours must be valid to be a valid combination
+                            if (!(  get_cell(left(x, y)).is_valid(l)     &&
+                                    get_cell(right(x, y)).is_valid(r)    &&
+                                    get_cell(up(x, y)).is_valid(u)       &&
+                                    get_cell(down(x, y)).is_valid(d)))
+                            {
                                 continue;
+                            }
 
                             bool compat = gen_tile_set[i]->is_compatible(gen_tile_set[l], gen_tile_set[r], gen_tile_set[u], gen_tile_set[d]);
-                            // at least a compination worked
+                            // at least a combination worked
                             if (compat)
                             {
-                                #pragma omp critical
+                                //#pragma omp critical
                                 {
                                     has_valid_combination = true;
                                 }
@@ -314,12 +286,37 @@ void WorldMap::propagate_change(int x, int y, std::stack<Vector2i> &changed)
         if (removed)
         {
             changed.push(coord);
-            modified.push(left(x, y));
-            modified.push(right(x, y));
-            modified.push(up(x, y));
-            modified.push(down(x, y));
+            to_check.push(left(x, y));
+            to_check.push(right(x, y));
+            to_check.push(up(x, y));
+            to_check.push(down(x, y));
         }
     }
+}
+
+void WorldMap::collapse_cell(int x, int y)
+{
+    float value = rand_float(0.f, total_weight);
+    auto &cell = get_cell(x,y);
+    const auto &bitset = cell.get_tile_bitset();
+    // value must be between 0 and 1
+    float sum = 0.f;
+    int idx = 0;
+    while (sum < value)
+    {
+        float weight = gen_tile_set[idx]->get_weight();
+        if (!bitset[idx])
+        {
+            value -= weight;
+        }
+        else
+        {
+            sum += weight;
+        }
+        ++idx;
+    }
+    cell.collapse(idx);
+    WARN_PRINT_ED("wfc loop :  collapsed " + String(Vector2i(x,y)) + " with idx : " + itos(idx));
 }
 
 float WorldMap::get_cell_entropy(int x, int y) const

@@ -11,7 +11,16 @@
 
 
 using namespace armory;
-		
+
+bool compare_name(const CharString &A,const CharString &B)
+{
+    //if (std::strcmp(A.ptr(),B.ptr()) != 0)
+    {
+        WARN_PRINT_ED("compare_name : Incompatible A=" + String(A.ptr()) + " B=" + String(B.ptr()));
+    //    return false;
+    }
+    return true;
+}
 
 void WorldTile::_bind_methods()
 {
@@ -55,15 +64,25 @@ void WorldTile::_bind_methods()
 }
 
 
+void WorldTile::reload_from_file()
+{
+    // resave border names
+    set_left(get_left().camelcase_to_underscore());
+    set_right(get_right().camelcase_to_underscore());
+    set_up(get_up().camelcase_to_underscore());
+    set_down(get_down().camelcase_to_underscore());
+    Resource::reload_from_file(); // call to super
+}
+
 Ref<WorldTile> WorldTile::rotate() const
 {
     // copy but subresources stays the same :
     Ref<WorldTile> ret_val = duplicate(false);
     // rotate :
-    ret_val->left = up;
-    ret_val->up  = right;
-    ret_val->right = down;
-    ret_val->down = left;
+    ret_val->left   = up;
+    ret_val->up     = right;
+    ret_val->right  = down;
+    ret_val->down   = left;
     return ret_val;
 }
 
@@ -71,26 +90,28 @@ bool WorldTile::is_compatible(const Ref<WorldTile> &left_tile, const Ref<WorldTi
 {
     if (left_tile.is_valid())
     {
-        if (left_tile->get_right().to_lower() != get_left().to_lower())
+        if (!compare_name(left_tile->right,left))
             return false;
     }
-
-      if (right_tile.is_valid())
+    if (right_tile.is_valid())
     {
-        if (right_tile->get_left().to_lower() != get_right().to_lower())
+        if (!compare_name(right_tile->left,right))
             return false;
     }
-
     if (up_tile.is_valid())
     {
-        if (up_tile->get_down().to_lower() != get_up().to_lower())
+        if (!compare_name(up_tile->down,up))
+            return false;
+    }
+    if (down_tile.is_valid())
+    {
+        if (!compare_name(down_tile->up,down))
             return false;
     }
 
-    if (down_tile.is_valid())
     {
-        if (down_tile->get_up().to_lower() != get_down().to_lower())
-            return false;
+        WARN_PRINT_ED("is_compatible : compatible  tile");
     }
+
     return true;
 }
