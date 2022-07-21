@@ -161,7 +161,12 @@ void WorldMap::wfc_loop()
             }
         }
         
-        // low_candidates.swap(std::stack<Vector2i>());
+        // empty
+        if (!low_candidates.empty())
+        {
+            auto empty_stack = std::stack<Vector2i>();
+            low_candidates.swap(empty_stack);
+        }
 
         //
         // WFC STEP : collapse lost entropy cell :
@@ -278,6 +283,7 @@ void WorldMap::propagate_change(int x, int y, std::stack<Vector2i> &changed)
             // we failed to find a valid combination, we set that bit to false
             if (!has_valid_combination)
             {
+                WARN_PRINT_ED("propagate_change : removed bit " + itos(i));
                 cell.get_tile_bitset().reset(i);
                 removed = true;
             }
@@ -316,7 +322,6 @@ void WorldMap::collapse_cell(int x, int y)
         ++idx;
     }
     cell.collapse(idx);
-    WARN_PRINT_ED("wfc loop :  collapsed " + String(Vector2i(x,y)) + " with idx : " + itos(idx));
 }
 
 float WorldMap::get_cell_entropy(int x, int y) const
