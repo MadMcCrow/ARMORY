@@ -13,10 +13,10 @@ BASEDIR := $(realpath $(CURDIR))
 
 # godot/bin/godot.*tools.*
 Godot :
-	@cd godot && scons -j$(THREADS) profile="../custom.py" ;
+	@cd godot && scons -j$(THREADS) profile="../build/custom.py" ;
 
 Export:
-	@cd godot && scons -j$(THREADS) profile="../custom_template.py" ;
+	@cd godot && scons -j$(THREADS) profile="../build/custom_template.py" ;
 
 godot: Godot
 
