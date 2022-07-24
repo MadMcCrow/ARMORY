@@ -1,3 +1,8 @@
-[gd_resource type="NativeScript" format=2]
+[gd_resource type="NativeScript" load_steps=2 format=2]
+
+[ext_resource path="res://src/native/armory-rust.gdnlib" type="GDNativeLibrary" id=1]
 
 [resource]
+class_name = "ArmoryTile"
+library = ExtResource( 1 )
+script_class_name = "ArmoryTile"

@@ -8,6 +8,8 @@ use gdnative::core_types::VariantArray;
 #[inherit(Resource)]
 pub struct ArmoryTileSet {
     #[property]
+    name: String,
+    #[property]
     tiles : VariantArray<Shared>,
 }
 
@@ -17,6 +19,7 @@ impl ArmoryTileSet {
 // ctr
     fn new(_owner: &Resource) -> Self {
         ArmoryTileSet{
+        name : "None".into(),
         tiles : VariantArray::<Shared>::new_shared()
         }
     }

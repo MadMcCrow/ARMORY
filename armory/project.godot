@@ -8,7 +8,18 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "",
+"class": "ArmoryTile",
+"language": "NativeScript",
+"path": "res://src/native/armory-tile.gdns"
+} ]
+_global_script_class_icons={
+"ArmoryTile": ""
+}
+
 [application]
 
 config/name="Armory"
+run/main_scene="res://scn/gui/main_menu.tscn"
 config/icon="res://res/2d/icon.png"
