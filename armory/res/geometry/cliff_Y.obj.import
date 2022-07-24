@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/cliff_Y.obj-9edc501595c9961a429cd91447cccbdd.mesh"
+
+[deps]
+
+files=[ "res://.import/cliff_Y.obj-9edc501595c9961a429cd91447cccbdd.mesh" ]
+
+source_file="res://res/geometry/cliff_Y.obj"
+dest_files=[ "res://.import/cliff_Y.obj-9edc501595c9961a429cd91447cccbdd.mesh", "res://.import/cliff_Y.obj-9edc501595c9961a429cd91447cccbdd.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

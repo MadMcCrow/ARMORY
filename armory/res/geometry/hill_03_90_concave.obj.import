@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/hill_03_90_concave.obj-d6d40ce6054efce88bf74331fb88a329.mesh"
+
+[deps]
+
+files=[ "res://.import/hill_03_90_concave.obj-d6d40ce6054efce88bf74331fb88a329.mesh" ]
+
+source_file="res://res/geometry/hill_03_90_concave.obj"
+dest_files=[ "res://.import/hill_03_90_concave.obj-d6d40ce6054efce88bf74331fb88a329.mesh", "res://.import/hill_03_90_concave.obj-d6d40ce6054efce88bf74331fb88a329.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

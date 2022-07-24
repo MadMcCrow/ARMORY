@@ -1,0 +1,10 @@
+[package]
+name = "armory-gdnative-lib"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+gdnative = "0.10"

@@ -1,0 +1,18 @@
+[entry]
+
+X11.64="res://../armory-gdnative-lib/target/debug/libarmory_gdnative_lib.so"
+OSX.64="res://../armory-gdnative-lib/target/debug/libarmory_gdnative_lib.dylib"
+Windows.64="res://../armory-gdnative-lib/target/debug/libarmory_gdnative_lib.dll"
+
+[dependencies]
+
+X11.64=[  ]
+OSX.64=[  ]
+
+[general]
+
+singleton=false
+load_once=true
+symbol_prefix="godot_"
+reloadable=true
+

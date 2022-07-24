@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/hill_02_T.obj-6d2206b6453cdfd17e7843d1fabcf49c.mesh"
+
+[deps]
+
+files=[ "res://.import/hill_02_T.obj-6d2206b6453cdfd17e7843d1fabcf49c.mesh" ]
+
+source_file="res://res/geometry/hill_02_T.obj"
+dest_files=[ "res://.import/hill_02_T.obj-6d2206b6453cdfd17e7843d1fabcf49c.mesh", "res://.import/hill_02_T.obj-6d2206b6453cdfd17e7843d1fabcf49c.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

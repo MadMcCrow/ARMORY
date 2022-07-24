@@ -14,10 +14,14 @@ we should focus on two points for the game design :
 [] Revise units and their relationship
 [] Revise Economy and flow of resources
 
+### RUST
+[] Create Tile class in Rust
+[] Create TileMap class in Rust
+
 ### System
 
-[X] Map generation entirely in WorldMap
-[X] tile set data definition
+[] Map generation entirely in WorldMap
+[] tile set data definition
 [] tile content as an object class (must be derivable for custom behaviour)
 [] GDscript function to control generation
 
