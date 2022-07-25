@@ -1,21 +1,20 @@
 [remap]
 
 importer="wavefront_obj"
-importer_version=1
 type="Mesh"
-uid="uid://brcrqw6eyb4d6"
-path="res://.godot/imported/mountain_straight.obj-6516d3202ba27a9ad522ad1ffb666991.mesh"
+path="res://.import/mountain_straight.obj-cce830cd501131fd16d84a3f4fe4d6e7.mesh"
 
 [deps]
 
-files=["res://.godot/imported/mountain_straight.obj-6516d3202ba27a9ad522ad1ffb666991.mesh"]
+files=[ "res://.import/mountain_straight.obj-cce830cd501131fd16d84a3f4fe4d6e7.mesh" ]
 
-source_file="res://geometry/mountain_straight.obj"
-dest_files=["res://.godot/imported/mountain_straight.obj-6516d3202ba27a9ad522ad1ffb666991.mesh", "res://.godot/imported/mountain_straight.obj-6516d3202ba27a9ad522ad1ffb666991.mesh"]
+source_file="res://res/geometry/mountain_straight.obj"
+dest_files=[ "res://.import/mountain_straight.obj-cce830cd501131fd16d84a3f4fe4d6e7.mesh", "res://.import/mountain_straight.obj-cce830cd501131fd16d84a3f4fe4d6e7.mesh" ]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3(1, 1, 1)
-offset_mesh=Vector3(0, 0, 0)
-optimize_mesh=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

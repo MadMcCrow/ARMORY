@@ -1,21 +1,20 @@
 [remap]
 
 importer="wavefront_obj"
-importer_version=1
 type="Mesh"
-uid="uid://c6b42t8ujdaqt"
-path="res://.godot/imported/hill_01_90_concave.obj-2e7cd86114f9b0f1d17b9aa5844728cf.mesh"
+path="res://.import/hill_01_90_concave.obj-4a09e2a3767e59ea1a055ec496e20b69.mesh"
 
 [deps]
 
-files=["res://.godot/imported/hill_01_90_concave.obj-2e7cd86114f9b0f1d17b9aa5844728cf.mesh"]
+files=[ "res://.import/hill_01_90_concave.obj-4a09e2a3767e59ea1a055ec496e20b69.mesh" ]
 
-source_file="res://geometry/hill_01_90_concave.obj"
-dest_files=["res://.godot/imported/hill_01_90_concave.obj-2e7cd86114f9b0f1d17b9aa5844728cf.mesh", "res://.godot/imported/hill_01_90_concave.obj-2e7cd86114f9b0f1d17b9aa5844728cf.mesh"]
+source_file="res://res/geometry/hill_01_90_concave.obj"
+dest_files=[ "res://.import/hill_01_90_concave.obj-4a09e2a3767e59ea1a055ec496e20b69.mesh", "res://.import/hill_01_90_concave.obj-4a09e2a3767e59ea1a055ec496e20b69.mesh" ]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3(1, 1, 1)
-offset_mesh=Vector3(0, 0, 0)
-optimize_mesh=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

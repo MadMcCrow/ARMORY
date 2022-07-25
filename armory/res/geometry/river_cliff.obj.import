@@ -1,21 +1,20 @@
 [remap]
 
 importer="wavefront_obj"
-importer_version=1
 type="Mesh"
-uid="uid://onh4l21ubr7o"
-path="res://.godot/imported/river_cliff.obj-b93fd3e2eb1ef2971e303e5f0aaf6297.mesh"
+path="res://.import/river_cliff.obj-dd9d58ad2de69ce513596902214dd0ce.mesh"
 
 [deps]
 
-files=["res://.godot/imported/river_cliff.obj-b93fd3e2eb1ef2971e303e5f0aaf6297.mesh"]
+files=[ "res://.import/river_cliff.obj-dd9d58ad2de69ce513596902214dd0ce.mesh" ]
 
-source_file="res://geometry/river_cliff.obj"
-dest_files=["res://.godot/imported/river_cliff.obj-b93fd3e2eb1ef2971e303e5f0aaf6297.mesh", "res://.godot/imported/river_cliff.obj-b93fd3e2eb1ef2971e303e5f0aaf6297.mesh"]
+source_file="res://res/geometry/river_cliff.obj"
+dest_files=[ "res://.import/river_cliff.obj-dd9d58ad2de69ce513596902214dd0ce.mesh", "res://.import/river_cliff.obj-dd9d58ad2de69ce513596902214dd0ce.mesh" ]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3(1, 1, 1)
-offset_mesh=Vector3(0, 0, 0)
-optimize_mesh=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

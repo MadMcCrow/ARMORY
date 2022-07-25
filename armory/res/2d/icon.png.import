@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/beach_left.png-6ae06952efe0ce21c2265203d898be82.stex"
+path="res://.import/icon.png-364ef7ad925b1cb75c83e1a01494666c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://res/tiles/images/beach_left.png"
-dest_files=[ "res://.import/beach_left.png-6ae06952efe0ce21c2265203d898be82.stex" ]
+source_file="res://res/2d/icon.png"
+dest_files=[ "res://.import/icon.png-364ef7ad925b1cb75c83e1a01494666c.stex" ]
 
 [params]
 

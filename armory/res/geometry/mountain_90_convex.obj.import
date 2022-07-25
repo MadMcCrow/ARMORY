@@ -1,21 +1,20 @@
 [remap]
 
 importer="wavefront_obj"
-importer_version=1
 type="Mesh"
-uid="uid://8a87yrwo650f"
-path="res://.godot/imported/mountain_90_convex.obj-def21b502ec5f1cb79736821421b0d0e.mesh"
+path="res://.import/mountain_90_convex.obj-9151abb8d1b0288562ad925fb397917f.mesh"
 
 [deps]
 
-files=["res://.godot/imported/mountain_90_convex.obj-def21b502ec5f1cb79736821421b0d0e.mesh"]
+files=[ "res://.import/mountain_90_convex.obj-9151abb8d1b0288562ad925fb397917f.mesh" ]
 
-source_file="res://geometry/mountain_90_convex.obj"
-dest_files=["res://.godot/imported/mountain_90_convex.obj-def21b502ec5f1cb79736821421b0d0e.mesh", "res://.godot/imported/mountain_90_convex.obj-def21b502ec5f1cb79736821421b0d0e.mesh"]
+source_file="res://res/geometry/mountain_90_convex.obj"
+dest_files=[ "res://.import/mountain_90_convex.obj-9151abb8d1b0288562ad925fb397917f.mesh", "res://.import/mountain_90_convex.obj-9151abb8d1b0288562ad925fb397917f.mesh" ]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3(1, 1, 1)
-offset_mesh=Vector3(0, 0, 0)
-optimize_mesh=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

@@ -1,21 +1,20 @@
 [remap]
 
 importer="wavefront_obj"
-importer_version=1
 type="Mesh"
-uid="uid://t0hpe3fplay6"
-path="res://.godot/imported/hill_01_X.obj-df13ae06d4ed264af0cedf2c2501949b.mesh"
+path="res://.import/hill_01_X.obj-762c457977de8d7b58da14c531540a8d.mesh"
 
 [deps]
 
-files=["res://.godot/imported/hill_01_X.obj-df13ae06d4ed264af0cedf2c2501949b.mesh"]
+files=[ "res://.import/hill_01_X.obj-762c457977de8d7b58da14c531540a8d.mesh" ]
 
-source_file="res://geometry/hill_01_X.obj"
-dest_files=["res://.godot/imported/hill_01_X.obj-df13ae06d4ed264af0cedf2c2501949b.mesh", "res://.godot/imported/hill_01_X.obj-df13ae06d4ed264af0cedf2c2501949b.mesh"]
+source_file="res://res/geometry/hill_01_X.obj"
+dest_files=[ "res://.import/hill_01_X.obj-762c457977de8d7b58da14c531540a8d.mesh", "res://.import/hill_01_X.obj-762c457977de8d7b58da14c531540a8d.mesh" ]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3(1, 1, 1)
-offset_mesh=Vector3(0, 0, 0)
-optimize_mesh=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

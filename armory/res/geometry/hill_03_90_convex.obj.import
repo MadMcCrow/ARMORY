@@ -1,21 +1,20 @@
 [remap]
 
 importer="wavefront_obj"
-importer_version=1
 type="Mesh"
-uid="uid://bfyd1wpi7xda2"
-path="res://.godot/imported/hill_03_90_convex.obj-07417952ad030aff7f4855ea28828fe6.mesh"
+path="res://.import/hill_03_90_convex.obj-acc6ff92c50458ed16c742d8f70ce60d.mesh"
 
 [deps]
 
-files=["res://.godot/imported/hill_03_90_convex.obj-07417952ad030aff7f4855ea28828fe6.mesh"]
+files=[ "res://.import/hill_03_90_convex.obj-acc6ff92c50458ed16c742d8f70ce60d.mesh" ]
 
-source_file="res://geometry/hill_03_90_convex.obj"
-dest_files=["res://.godot/imported/hill_03_90_convex.obj-07417952ad030aff7f4855ea28828fe6.mesh", "res://.godot/imported/hill_03_90_convex.obj-07417952ad030aff7f4855ea28828fe6.mesh"]
+source_file="res://res/geometry/hill_03_90_convex.obj"
+dest_files=[ "res://.import/hill_03_90_convex.obj-acc6ff92c50458ed16c742d8f70ce60d.mesh", "res://.import/hill_03_90_convex.obj-acc6ff92c50458ed16c742d8f70ce60d.mesh" ]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3(1, 1, 1)
-offset_mesh=Vector3(0, 0, 0)
-optimize_mesh=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

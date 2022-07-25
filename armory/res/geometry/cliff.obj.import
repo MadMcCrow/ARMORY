@@ -1,21 +1,20 @@
 [remap]
 
 importer="wavefront_obj"
-importer_version=1
 type="Mesh"
-uid="uid://chf8u43ft84hm"
-path="res://.godot/imported/cliff.obj-4cd610e803d85af1b3d4c363715c56d0.mesh"
+path="res://.import/cliff.obj-44e2cfedcad21662d16731d6d1967320.mesh"
 
 [deps]
 
-files=["res://.godot/imported/cliff.obj-4cd610e803d85af1b3d4c363715c56d0.mesh"]
+files=[ "res://.import/cliff.obj-44e2cfedcad21662d16731d6d1967320.mesh" ]
 
-source_file="res://geometry/cliff.obj"
-dest_files=["res://.godot/imported/cliff.obj-4cd610e803d85af1b3d4c363715c56d0.mesh", "res://.godot/imported/cliff.obj-4cd610e803d85af1b3d4c363715c56d0.mesh"]
+source_file="res://res/geometry/cliff.obj"
+dest_files=[ "res://.import/cliff.obj-44e2cfedcad21662d16731d6d1967320.mesh", "res://.import/cliff.obj-44e2cfedcad21662d16731d6d1967320.mesh" ]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3(1, 1, 1)
-offset_mesh=Vector3(0, 0, 0)
-optimize_mesh=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

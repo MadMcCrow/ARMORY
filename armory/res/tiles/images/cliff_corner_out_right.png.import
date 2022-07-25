@@ -1,34 +1,35 @@
 [remap]
 
 importer="texture"
-type="CompressedTexture2D"
-uid="uid://c26ynvtrsjgd7"
-path="res://.godot/imported/cliff_corner_out_right.png-202173862fd6606109bee1a77098e43c.ctex"
+type="StreamTexture"
+path="res://.import/cliff_corner_out_right.png-81d1a1b73bca47090d42485a0620bc30.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/tiles/images/cliff_corner_out_right.png"
-dest_files=["res://.godot/imported/cliff_corner_out_right.png-202173862fd6606109bee1a77098e43c.ctex"]
+source_file="res://res/tiles/images/cliff_corner_out_right.png"
+dest_files=[ "res://.import/cliff_corner_out_right.png-81d1a1b73bca47090d42485a0620bc30.stex" ]
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
-compress/hdr_compression=1
+compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-compress/channel_pack=0
-mipmaps/generate=false
-mipmaps/limit=-1
-roughness/mode=0
-roughness/src_normal=""
+flags/repeat=0
+flags/filter=true
+flags/mipmaps=false
+flags/anisotropic=false
+flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
 process/normal_map_invert_y=false
-process/hdr_as_srgb=false
-process/hdr_clamp_exposure=false
-process/size_limit=0
-detect_3d/compress_to=1
+stream=false
+size_limit=0
+detect_3d=true
+svg/scale=1.0

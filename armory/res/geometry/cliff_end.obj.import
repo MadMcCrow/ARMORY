@@ -1,21 +1,20 @@
 [remap]
 
 importer="wavefront_obj"
-importer_version=1
 type="Mesh"
-uid="uid://bjudrjvn6mg2s"
-path="res://.godot/imported/cliff_end.obj-1b200603e52b85262a26cebea18b4298.mesh"
+path="res://.import/cliff_end.obj-e7b62b1ea8d3bad108f6760475240c03.mesh"
 
 [deps]
 
-files=["res://.godot/imported/cliff_end.obj-1b200603e52b85262a26cebea18b4298.mesh"]
+files=[ "res://.import/cliff_end.obj-e7b62b1ea8d3bad108f6760475240c03.mesh" ]
 
-source_file="res://geometry/cliff_end.obj"
-dest_files=["res://.godot/imported/cliff_end.obj-1b200603e52b85262a26cebea18b4298.mesh", "res://.godot/imported/cliff_end.obj-1b200603e52b85262a26cebea18b4298.mesh"]
+source_file="res://res/geometry/cliff_end.obj"
+dest_files=[ "res://.import/cliff_end.obj-e7b62b1ea8d3bad108f6760475240c03.mesh", "res://.import/cliff_end.obj-e7b62b1ea8d3bad108f6760475240c03.mesh" ]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3(1, 1, 1)
-offset_mesh=Vector3(0, 0, 0)
-optimize_mesh=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

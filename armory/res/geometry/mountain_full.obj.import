@@ -1,21 +1,20 @@
 [remap]
 
 importer="wavefront_obj"
-importer_version=1
 type="Mesh"
-uid="uid://bl76gndogm4ux"
-path="res://.godot/imported/mountain_full.obj-57d6a9fa676d41fdbb7421398df28079.mesh"
+path="res://.import/mountain_full.obj-2d9ce5afe63dadb51eb16e54cf7dfd64.mesh"
 
 [deps]
 
-files=["res://.godot/imported/mountain_full.obj-57d6a9fa676d41fdbb7421398df28079.mesh"]
+files=[ "res://.import/mountain_full.obj-2d9ce5afe63dadb51eb16e54cf7dfd64.mesh" ]
 
-source_file="res://geometry/mountain_full.obj"
-dest_files=["res://.godot/imported/mountain_full.obj-57d6a9fa676d41fdbb7421398df28079.mesh", "res://.godot/imported/mountain_full.obj-57d6a9fa676d41fdbb7421398df28079.mesh"]
+source_file="res://res/geometry/mountain_full.obj"
+dest_files=[ "res://.import/mountain_full.obj-2d9ce5afe63dadb51eb16e54cf7dfd64.mesh", "res://.import/mountain_full.obj-2d9ce5afe63dadb51eb16e54cf7dfd64.mesh" ]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3(1, 1, 1)
-offset_mesh=Vector3(0, 0, 0)
-optimize_mesh=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286
