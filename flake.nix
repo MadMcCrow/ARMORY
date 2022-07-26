@@ -1,3 +1,4 @@
+# Flake for building armory with nix
 {
     inputs = {
     };
@@ -9,8 +10,8 @@
     {
         packages."${system}" = with pkgs; {
             default = stdenv.mkDerivation rec{
-                name = "godot";
-                src = inputs.godot;
+                name = "ARMORY";
+                src = self;
                 nativeBuildInputs = [
                     scons
                     pkg-config
@@ -51,4 +52,3 @@
 
     };
 }
-
