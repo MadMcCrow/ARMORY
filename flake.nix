@@ -1,6 +1,8 @@
 # Flake for building armory with nix
 {
     inputs = {
+  	godot.url = "github:godotengine/godot";
+        godot.flake = false;
     };
     outputs = {self, nixpkgs, ...}@inputs: 
         let
@@ -11,9 +13,11 @@
         packages."${system}" = with pkgs; {
             default = stdenv.mkDerivation rec{
                 name = "ARMORY";
-                src = self;
+                src = inputs.godot;
+                submodules = true;
                 nativeBuildInputs = [
                     scons
+                    gnumake
                     pkg-config
                     xorg.libX11
                     xorg.libXcursor
@@ -35,13 +39,15 @@
                     yasm
 
                 ];
-                patchPhase = ''
-                    substituteInPlace platform/linuxbsd/detect.py --replace 'pkg-config xi ' 'pkg-config xi xfixes '
-                '';
+                patchPhase = "
+                    substituteInPlace ${inputs.godot}/platform/linuxbsd/detect.py --replace 'pkg-config xi ' 'pkg-config xi xfixes '
+                ";
+                
                 enableParallelBuilding = true;
                 buildInputs = nativeBuildInputs;
                 
-                sconsFlags = "platform=linuxbsd";
+                
+                #sconsFlags = "platform=linuxbsd";
                 LIBRARY_PATH = "${xorg.libXfixes}";
                 installPhase = ''
                     mkdir -p "$out/bin"
