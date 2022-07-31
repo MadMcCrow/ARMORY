@@ -4,7 +4,7 @@ with import <nixpkgs> {
 };
 
 stdenv.mkDerivation {
-  name = "breath";
+  name = "Armory";
   nativeBuildInputs = [
                     scons
                     gnumake
