@@ -4,7 +4,7 @@
 #ifndef ARMORY_WORLD_REGISTER_TYPES_H
 #define ARMORY_WORLD_REGISTER_TYPES_H
 
-#include "modules/register_module_types.h"
+#include <godot_cpp/core/class_db.hpp>
 
 void initialize_world_module(ModuleInitializationLevel p_level);
 void uninitialize_world_module(ModuleInitializationLevel p_level);

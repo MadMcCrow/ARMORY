@@ -8,79 +8,14 @@ import platform
 import sys
 import subprocess
 
-platform_list = ["linuxbsd"]
+# Using godot as our conscript
+env =  SConscript("../godot-cpp/SConstruct")
 
-#env = SConscript("../godot-cpp/SConstruct")
-env = Environment(tools=["default"])
-
-# @todo : use Godot env
-# scommand line options
-opts = Variables([], ARGUMENTS)
-opts.Add("p", "Platform (alias for 'platform')", "")
-opts.Add("platform", "Target platform (%s)" % ("|".join(platform_list),), "")
-opts.Update(env)
-
-if env["platform"] != "":
-    selected_platform = env["platform"]
-elif env["p"] != "":
-    selected_platform = env["p"]
-else:
-    # Missing `platform` argument, try to detect platform automatically
-    if (
-        sys.platform.startswith("linux")
-        or sys.platform.startswith("dragonfly")
-        or sys.platform.startswith("freebsd")
-        or sys.platform.startswith("netbsd")
-        or sys.platform.startswith("openbsd")
-    ):
-        selected_platform = "linuxbsd"
-    elif sys.platform == "darwin":
-        selected_platform = "macos"
-    elif sys.platform == "win32":
-        selected_platform = "windows"
-    else:
-        print("Could not detect platform automatically. Supported platforms:")
-        for x in platform_list:
-            print("\t" + x)
-        print("\nPlease run SCons again and select a valid platform: platform=<string>")
-
-    if selected_platform != "":
-        print("Automatically detected platform: " + selected_platform)
-
-if selected_platform in ["macos", "osx"]:
-    if selected_platform == "osx":
-        # Deprecated alias kept for compatibility.
-        print('Platform "osx" has been renamed to "macos" in Godot 4.0. Building for platform "macos".')
-    # Alias for convenience.
-    selected_platform = "macos"
-
-if selected_platform in ["ios", "iphone"]:
-    if selected_platform == "iphone":
-        # Deprecated alias kept for compatibility.
-        print('Platform "iphone" has been renamed to "ios" in Godot 4.0. Building for platform "ios".')
-    # Alias for convenience.
-    selected_platform = "ios"
-
-if selected_platform in ["linux", "bsd", "x11"]:
-    if selected_platform == "x11":
-        # Deprecated alias kept for compatibility.
-        print('Platform "x11" has been renamed to "linuxbsd" in Godot 4.0. Building for platform "linuxbsd".')
-    # Alias for convenience.
-    selected_platform = "linuxbsd"
-
-# Make sure to update this to the found, valid platform as it's used through the buildsystem as the reference.
-# It should always be re-set after calling `opts.Update()` otherwise it uses the original input value.
-env["platform"] = selected_platform
-opts.Update(env)
-env["platform"] = selected_platform
-
-# data
 _platform = env["platform"]
 _target = env["target"]
-_project = "armory"
+_folder = "../armory/bin"
 
-# customise our compilation flags
-if env["platform"] == "windows" :
+if _platform == "windows" :
     cxx_flags = ['/std:c++17', '/Zc:alignedNew']
     cc_flags  = ['/O2'] + ["-EHsc", "-MD"]
 else :
@@ -90,30 +25,34 @@ else :
     cc_flags  = ['-O3', '-fPIC', '-fopenmp' '-static']
 
 
+# list all modules
+mod_list = [d for d in os.listdir() if os.path.isdir(d)]
+
 # build all modules as extensions
-for mod_dir in os.listdir() :
+for mod_dir in mod_list :
+    print("building mod {}".format(mod_dir))
     # add our sources to the build environment
     module_env = env.Clone()
     # customise env for modules
     module_env['LIBS'] = ['-fopenmp']  # Don't inject Godot's dependencies into our shared library.
-    module_env.Append(CPPPATH=[os.path.join(mod_dir, 'inc')]) # pass flags for compiler
+    module_env.Append(CPPPATH=[os.path.join(mod_dir, 'inc/')]) # pass flags for compiler
     module_env.Append(CXXFLAGS=cxx_flags)
     module_env.Append(CCFLAGS=cc_flags)
     # get all source files
     sources = [os.path.join(p, n) for p, s, f in os.walk(mod_dir) for n in f if n.endswith('cpp')]
-    sources += ["register_types.cpp"]
+    sources += [os.path.join(mod_dir,'register_types.cpp')]
     # define our libraries
     library = "libgd" + mod_dir
     if _platform == "macos":
         library = env.SharedLibrary(
-            "demo/bin/{}.{}.{}.framework/{}.{}.{}".format(
-                library,_platform,_target,library,_platform,_target),
+            "{}/{}.{}.{}.framework/{}.{}.{}".format(
+                _folder, library,_platform,_target,library,_platform,_target),
             source=sources,
         )
     else:
         library = env.SharedLibrary(
-            "demo/bin/{}.{}.{}.{}{}".format(
-                library,_platform,_target,env["arch_suffix"], env["SHLIBSUFFIX"]),
+            "{}/{}.{}.{}.{}{}".format(
+                _folder, library,_platform,_target,env["arch_suffix"], env["SHLIBSUFFIX"]),
             source=sources,
         )
     # build it
