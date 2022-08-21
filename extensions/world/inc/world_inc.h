@@ -5,6 +5,7 @@
 #define WORLD_INC_H
 
 #define WORLD_MAX_TILE_SET 128
+#define SIDES 4
 
 /**
  * @file world_inc.h

@@ -1,0 +1,120 @@
+#!/usr/bin/env python
+
+# check scons version before going any further
+EnsureSConsVersion(4, 0)
+
+import os
+import platform
+import sys
+import subprocess
+
+platform_list = ["linuxbsd"]
+
+#env = SConscript("../godot-cpp/SConstruct")
+env = Environment(tools=["default"])
+
+# @todo : use Godot env
+# scommand line options
+opts = Variables([], ARGUMENTS)
+opts.Add("p", "Platform (alias for 'platform')", "")
+opts.Add("platform", "Target platform (%s)" % ("|".join(platform_list),), "")
+opts.Update(env)
+
+if env["platform"] != "":
+    selected_platform = env["platform"]
+elif env["p"] != "":
+    selected_platform = env["p"]
+else:
+    # Missing `platform` argument, try to detect platform automatically
+    if (
+        sys.platform.startswith("linux")
+        or sys.platform.startswith("dragonfly")
+        or sys.platform.startswith("freebsd")
+        or sys.platform.startswith("netbsd")
+        or sys.platform.startswith("openbsd")
+    ):
+        selected_platform = "linuxbsd"
+    elif sys.platform == "darwin":
+        selected_platform = "macos"
+    elif sys.platform == "win32":
+        selected_platform = "windows"
+    else:
+        print("Could not detect platform automatically. Supported platforms:")
+        for x in platform_list:
+            print("\t" + x)
+        print("\nPlease run SCons again and select a valid platform: platform=<string>")
+
+    if selected_platform != "":
+        print("Automatically detected platform: " + selected_platform)
+
+if selected_platform in ["macos", "osx"]:
+    if selected_platform == "osx":
+        # Deprecated alias kept for compatibility.
+        print('Platform "osx" has been renamed to "macos" in Godot 4.0. Building for platform "macos".')
+    # Alias for convenience.
+    selected_platform = "macos"
+
+if selected_platform in ["ios", "iphone"]:
+    if selected_platform == "iphone":
+        # Deprecated alias kept for compatibility.
+        print('Platform "iphone" has been renamed to "ios" in Godot 4.0. Building for platform "ios".')
+    # Alias for convenience.
+    selected_platform = "ios"
+
+if selected_platform in ["linux", "bsd", "x11"]:
+    if selected_platform == "x11":
+        # Deprecated alias kept for compatibility.
+        print('Platform "x11" has been renamed to "linuxbsd" in Godot 4.0. Building for platform "linuxbsd".')
+    # Alias for convenience.
+    selected_platform = "linuxbsd"
+
+# Make sure to update this to the found, valid platform as it's used through the buildsystem as the reference.
+# It should always be re-set after calling `opts.Update()` otherwise it uses the original input value.
+env["platform"] = selected_platform
+opts.Update(env)
+env["platform"] = selected_platform
+
+# data
+_platform = env["platform"]
+_target = env["target"]
+_project = "armory"
+
+# customise our compilation flags
+if env["platform"] == "windows" :
+    cxx_flags = ['/std:c++17', '/Zc:alignedNew']
+    cc_flags  = ['/O2'] + ["-EHsc", "-MD"]
+else :
+    # godot is not yet fully compatible with '-std=c++20' so we stay at 17 with padded
+    cxx_flags =  ['-std=c++17', '-fopenmp', '-Wpadded']
+    # Position Independent Code , requiered for unix shared libs
+    cc_flags  = ['-O3', '-fPIC', '-fopenmp' '-static']
+
+
+# build all modules as extensions
+for mod_dir in os.listdir() :
+    # add our sources to the build environment
+    module_env = env.Clone()
+    # customise env for modules
+    module_env['LIBS'] = ['-fopenmp']  # Don't inject Godot's dependencies into our shared library.
+    module_env.Append(CPPPATH=[os.path.join(mod_dir, 'inc')]) # pass flags for compiler
+    module_env.Append(CXXFLAGS=cxx_flags)
+    module_env.Append(CCFLAGS=cc_flags)
+    # get all source files
+    sources = [os.path.join(p, n) for p, s, f in os.walk(mod_dir) for n in f if n.endswith('cpp')]
+    sources += ["register_types.cpp"]
+    # define our libraries
+    library = "libgd" + mod_dir
+    if _platform == "macos":
+        library = env.SharedLibrary(
+            "demo/bin/{}.{}.{}.framework/{}.{}.{}".format(
+                library,_platform,_target,library,_platform,_target),
+            source=sources,
+        )
+    else:
+        library = env.SharedLibrary(
+            "demo/bin/{}.{}.{}.{}{}".format(
+                library,_platform,_target,env["arch_suffix"], env["SHLIBSUFFIX"]),
+            source=sources,
+        )
+    # build it
+    Default(library)

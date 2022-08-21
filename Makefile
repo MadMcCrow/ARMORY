@@ -11,29 +11,44 @@
 THREADS := $(shell nproc)
 BASEDIR := $(realpath $(CURDIR))
 
-# godot/bin/godot.*tools.*
-Godot :
+# todo : make this work
+# clean and rebuild everything
+#_upgrade:
+#	@echo "update engine";\
+#   $(MAKE) clean;\
+#   cd godot-cpp && git pull --rebase ; \
+# 	cd godot && git pull --rebase ; \
+#	$(MAKE) all;\
+
+# godot editor : we don't need to rebuild it all the times
+godot/bin/godot.*.tools.* :
 	@cd godot && scons -j$(THREADS) profile="../build/custom.py" ;
+godot: godot/bin/godot.*.tools.*
 
-Export:
-	@cd godot && scons -j$(THREADS) profile="../build/custom_template.py" ;
+# GDextension bindings
+godot-cpp/bin/libgodot-cpp.*.a :
+	@cd godot-cpp && scons -j$(THREADS) target=debug ;
+godot-cpp: godot-cpp/bin/libgodot-cpp.*.a
 
-godot: Godot
-
-# get everything ready
-all: godot extensions 
+# Build our ARMORY modules 
+Extensions: godot-cpp
+	@cd extensions && scons -j$(THREADS);
+extensions: Extensions
 
 # `make launch` calls launch script
+# TODO : create a separate launcher 
 launch:
 	@cd armory && ../godot/bin/godot.*  --debug ;
-
 editor:
 	@godot/bin/godot.*  armory/project.godot --upwards ;
 
 # clean everything
 clean:
 	@echo "cleaning engine";\
-	rm godot/bin/godot.* > /dev/null 2>&1 || true;\
+	rm godot/bin/* > /dev/null 2>&1 || true;\
+	rm godot-cpp/bin/* > /dev/null 2>&1 || true;\
 
+# Get everything ready
+all: godot godot-cpp extensions
 
 

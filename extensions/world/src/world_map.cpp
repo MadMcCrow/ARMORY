@@ -29,7 +29,7 @@ void WorldMap::_bind_methods()
     // Properties
     ADD_GROUP("ARMORY", "armory_");
     ADD_SUBGROUP("WORLD", "world_");
-    ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "size"), "set_size", "get_size");
+    ADD_PROPERTY(PropertyInfo(Variant::VECTOR3I, "size"), "set_size", "get_size");
     ADD_PROPERTY(PropertyInfo(Variant::INT, "seed"), "set_seed", "get_seed");
     ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "tile_set_resource", PROPERTY_HINT_RESOURCE_TYPE, "WorldTileSet"), "set_tile_set", "get_tile_set");
 }
