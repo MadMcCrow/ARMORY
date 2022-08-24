@@ -4,6 +4,7 @@
 #ifndef WORLD_INC_H
 #define WORLD_INC_H
 
+#include "godot_cpp/variant/dictionary.hpp"
 #define WORLD_MAX_TILE_SET 128
 #define SIDES 4
 
@@ -31,18 +32,26 @@
 #include <chrono>
 #include <optional> 
 
-// godot :
-#include <core/typedefs.h>
-#include <core/object/class_db.h>
-#include <core/object/ref_counted.h>
-#include <core/error/error_macros.h>
-#include <core/math/color.h>
-#include <core/io/resource.h>
-#include <core/io/image.h>
-#include <core/config/project_settings.h>
-#include <scene/resources/texture.h>
-#include <scene/resources/mesh.h>
-#include <scene/main/node.h>
+// godot-cpp :
+#include <godot_cpp/core/object.hpp>
+#include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/core/error_macros.hpp>
+#include <godot_cpp/variant/color.hpp>
+#include <godot_cpp/classes/ref_counted.hpp>
+#include <godot_cpp/classes/ref.hpp>
+#include <godot_cpp/classes/resource.hpp>
+#include <godot_cpp/classes/image.hpp>
+#include <godot_cpp/classes/project_settings.hpp>
+#include <godot_cpp/classes/texture.hpp>
+#include <godot_cpp/classes/mesh.hpp>
+#include <godot_cpp/classes/node.hpp>
+
+
+// must use godot namespace for module code to work as extension
+// we could be using aliases instead, but since this code 
+// is made for godot anyway, so lets just do it now
+using namespace godot;
+
 
 namespace armory
 {
@@ -182,6 +191,7 @@ static const void set_rand_seed(size_t random_seed)
 /** generate a float between min and max (based on last set seed) */
 static const float rand_float(float min, float max)
 {
+
     std::uniform_real_distribution<float> dis(min, max);
     return  dis(mersene_generator);
 };
@@ -214,14 +224,18 @@ static const void add_custom_project_setting(String name, Variant default_value,
 	if (PS->has_setting(name))
         return;
 
-	
-	PropertyInfo setting_info(type, name, hint, hint_string);
+    Dictionary dict;
+    dict["name"] = name;
+	dict["type"] = type;
+    dict["hint"] = hint;
+    dict["hint_string"] = hint_string;
   
 	PS->set_setting(name, default_value);
-	PS->set_custom_property_info(setting_info.name, setting_info);
+	PS->add_property_info(dict);
 	PS->set_initial_value(name, default_value);
     
-	ERR_FAIL_COND_EDMSG(PS->save(), "Failed to save project settings");
+    // EDMSG does not exist in GDExtension
+	ERR_FAIL_COND_MSG(PS->save(), "Failed to save project settings");
 }
 
 
@@ -249,4 +263,6 @@ _Benchmark benchy#Name(#Name);
 
 };
 
+
 #endif // ! WORLD_INC_H
+// scoped 

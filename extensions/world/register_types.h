@@ -6,7 +6,7 @@
 
 #include <godot_cpp/core/class_db.hpp>
 
-void initialize_world_module(ModuleInitializationLevel p_level);
-void uninitialize_world_module(ModuleInitializationLevel p_level);
+void initialize_world_module(godot::ModuleInitializationLevel p_level);
+void uninitialize_world_module(godot::ModuleInitializationLevel p_level);
 
 #endif // ARMORY_WORLD_REGISTER_TYPES_H

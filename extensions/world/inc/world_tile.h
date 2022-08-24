@@ -6,11 +6,13 @@
 
 
 // world
+#include "godot_cpp/variant/array.hpp"
+#include "godot_cpp/variant/packed_string_array.hpp"
 #include "world_inc.h"
+#include <cstdint>
 
 
-// we must use this namespace if we want to compile against godot
-using namespace godot;
+
 
 // make sure we do not override
 namespace armory
@@ -27,25 +29,35 @@ class WorldTile :  public Resource
 
 public:
 
-    // default CTR
-    WorldTile() 
-    : Resource()
-    {}
+    /**
+     * @brief Shapes that can be tiled
+     * @see https://en.wikipedia.org/wiki/Euclidean_tilings_by_convex_regular_polygons
+     */
+    enum TileableShapes  : uint8_t{
+		Triangle = 3,
+        Square   = 4,
+        Hexagon  = 6
+	};
 
-	virtual bool editor_can_reload_from_file() override {return true;}
+    // default CTR
+    WorldTile(): Resource(){}
+
 	virtual void reload_from_file();
 
 
     /** create a rotated copy (Clockwise) */
     Ref<WorldTile> rotate() const;
-
+    
 private:
 
-    /** border codes */
-    CharString left;
-    CharString right;
-    CharString up;
-    CharString down;
+    /** Shape of that tile */
+    TileableShapes shape;
+
+    /**
+     * @brief list of values allowed on sides
+     * @note Sides are in clockwise order
+     */
+    std::vector<CharString> borders;
 
     /** probability weight*/
     float weight;
@@ -59,32 +71,23 @@ private:
 
 public:
 
-    /**
-     * @brief check for compatibility, does not check for rotation
-     * @return true     if in this configuration it is possible, false otherwise 
-     */
-    bool is_compatible(const Ref<WorldTile> &left_tile, const Ref<WorldTile> &right_tile, const Ref<WorldTile> &up_tile, const Ref<WorldTile> &down_tile) const;
-
-
-
     //<GDScript interface>
+    /** setter for @see borders */
+    void set_borders(const PackedStringArray& in_borders);
 
-    /** getter for @see border codes */
-    _FORCE_INLINE_ String get_left() const  {return String(left.ptr());}
-    _FORCE_INLINE_ String get_right() const {return String(right.ptr());}
-    _FORCE_INLINE_ String get_up() const    {return String(up.ptr());}
-    _FORCE_INLINE_ String get_down() const  {return String(down.ptr());}
+    /** getter for @see borders */
+    PackedStringArray get_borders();
 
-    /** setter for @see border codes */
-    _FORCE_INLINE_ void set_left(const String &in_left)   {left = in_left.utf8();  }
-    _FORCE_INLINE_ void set_right(const String &in_right) {right = in_right.utf8();}
-    _FORCE_INLINE_ void set_up(const String &in_up)       {up = in_up.utf8();      }
-    _FORCE_INLINE_ void set_down(const String &in_down)   {down = in_down.utf8();  }
+    /** setter for @see shape */
+    _FORCE_INLINE_ void set_shape(const TileableShapes& in_shape) {shape = in_shape; borders.resize(shape);}
+
+    /** getter for @see shape */
+    _FORCE_INLINE_ TileableShapes get_shape() {return shape;}
 
     /** setter for @see weight */
     _FORCE_INLINE_ void set_weight(const float& in_weight) {weight = in_weight;}
 
-    /** getter for @see {weight */
+    /** getter for @see weight */
     _FORCE_INLINE_ float get_weight() const { return weight;}
 
     /** setter for @see tile_3d */
@@ -101,6 +104,8 @@ public:
 
     //<\GDScript interface>
 };
-}; // namespace armory
+};
+// namespace armory
+VARIANT_ENUM_CAST(armory::WorldTile, TileableShapes);
 
 #endif // ! WORLD_TILE_H

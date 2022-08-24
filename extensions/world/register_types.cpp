@@ -1,11 +1,12 @@
 /* Copyright © Noé Perard-Gayot 2022. */
 /* Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php */
 
-// godot
-#include "register_types.h"
-#include "core/object/class_db.h"
+// godot-cpp
+
+#include <godot_cpp/core/class_db.hpp>
 
 // world map
+#include "register_types.h"
 #include "world_map.h"
 #include "world_tile.h"
 #include "world_tile_set.h"

@@ -8,9 +8,6 @@
 #include "world_inc.h"
 #include "world_tile.h"
 
-// we must use this namespace if we want to compile against godot
-using namespace godot;
-
 // make sure we do not override
 namespace armory
 {

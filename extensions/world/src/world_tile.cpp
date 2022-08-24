@@ -3,20 +3,17 @@
 
 // header
 #include "world_tile.h"
+#include "godot_cpp/classes/global_constants.hpp"
+#include <cstdint>
 
 // godot
-#include <core/object/class_db.h>
-#include <core/error/error_macros.h>
-#include <core/math/color.h>
-
-
 using namespace armory;
 
 bool compare_name(const CharString &A,const CharString &B)
 {
     //if (std::strcmp(A.ptr(),B.ptr()) != 0)
     {
-        WARN_PRINT_ED("compare_name : Incompatible A=" + String(A.ptr()) + " B=" + String(B.ptr()));
+        WARN_PRINT("compare_name : Incompatible A=" + String(A.get_data()) + " B=" + String(B.get_data()));
     //    return false;
     }
     return true;
@@ -27,17 +24,11 @@ void WorldTile::_bind_methods()
 	// Methods.
 
     // WorldTile Methods
+    ClassDB::bind_method(D_METHOD("set_shape", "in_shape"),  &WorldTile::set_shape);
+    ClassDB::bind_method(D_METHOD("get_shape"),  &WorldTile::get_shape);
 
-    //
-    ClassDB::bind_method(D_METHOD("set_left", "in_left"),   &WorldTile::set_left);
-    ClassDB::bind_method(D_METHOD("set_right", "in_right"), &WorldTile::set_right);
-    ClassDB::bind_method(D_METHOD("set_up", "in_up"),       &WorldTile::set_up);
-    ClassDB::bind_method(D_METHOD("set_down", "in_down"),   &WorldTile::set_down);
-
-    ClassDB::bind_method(D_METHOD("get_left"),  &WorldTile::get_left);
-    ClassDB::bind_method(D_METHOD("get_right"), &WorldTile::get_right);
-    ClassDB::bind_method(D_METHOD("get_up"),    &WorldTile::get_up);
-    ClassDB::bind_method(D_METHOD("get_down"),  &WorldTile::get_down);
+    ClassDB::bind_method(D_METHOD("set_borders", "in_borders"),  &WorldTile::set_borders);
+    ClassDB::bind_method(D_METHOD("get_borders"),  &WorldTile::get_borders);
 
     ClassDB::bind_method(D_METHOD("set_weight", "in_weight"),  &WorldTile::set_weight);
     ClassDB::bind_method(D_METHOD("get_weight"),  &WorldTile::get_weight);
@@ -52,66 +43,52 @@ void WorldTile::_bind_methods()
 	ADD_GROUP("ARMORY", "armory_");
     ADD_SUBGROUP("WORLD", "world_");
 
-    ADD_PROPERTY(PropertyInfo(Variant::STRING,   "left"),   "set_left",     "get_left");
-    ADD_PROPERTY(PropertyInfo(Variant::STRING,   "right"),  "set_right",    "get_right");
-    ADD_PROPERTY(PropertyInfo(Variant::STRING,   "up"),     "set_up",       "get_up");
-    ADD_PROPERTY(PropertyInfo(Variant::STRING,   "down"),   "set_down",     "get_down");
-
+    ADD_PROPERTY(PropertyInfo(Variant::INT,   "shape",   PROPERTY_HINT_ENUM, "TileableShape"),   "set_shape", "get_shape");
+    ADD_PROPERTY(PropertyInfo(Variant::PACKED_STRING_ARRAY, "borders", godot::PROPERTY_HINT_ARRAY_TYPE, "String"),   "set_borders", "get_borders");
 
     ADD_PROPERTY(PropertyInfo(Variant::FLOAT,   "weight"),   "set_weight",     "get_weight");
     ADD_PROPERTY(PropertyInfo(Variant::OBJECT,   "tile_2d", PROPERTY_HINT_RESOURCE_TYPE, "Texture2D"),  "set_tile_2d",    "get_tile_2d");
     ADD_PROPERTY(PropertyInfo(Variant::OBJECT,   "tile_3d", PROPERTY_HINT_RESOURCE_TYPE, "Mesh"),       "set_tile_3d",    "get_tile_3d");
+
+    BIND_ENUM_CONSTANT(Triangle);
+	BIND_ENUM_CONSTANT(Square);
+    BIND_ENUM_CONSTANT(Hexagon);
+
 }
 
-
-void WorldTile::reload_from_file()
-{
-    // resave border names
-    set_left(get_left().camelcase_to_underscore());
-    set_right(get_right().camelcase_to_underscore());
-    set_up(get_up().camelcase_to_underscore());
-    set_down(get_down().camelcase_to_underscore());
-    Resource::reload_from_file(); // call to super
-}
 
 Ref<WorldTile> WorldTile::rotate() const
 {
     // copy but subresources stays the same :
     Ref<WorldTile> ret_val = duplicate(false);
-    // rotate :
-    ret_val->left   = up;
-    ret_val->up     = right;
-    ret_val->right  = down;
-    ret_val->down   = left;
     return ret_val;
 }
 
-bool WorldTile::is_compatible(const Ref<WorldTile> &left_tile, const Ref<WorldTile> &right_tile, const Ref<WorldTile> &up_tile, const Ref<WorldTile> &down_tile) const
+void WorldTile::set_borders(const PackedStringArray& in_borders)
 {
-    if (left_tile.is_valid())
+    borders.clear();
+    borders.reserve(shape);
+    for (uint8_t idx = 0; idx < shape; idx++)
     {
-        if (!compare_name(left_tile->right,left))
-            return false;
+        if (in_borders.size() > idx) {
+            borders.push_back(String(in_borders[idx]).utf8());
+        } else {
+            borders.push_back(String().utf8());
+        }
+        
     }
-    if (right_tile.is_valid())
-    {
-        if (!compare_name(right_tile->left,right))
-            return false;
-    }
-    if (up_tile.is_valid())
-    {
-        if (!compare_name(up_tile->down,up))
-            return false;
-    }
-    if (down_tile.is_valid())
-    {
-        if (!compare_name(down_tile->up,down))
-            return false;
-    }
+}
 
+PackedStringArray WorldTile::get_borders()
+{
+    PackedStringArray ret_val;
+    ret_val.resize(shape);
+    for (uint8_t idx = 0; idx < shape; idx++)
     {
-        WARN_PRINT_ED("is_compatible : compatible  tile");
+        if (borders.size() > idx) {
+            ret_val[idx] = String(borders[idx].get_data());
+        } else {
+            ret_val[idx] = String();
+        }     
     }
-
-    return true;
 }
