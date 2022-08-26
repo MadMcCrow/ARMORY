@@ -6,10 +6,7 @@
 
 
 // world
-#include "godot_cpp/variant/array.hpp"
-#include "godot_cpp/variant/packed_string_array.hpp"
 #include "world_inc.h"
-#include <cstdint>
 
 
 
@@ -33,7 +30,7 @@ public:
      * @brief Shapes that can be tiled
      * @see https://en.wikipedia.org/wiki/Euclidean_tilings_by_convex_regular_polygons
      */
-    enum TileableShapes  : uint8_t{
+    enum TileableShapes {
 		Triangle = 3,
         Square   = 4,
         Hexagon  = 6
@@ -42,11 +39,13 @@ public:
     // default CTR
     WorldTile(): Resource(){}
 
-	virtual void reload_from_file();
 
-
-    /** create a rotated copy (Clockwise) */
-    Ref<WorldTile> rotate() const;
+    /**
+     * @brief  create a rotated copy (Clockwise)
+     * @param count number of clockwise rotations
+     * @return Ref<WorldTile> copy of self but rotated
+     */
+    Ref<WorldTile> rotate(int count = 1) const;
     
 private:
 
@@ -76,7 +75,7 @@ public:
     void set_borders(const PackedStringArray& in_borders);
 
     /** getter for @see borders */
-    PackedStringArray get_borders();
+    PackedStringArray get_borders() const;
 
     /** setter for @see shape */
     _FORCE_INLINE_ void set_shape(const TileableShapes& in_shape) {shape = in_shape; borders.resize(shape);}

@@ -32,19 +32,26 @@
 #include <chrono>
 #include <optional> 
 
+
+
 // godot-cpp :
 #include <godot_cpp/core/object.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/core/error_macros.hpp>
 #include <godot_cpp/variant/color.hpp>
-#include <godot_cpp/classes/ref_counted.hpp>
-#include <godot_cpp/classes/ref.hpp>
-#include <godot_cpp/classes/resource.hpp>
+#include <godot_cpp/variant/vector3i.hpp>
+#include <godot_cpp/variant/array.hpp>
+#include <godot_cpp/variant/packed_string_array.hpp>
+#include <godot_cpp/variant/char_string.hpp>
 #include <godot_cpp/classes/image.hpp>
 #include <godot_cpp/classes/project_settings.hpp>
+#include <godot_cpp/classes/global_constants.hpp>
 #include <godot_cpp/classes/texture.hpp>
 #include <godot_cpp/classes/mesh.hpp>
 #include <godot_cpp/classes/node.hpp>
+#include <godot_cpp/classes/ref.hpp>
+#include <godot_cpp/classes/ref_counted.hpp>
+#include <godot_cpp/classes/resource.hpp>
 
 
 // must use godot namespace for module code to work as extension

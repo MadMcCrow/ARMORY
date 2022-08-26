@@ -3,18 +3,15 @@
 
 // header
 #include "world_tile.h"
-#include "godot_cpp/classes/global_constants.hpp"
-#include <cstdint>
 
 // godot
 using namespace armory;
 
 bool compare_name(const CharString &A,const CharString &B)
 {
-    //if (std::strcmp(A.ptr(),B.ptr()) != 0)
+    if (std::strcmp(A.get_data(),B.get_data()) != 0)
     {
-        WARN_PRINT("compare_name : Incompatible A=" + String(A.get_data()) + " B=" + String(B.get_data()));
-    //    return false;
+        return false;
     }
     return true;
 }
@@ -57,30 +54,28 @@ void WorldTile::_bind_methods()
 }
 
 
-Ref<WorldTile> WorldTile::rotate() const
-{
-    // copy but subresources stays the same :
+Ref<WorldTile> WorldTile::rotate(int count) const {
     Ref<WorldTile> ret_val = duplicate(false);
+    count = count % shape; // avoid doing the rotate too much
+    for (int t = 0; t < count; t++) {
+        std::rotate(ret_val->borders.rbegin(), ret_val->borders.rbegin() + 1, ret_val->borders.rend());
+    }
     return ret_val;
 }
 
-void WorldTile::set_borders(const PackedStringArray& in_borders)
-{
+void WorldTile::set_borders(const PackedStringArray& in_borders) {
     borders.clear();
     borders.reserve(shape);
-    for (uint8_t idx = 0; idx < shape; idx++)
-    {
+    for (uint8_t idx = 0; idx < shape; idx++) {
         if (in_borders.size() > idx) {
             borders.push_back(String(in_borders[idx]).utf8());
         } else {
             borders.push_back(String().utf8());
         }
-        
     }
 }
 
-PackedStringArray WorldTile::get_borders()
-{
+PackedStringArray WorldTile::get_borders() const {
     PackedStringArray ret_val;
     ret_val.resize(shape);
     for (uint8_t idx = 0; idx < shape; idx++)
@@ -91,4 +86,5 @@ PackedStringArray WorldTile::get_borders()
             ret_val[idx] = String();
         }     
     }
+    return ret_val;
 }

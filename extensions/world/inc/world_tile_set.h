@@ -33,7 +33,16 @@ private:
     /** list of tiles in the tile set */
     std::vector<Ref<WorldTile>> tiles;
 
+    WorldTile::TileableShapes shape; 
+
 public:
+
+    /**
+     * @brief Fill the set with rotated versions of tiles
+     * @return a copy of self if duplicate, itelf otherwise
+     */
+    void fill_set(bool duplicate); 
+
 
     // function for the CPP system
     _ALWAYS_INLINE_ const std::vector<Ref<WorldTile>>& get_tile_set() const {return tiles; }

@@ -41,6 +41,27 @@ void WorldTileSet::set_tiles(const Array& in_tiles)
     #pragma omp parallel for
     for (size_t idx = 0; idx < num; ++idx)
     {
-        tiles[idx] = in_tiles[idx];
+        Ref<WorldTile> tile = in_tiles[idx];
+        if (tile.is_valid() && tile->get_shape() == shape) {
+            tiles[idx] = in_tiles[idx];
+        }
     }
+}
+
+void WorldTileSet::fill_set(bool duplicate)
+{
+    Ref<WorldTileSet> set = duplicate ? this->duplicate(false) : this;
+    std::vector<Ref<WorldTile>> new_tile_array;
+    new_tile_array.reserve(tiles.size() * shape); // number of rotations == number of sides 
+    for (int idx = 0; idx < tiles.size(); ++idx)
+    {
+        for (int side = 0; side < shape; ++side) {
+            auto target = tiles[idx]->rotate(side);
+            const int num = std::count(new_tile_array.cbegin(), new_tile_array.cend(), target);
+            if (num <= 0)
+                new_tile_array.push_back(target); 
+        }
+    }
+    // replace with new array
+    set->tiles.swap(new_tile_array);
 }
