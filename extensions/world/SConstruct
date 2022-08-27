@@ -10,24 +10,34 @@ Import('output_path')
 _platform = env["platform"]
 _target = env["target"]
 _folder = output_path # if it does not work, we'll go through env
-_libname = os.getcwd()
+_libname = os.path.split(str(Dir('.').srcnode()))[1] # a bit farfetched
 
 # may not be compatible with windows (check msvc/msys/mingw for options)
 cxx_flags =  ['-std=c++17', '-fopenmp']
 # Position Independent Code , requiered for unix shared libs
 cc_flags  = ['-O3', '-fPIC', '-fopenmp', '-static']
+ld_flags  = ['-fopenmp']
 
 
 # get all source and include files files
 sources = [os.path.join(p, n) for p, s, f in os.walk(_libname) for n in f if n.endswith('cpp')]
 sources += ['register_types.cpp']
-includes = ['inc/']
+includes = ['./', 'inc/']
+
 # customise env for modules
 module_env = env.Clone()
+
+module_env['VARIANT_DIR'] = Dir("build")
+module_env['SOURCE_DIR'] = Dir("src")
+module_env['LIBS'] = [] 
+
+#flags
 module_env.Append(CPPPATH=includes) # pass flags for compiler
-module_env['LIBS'] = ['-fopenmp']  # Don't inject any dependencies into our shared library.
 module_env.Append(CXXFLAGS=cxx_flags)
 module_env.Append(CCFLAGS=cc_flags)
+module_env.Append(LINKFLAGS=ld_flags)
+
+
 # define our libraries
 library = "libgd" + _libname
 if _platform == "macos":

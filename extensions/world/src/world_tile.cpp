@@ -40,7 +40,7 @@ void WorldTile::_bind_methods()
 	ADD_GROUP("ARMORY", "armory_");
     ADD_SUBGROUP("WORLD", "world_");
 
-    ADD_PROPERTY(PropertyInfo(Variant::INT,   "shape",   PROPERTY_HINT_ENUM, "TileableShape"),   "set_shape", "get_shape");
+    ADD_PROPERTY(PropertyInfo(Variant::INT,   "shape",   PROPERTY_HINT_ENUM, "TileableShapes"),   "set_shape", "get_shape");
     ADD_PROPERTY(PropertyInfo(Variant::PACKED_STRING_ARRAY, "borders", godot::PROPERTY_HINT_ARRAY_TYPE, "String"),   "set_borders", "get_borders");
 
     ADD_PROPERTY(PropertyInfo(Variant::FLOAT,   "weight"),   "set_weight",     "get_weight");

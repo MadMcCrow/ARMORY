@@ -30,7 +30,7 @@ public:
      * @brief Shapes that can be tiled
      * @see https://en.wikipedia.org/wiki/Euclidean_tilings_by_convex_regular_polygons
      */
-    enum TileableShapes {
+    enum TileableShapes : int {
 		Triangle = 3,
         Square   = 4,
         Hexagon  = 6
@@ -78,10 +78,10 @@ public:
     PackedStringArray get_borders() const;
 
     /** setter for @see shape */
-    _FORCE_INLINE_ void set_shape(const TileableShapes& in_shape) {shape = in_shape; borders.resize(shape);}
+    _FORCE_INLINE_ void set_shape(const int& in_shape) {shape = static_cast<TileableShapes>(in_shape); borders.resize(shape);}
 
     /** getter for @see shape */
-    _FORCE_INLINE_ TileableShapes get_shape() {return shape;}
+    _FORCE_INLINE_ int get_shape() {return shape;}
 
     /** setter for @see weight */
     _FORCE_INLINE_ void set_weight(const float& in_weight) {weight = in_weight;}
@@ -103,8 +103,8 @@ public:
 
     //<\GDScript interface>
 };
-};
-// namespace armory
+}; // namespace armory
+
 VARIANT_ENUM_CAST(armory::WorldTile, TileableShapes);
 
 #endif // ! WORLD_TILE_H
