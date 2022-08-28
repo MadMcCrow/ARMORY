@@ -9,18 +9,18 @@ Import('output_path')
 # get data for builder
 _platform = env["platform"]
 _target = env["target"]
-_folder = output_path # if it does not work, we'll go through env
-_libname = os.path.split(str(Dir('.').srcnode()))[1] # a bit farfetched
+_output = output_path # if it does not work, we'll go through env
+_folder = str(Dir('.').srcnode())
+_libname = os.path.split(_folder)[1] # a bit farfetched
 
 # may not be compatible with windows (check msvc/msys/mingw for options)
 cxx_flags =  ['-std=c++17', '-fopenmp']
 # Position Independent Code , requiered for unix shared libs
-cc_flags  = ['-O3', '-fPIC', '-fopenmp', '-static']
+cc_flags  = ['-O3', '-fPIC', '-fopenmp']
 ld_flags  = ['-fopenmp']
 
-
 # get all source and include files files
-sources = [os.path.join(p, n) for p, s, f in os.walk(_libname) for n in f if n.endswith('cpp')]
+sources = [os.path.join(p, n) for p, s, f in os.walk(os.path.join(_folder, 'src')) for n in f if n.endswith('cpp')]
 sources += ['register_types.cpp']
 includes = ['./', 'inc/']
 
@@ -29,7 +29,7 @@ module_env = env.Clone()
 
 module_env['VARIANT_DIR'] = Dir("build")
 module_env['SOURCE_DIR'] = Dir("src")
-module_env['LIBS'] = [] 
+#module_env['LIBS'] = [] // maybe purging libs was not a good idea after all
 
 #flags
 module_env.Append(CPPPATH=includes) # pass flags for compiler
@@ -37,19 +37,18 @@ module_env.Append(CXXFLAGS=cxx_flags)
 module_env.Append(CCFLAGS=cc_flags)
 module_env.Append(LINKFLAGS=ld_flags)
 
-
 # define our libraries
 library = "libgd" + _libname
 if _platform == "macos":
     library = module_env.SharedLibrary(
         "{}/{}.{}.{}.framework/{}.{}.{}".format(
-            _folder, library,_platform,_target,library,_platform,_target),
+            _output, library,_platform,_target,library,_platform,_target),
         source=sources,
     )
 else:
     library = module_env.SharedLibrary(
         "{}/{}.{}.{}.{}{}".format(
-            _folder, library,_platform,_target,env["arch_suffix"], env["SHLIBSUFFIX"]),
+            _output, library,_platform,_target,env["arch_suffix"], env["SHLIBSUFFIX"]),
         source=sources,
     )
 # build it

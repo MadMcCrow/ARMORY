@@ -7,8 +7,6 @@
 #include <godot_cpp/core/class_db.hpp>
 
 
-using namespace godot;
-
 void initialize_world_module(godot::ModuleInitializationLevel p_level);
 void uninitialize_world_module(godot::ModuleInitializationLevel p_level);
 

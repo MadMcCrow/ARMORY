@@ -33,8 +33,9 @@
 #include <optional> 
 
 
-
 // godot-cpp :
+#include <godot_cpp/classes/wrapped.hpp>
+#include <godot_cpp/core/binder_common.hpp>
 #include <godot_cpp/core/object.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/core/error_macros.hpp>
@@ -59,10 +60,8 @@
 // is made for godot anyway, so lets just do it now
 using namespace godot;
 
-
-namespace armory
-{
-
+/** World is part of armory */
+namespace armory {
 
 static std::mt19937 mersene_generator;
 
@@ -268,8 +267,6 @@ _Benchmark benchy__FUNCTION__(__FUNCTION__);
 #define BENCHMARK_SCOPE(Name) \
 _Benchmark benchy#Name(#Name);
 
-};
-
+}; // namespace armory
 
 #endif // ! WORLD_INC_H
-// scoped 

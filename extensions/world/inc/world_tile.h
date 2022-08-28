@@ -4,16 +4,10 @@
 #ifndef WORLD_TILE_H
 #define WORLD_TILE_H
 
-
-// world
 #include "world_inc.h"
 
-
-
-
-// make sure we do not override
-namespace armory
-{
+/** World is part of armory */
+namespace armory {
 
 /**
  *  @class WorldTile
@@ -103,6 +97,8 @@ public:
 
     //<\GDScript interface>
 };
+
+/** World is part of armory */
 }; // namespace armory
 
 VARIANT_ENUM_CAST(armory::WorldTile, TileableShapes);

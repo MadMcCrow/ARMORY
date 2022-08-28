@@ -4,14 +4,11 @@
 #ifndef WORLD_SOLVER_H
 #define WORLD_SOLVER_H
 
-
-// world
-
 #include "world_inc.h"
 #include "world_tile_set.h"
 
-namespace armory
-{
+/** World is part of armory */
+namespace armory {
 
 /**
  * 	@class WorldSolver
@@ -70,6 +67,7 @@ private:
     Vector3i Coord;
 
 };
+
 }; // namespace armory
 
 #endif // ! WORLD_SOLVER_H

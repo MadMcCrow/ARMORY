@@ -1,20 +1,21 @@
 [remap]
 
 importer="wavefront_obj"
+importer_version=1
 type="Mesh"
-path="res://.import/beach_right.obj-8f5efd5a3e99761503980fc7a421772c.mesh"
+uid="uid://cbm0iaj47wgrt"
+path="res://.godot/imported/beach_right.obj-8f5efd5a3e99761503980fc7a421772c.mesh"
 
 [deps]
 
-files=[ "res://.import/beach_right.obj-8f5efd5a3e99761503980fc7a421772c.mesh" ]
+files=["res://.godot/imported/beach_right.obj-8f5efd5a3e99761503980fc7a421772c.mesh"]
 
 source_file="res://res/geometry/beach_right.obj"
-dest_files=[ "res://.import/beach_right.obj-8f5efd5a3e99761503980fc7a421772c.mesh", "res://.import/beach_right.obj-8f5efd5a3e99761503980fc7a421772c.mesh" ]
+dest_files=["res://.godot/imported/beach_right.obj-8f5efd5a3e99761503980fc7a421772c.mesh", "res://.godot/imported/beach_right.obj-8f5efd5a3e99761503980fc7a421772c.mesh"]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3( 1, 1, 1 )
-offset_mesh=Vector3( 0, 0, 0 )
-octahedral_compression=true
-optimize_mesh_flags=4286
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

@@ -8,9 +8,10 @@
 #include "world_inc.h"
 #include "world_tile.h"
 
-// make sure we do not override
-namespace armory
-{
+
+
+/** World is part of armory */
+namespace armory {
 
 /**
  * 	@class WorldTileSet
@@ -24,9 +25,7 @@ class WorldTileSet :  public Resource
 public:
 
     // default CTR
-    WorldTileSet() 
-    : Resource()
-    {}
+    WorldTileSet();
 
 private:
 

@@ -7,6 +7,10 @@
 
 using namespace armory;
 
+WorldTileSet::WorldTileSet() : Resource()
+{
+
+}
 
 void WorldTileSet::_bind_methods()
 {

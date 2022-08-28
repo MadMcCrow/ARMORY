@@ -1,20 +1,21 @@
 [remap]
 
 importer="wavefront_obj"
+importer_version=1
 type="Mesh"
-path="res://.import/river_turn.obj-9d97e88222a6774f7ee18a7485e883ef.mesh"
+uid="uid://b5dr6s025s1vi"
+path="res://.godot/imported/river_turn.obj-9d97e88222a6774f7ee18a7485e883ef.mesh"
 
 [deps]
 
-files=[ "res://.import/river_turn.obj-9d97e88222a6774f7ee18a7485e883ef.mesh" ]
+files=["res://.godot/imported/river_turn.obj-9d97e88222a6774f7ee18a7485e883ef.mesh"]
 
 source_file="res://res/geometry/river_turn.obj"
-dest_files=[ "res://.import/river_turn.obj-9d97e88222a6774f7ee18a7485e883ef.mesh", "res://.import/river_turn.obj-9d97e88222a6774f7ee18a7485e883ef.mesh" ]
+dest_files=["res://.godot/imported/river_turn.obj-9d97e88222a6774f7ee18a7485e883ef.mesh", "res://.godot/imported/river_turn.obj-9d97e88222a6774f7ee18a7485e883ef.mesh"]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3( 1, 1, 1 )
-offset_mesh=Vector3( 0, 0, 0 )
-octahedral_compression=true
-optimize_mesh_flags=4286
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

@@ -32,7 +32,7 @@ godot-cpp: godot-cpp/bin/libgodot-cpp.*.a
 
 # Build our ARMORY modules 
 Extensions: godot-cpp
-	@cd extensions && scons -j$(THREADS);
+	@rm armory/bin/* ; cd extensions && scons -j$(THREADS);
 extensions: Extensions
 
 # `make launch` calls launch script
@@ -40,7 +40,7 @@ extensions: Extensions
 launch:
 	@cd armory && ../godot/bin/godot.*  --debug ;
 editor:
-	@godot/bin/godot.*  armory/project.godot --upwards ;
+	@godot/bin/godot.*  ./armory/project.godot ;
 
 # clean everything
 clean:

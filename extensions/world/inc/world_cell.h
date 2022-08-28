@@ -8,9 +8,8 @@
 // world
 #include "world_inc.h"
 
-
-namespace armory
-{
+/** World is part of armory */
+namespace armory {
 
 /**
  * 	@struct WorldCell

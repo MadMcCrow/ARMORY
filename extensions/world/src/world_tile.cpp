@@ -4,9 +4,9 @@
 // header
 #include "world_tile.h"
 
-// godot
 using namespace armory;
 
+// godot
 bool compare_name(const CharString &A,const CharString &B)
 {
     if (std::strcmp(A.get_data(),B.get_data()) != 0)
@@ -41,15 +41,15 @@ void WorldTile::_bind_methods()
     ADD_SUBGROUP("WORLD", "world_");
 
     ADD_PROPERTY(PropertyInfo(Variant::INT,   "shape",   PROPERTY_HINT_ENUM, "TileableShapes"),   "set_shape", "get_shape");
-    ADD_PROPERTY(PropertyInfo(Variant::PACKED_STRING_ARRAY, "borders", godot::PROPERTY_HINT_ARRAY_TYPE, "String"),   "set_borders", "get_borders");
+    ADD_PROPERTY(PropertyInfo(Variant::PACKED_STRING_ARRAY, "borders", PROPERTY_HINT_ARRAY_TYPE, "String"),   "set_borders", "get_borders");
 
     ADD_PROPERTY(PropertyInfo(Variant::FLOAT,   "weight"),   "set_weight",     "get_weight");
     ADD_PROPERTY(PropertyInfo(Variant::OBJECT,   "tile_2d", PROPERTY_HINT_RESOURCE_TYPE, "Texture2D"),  "set_tile_2d",    "get_tile_2d");
     ADD_PROPERTY(PropertyInfo(Variant::OBJECT,   "tile_3d", PROPERTY_HINT_RESOURCE_TYPE, "Mesh"),       "set_tile_3d",    "get_tile_3d");
 
-    BIND_ENUM_CONSTANT(Triangle);
-	BIND_ENUM_CONSTANT(Square);
-    BIND_ENUM_CONSTANT(Hexagon);
+    BIND_ENUM_CONSTANT(WorldTile::Triangle);
+	BIND_ENUM_CONSTANT(WorldTile::Square);
+    BIND_ENUM_CONSTANT(WorldTile::Hexagon);
 
 }
 

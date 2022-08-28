@@ -9,12 +9,8 @@
 #include "world_solver.h"
 #include "world_cell.h"
 
-// make sure we do not override
-namespace armory
-{
-
-// forward declaration :
-class WorldTile;
+/** World is part of armory */
+namespace armory {
 
 /**
  * 	@class WorldMap
@@ -50,6 +46,6 @@ public:
     Ref<WorldSolver> get_map_solver() const {return map_solver;}
     //<\GDScript interface>
 };
-}; // namespace armory
 
+}; // namespace armory
 #endif // ! WORLD_CLASS_H
