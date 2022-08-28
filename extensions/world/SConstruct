@@ -27,15 +27,20 @@ includes = ['./', 'inc/']
 # customise env for modules
 module_env = env.Clone()
 
-module_env['VARIANT_DIR'] = Dir("build")
-module_env['SOURCE_DIR'] = Dir("src")
+module_env['VARIANT_DIR'] = Dir("../build")
 #module_env['LIBS'] = [] // maybe purging libs was not a good idea after all
 
 #flags
-module_env.Append(CPPPATH=includes) # pass flags for compiler
-module_env.Append(CXXFLAGS=cxx_flags)
-module_env.Append(CCFLAGS=cc_flags)
-module_env.Append(LINKFLAGS=ld_flags)
+module_env.Append(CPPPATH=list(set(includes))) # pass flags for compiler
+module_env.Append(CXXFLAGS=list(set(cxx_flags)))
+module_env.Append(CCFLAGS=list(set(cc_flags)))
+module_env.Append(LINKFLAGS=list(set(ld_flags)))
+
+# split generation of shared objects
+shared_objects = []
+for s in sources :
+    t = os.path.splitext(os.path.basename(s))[0] # scons will pick the correct extension
+    shared_objects += module_env.SharedObject(target = t , source = s)
 
 # define our libraries
 library = "libgd" + _libname
@@ -43,13 +48,13 @@ if _platform == "macos":
     library = module_env.SharedLibrary(
         "{}/{}.{}.{}.framework/{}.{}.{}".format(
             _output, library,_platform,_target,library,_platform,_target),
-        source=sources,
+        source=shared_objects,
     )
 else:
     library = module_env.SharedLibrary(
         "{}/{}.{}.{}.{}{}".format(
             _output, library,_platform,_target,env["arch_suffix"], env["SHLIBSUFFIX"]),
-        source=sources,
+        source=shared_objects,
     )
 # build it
 Default(library)

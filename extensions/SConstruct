@@ -22,4 +22,5 @@ mod_list = [d for d in os.listdir() if os.path.isdir(d)]
 for mod_dir in mod_list :
     conscript = os.path.join(mod_dir, 'SConstruct')
     if os.path.exists(conscript) :
-        env.SConscript(conscript, exports=['env','output_path'], variant_dir='build', duplicate=False)
+        build_dir = os.path.join(mod_dir, 'build')
+        env.SConscript(conscript, exports=['env','output_path'], variant_dir=build_dir, duplicate=0)
