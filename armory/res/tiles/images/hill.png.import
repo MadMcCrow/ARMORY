@@ -3,16 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cfpi6fviwju4x"
-path="res://.godot/imported/hill.png-bbff8bfd2f91ce2282b1876047668f53.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://res/tiles/images/hill.png"
-dest_files=["res://.godot/imported/hill.png-bbff8bfd2f91ce2282b1876047668f53.ctex"]
-
 [params]
 
 compress/mode=0

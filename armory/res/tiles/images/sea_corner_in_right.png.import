@@ -3,16 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b8gnvbuoepsyw"
-path="res://.godot/imported/sea_corner_in_right.png-89c297f7eec6b9cac38cbb11d691f4a4.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://res/tiles/images/sea_corner_in_right.png"
-dest_files=["res://.godot/imported/sea_corner_in_right.png-89c297f7eec6b9cac38cbb11d691f4a4.ctex"]
-
 [params]
 
 compress/mode=0

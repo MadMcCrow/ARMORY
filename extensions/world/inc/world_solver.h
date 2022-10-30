@@ -5,7 +5,8 @@
 #define WORLD_SOLVER_H
 
 #include "world_inc.h"
-#include "world_tile_set.h"
+#include "world_tile.h"
+#include "world_map.h"
 
 /** World is part of armory */
 namespace armory {
@@ -24,12 +25,9 @@ public:
     /** CTR */
     WorldSolver();
 
+    void set_owning_map(class WorldMap* in_world_map);
+
 private:
-
-    int seed;
-
-    // the size for the generation
-    Vector3i size;
 
     /** the generated tile_set for generation */
 	std::vector<Ref<WorldTile>> gen_tile_set;
@@ -37,34 +35,22 @@ private:
     /** total weight of gen_tile_set */
     float total_weight;
 
-    /** the tile set to use for solving the map */
-    Ref<WorldTileSet> tile_set_resource;
+    /** map used as reference */
+    Ref<WorldMap> owning_map;
+
+    // current solver coordinate
+    Vector3i Coord;
 
 public:
 
      //<GDScript interface>
-    
-    /** setter for @see size */
-    void set_size(const Vector3i& in_size) {size = in_size;}
-    /** getter for @see size */
-    const Vector3i& get_size() const {return size;}
 
-    /** setter for @see tile_set_resource */
-    void set_tile_set(const Ref<WorldTileSet>& in_tile_set) {tile_set_resource = in_tile_set;}
-    /** getter for @see tile_set_resource */
-    Ref<WorldTileSet> get_tile_set() const {return tile_set_resource;}
-
-    /** setter for @see seed */
-    void set_seed(int in_seed) {seed = in_seed;}
-    /** getter for @see seed */
-    int get_seed() const {return seed;}
 
      //<\GDScript interface>
 
 private:
 
-    // current solver coordinate
-    Vector3i Coord;
+
 
 };
 

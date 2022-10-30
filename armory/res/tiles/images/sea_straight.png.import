@@ -3,16 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bxps63thsmdm1"
-path="res://.godot/imported/sea_straight.png-ea0609b57bdc7e6dfcc2f6f0e4db2d9e.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://res/tiles/images/sea_straight.png"
-dest_files=["res://.godot/imported/sea_straight.png-ea0609b57bdc7e6dfcc2f6f0e4db2d9e.ctex"]
-
 [params]
 
 compress/mode=0

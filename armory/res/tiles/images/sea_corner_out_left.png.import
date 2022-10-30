@@ -3,16 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c5x1vkh1bk5jg"
-path="res://.godot/imported/sea_corner_out_left.png-868fc4166a4c1a0f7bc0e04d0c588a8d.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://res/tiles/images/sea_corner_out_left.png"
-dest_files=["res://.godot/imported/sea_corner_out_left.png-868fc4166a4c1a0f7bc0e04d0c588a8d.ctex"]
-
 [params]
 
 compress/mode=0

@@ -3,16 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://duqob545rsqn8"
-path="res://.godot/imported/beach_left.png-6ae06952efe0ce21c2265203d898be82.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://res/tiles/images/beach_left.png"
-dest_files=["res://.godot/imported/beach_left.png-6ae06952efe0ce21c2265203d898be82.ctex"]
-
 [params]
 
 compress/mode=0

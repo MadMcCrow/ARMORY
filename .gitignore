@@ -56,3 +56,6 @@ __pycache__
 # local blend files backup
 *.blend1
 *.blend2
+
+# nix evaluation result
+result

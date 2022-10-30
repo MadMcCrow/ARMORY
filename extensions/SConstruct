@@ -3,7 +3,12 @@
 import os
 
 # Using godot-cpp as the source of our env
-env =  SConscript("../godot-cpp/SConstruct")
+env =  SConscript("godot-cpp/SConstruct")
+# compilation dtb (most likely empty)
+# scons -Q compile_commands.json
+env.Tool("compilation_db")
+cdb = env.CompilationDatabase('compile_commands.json')
+Alias('compile_database.json', cdb)
 
 # set binaries folder
 output_path = os.path.abspath("../armory/bin")
@@ -20,7 +25,11 @@ mod_list = [d for d in os.listdir() if os.path.isdir(d)]
 
 # build all modules as extensions
 for mod_dir in mod_list :
+    print(os.path.list(mod_dir))
     conscript = os.path.join(mod_dir, 'SConstruct')
     if os.path.exists(conscript) :
         build_dir = os.path.join(mod_dir, 'build')
         env.SConscript(conscript, exports=['env','output_path'], variant_dir=build_dir, duplicate=0)
+
+
+

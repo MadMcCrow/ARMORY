@@ -10,7 +10,7 @@ sea_level = null
 
 [sub_resource type="ImageTexture" id="ImageTexture_wta7x"]
 
-[node name="WorldMap" type="Node"]
+[node name="WorldMap" type="WorldMap"]
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchor_right = 1.0

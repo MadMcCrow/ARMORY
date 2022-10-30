@@ -3,16 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dh86cotrs5tqo"
-path="res://.godot/imported/hill_corner_in_right.png-55b7ac6a94f07f04499930406b3028e7.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://res/tiles/images/hill_corner_in_right.png"
-dest_files=["res://.godot/imported/hill_corner_in_right.png-55b7ac6a94f07f04499930406b3028e7.ctex"]
-
 [params]
 
 compress/mode=0

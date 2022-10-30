@@ -3,16 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cdvia5espm3vq"
-path="res://.godot/imported/mountain_corner_in_left.png-391ead040e2d6d1564c06ac322eb4012.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://res/tiles/images/mountain_corner_in_left.png"
-dest_files=["res://.godot/imported/mountain_corner_in_left.png-391ead040e2d6d1564c06ac322eb4012.ctex"]
-
 [params]
 
 compress/mode=0

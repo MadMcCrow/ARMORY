@@ -3,16 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d0bl11an8m8gl"
-path="res://.godot/imported/cliff_corner_in_left.png-9b823aef4fbb17372f495fc51481bd33.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://res/tiles/images/cliff_corner_in_left.png"
-dest_files=["res://.godot/imported/cliff_corner_in_left.png-9b823aef4fbb17372f495fc51481bd33.ctex"]
-
 [params]
 
 compress/mode=0
