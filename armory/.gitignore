@@ -1,0 +1,17 @@
+#!/usr/bin/git
+#
+# gitignore : 
+#             What files and extension we mustn't submit to github
+#
+# Copyright © Noé Perard-Gayot 2020.                                                                                        #
+# Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php   #
+#
+
+# Godot
+## import data, will be generated again
+*/.import/*
+*/.godot/*
+
+## no bin share object
+*.dll
+*.so
