@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MapScript" load_steps=5 format=3 uid="uid://jmi322v0sctn"]
+
+[ext_resource type="Script" path="res://src/map/scripts/map_script.gd" id="1_1mlnc"]
+[ext_resource type="Script" path="res://src/map/scripts/steps/spawn_players.gd" id="2_lu7ov"]
+[ext_resource type="Script" path="res://src/map/scripts/map_step.gd" id="3_eedsh"]
+
+[sub_resource type="Resource" id="Resource_g5pqv"]
+script = ExtResource("3_eedsh")
+name = ""
+gdscript = ExtResource("2_lu7ov")
+parameters = {}
+
+[resource]
+script = ExtResource("1_1mlnc")
+display_name = "Armory Map"
+steps = Array[ExtResource("3_eedsh")]([SubResource("Resource_g5pqv")])

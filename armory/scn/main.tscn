@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://cua1ircjvh7em"]
+
+[ext_resource type="Script" path="res://src/main.gd" id="1_c1qgi"]
+[ext_resource type="Resource" uid="uid://jmi322v0sctn" path="res://res/default_gen.tres" id="3_1fw6d"]
+[ext_resource type="Script" path="res://src/map/map_node.gd" id="map_node_src"]
+[ext_resource type="PackedScene" uid="uid://dgcf2xpiejvxs" path="res://scn/ui/map_generator_ui.tscn" id="map_ui"]
+
+[node name="main" type="Node"]
+script = ExtResource("1_c1qgi")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 1
+
+[node name="map_generator_ui" parent="AspectRatioContainer" instance=ExtResource("map_ui")]
+layout_mode = 2
+map_node_path = NodePath("../../map_node")
+
+[node name="map_node" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("map_node_src")
+gen_script = ExtResource("3_1fw6d")
+gen_size = Vector2i(150, 150)
