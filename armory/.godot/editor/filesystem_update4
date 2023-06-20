@@ -1,8 +1,0 @@
-res://scn/main.tscn
-res://res/default_gen.tres
-res://src/main.gd
-res://scn/ui/map_selection_ui.tscn
-res://src/ui/map_script_ui.gd
-res://src/map/scripts/map_step.gd
-res://src/map/scripts/steps/spawn_players.gd
-res://src/map/scripts/map_script.gd

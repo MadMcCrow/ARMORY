@@ -37,5 +37,8 @@ int MapGrid::get_index(const int& x, const int& y) {
 
 
 void MapGrid::_bind_methods() {
-    BIND_GDPROPERTY(MapGrid, Vector2i, size, Variant::VECTOR2I );
+   // size fake property
+   ClassDB::bind_method(D_METHOD("get_size"), &MapGrid::get_size);
+   ClassDB::bind_method(D_METHOD("set_size", "size"), &MapGrid::set_size);
+   godot::ClassDB::add_property(get_class_static(), PropertyInfo(Variant::VECTOR2I, "size"), "set_size", "get_size");
 }

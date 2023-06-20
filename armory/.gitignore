@@ -10,7 +10,7 @@
 # Godot
 ## import data, will be generated again
 *.import
-.godot/*
+.godot/
 
 ## no bin share object
 *.dll

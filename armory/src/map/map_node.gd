@@ -5,9 +5,10 @@ extends Node
 @export var gen_size : Vector2i
 
 # runtime
-@onready var grid = MapGrid.new_grid(gen_size)
+@onready var grid = MapGrid.new()
 
 func gen_map() :
+	grid.set_size(gen_size)
 	if gen_script == null :
 		return
 	start_gen()

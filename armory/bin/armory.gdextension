@@ -1,5 +1,6 @@
 [configuration]
 entry_symbol = "armory_library_init"
+compatibility_minimum = "4.1.0"
 
 [libraries]
 windows.x86_64 = "res://bin/win64/libarmory.windows.template_debug.x86_64.dll"
