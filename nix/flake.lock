@@ -1,0 +1,93 @@
+{
+  "nodes": {
+    "godot": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1687098831,
+        "narHash": "sha256-i1cFwvXVUwVpNIWp7WhkGpkw68HwDnXXbllqk1abC4c=",
+        "owner": "godotengine",
+        "repo": "godot",
+        "rev": "4a0bb80b18cb8aac107fa71c382e7077b858c744",
+        "type": "github"
+      },
+      "original": {
+        "owner": "godotengine",
+        "repo": "godot",
+        "type": "github"
+      }
+    },
+    "godot-cpp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1686904208,
+        "narHash": "sha256-lUNI/nJAp/cebZZVG8E9wkj+XqL6YpmGL+y8tdOITsc=",
+        "owner": "godotengine",
+        "repo": "godot-cpp",
+        "rev": "f56f45156bb3c426c7f77c51cfda6edee27d66f8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "godotengine",
+        "repo": "godot-cpp",
+        "type": "github"
+      }
+    },
+    "godot-flake": {
+      "inputs": {
+        "godot": "godot",
+        "godot-cpp": "godot-cpp",
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1687115774,
+        "narHash": "sha256-IWoMm9W6DW0y4cVscF285+zqeTClzmGuPXlyIAyvC+A=",
+        "owner": "MadMcCrow",
+        "repo": "godot-flake",
+        "rev": "7f30bf5de051d48f28656ee4d28087063b6a4777",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MadMcCrow",
+        "repo": "godot-flake",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1686960236,
+        "narHash": "sha256-AYCC9rXNLpUWzD9hm+askOfpliLEC9kwAo7ITJc4HIw=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "04af42f3b31dba0ef742d254456dc4c14eedac86",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1686960236,
+        "narHash": "sha256-AYCC9rXNLpUWzD9hm+askOfpliLEC9kwAo7ITJc4HIw=",
+        "path": "/nix/store/vby8c3909sglr03fxkclkly29vs49ncy-source",
+        "rev": "04af42f3b31dba0ef742d254456dc4c14eedac86",
+        "type": "path"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "root": {
+      "inputs": {
+        "godot-flake": "godot-flake",
+        "nixpkgs": "nixpkgs_2"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
