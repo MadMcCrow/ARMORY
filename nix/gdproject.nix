@@ -4,7 +4,6 @@
 {libGodot, pkgs, src , name, dependencies, isEditor ? true , isDebug ? true , templateName ? "linux-x86_64"} : 
 with pkgs;
 let 
-lib = pkgs.lib;
 linux_ext = ".bin";
 # export commandline
 export = ''godot --export ${templateName} ${name}${linux_ext}'';
@@ -12,7 +11,7 @@ export = ''godot --export ${templateName} ${name}${linux_ext}'';
 godotEngine = libGodot.mkGodot {withTemplates = !isEditor;};
 in
 # result derivation
-lib.mkDerivation {
+stdenv.mkDerivation {
   inherit name src;
   nativeBuildInputs = [godotEngine] ++ dependencies;
   buildPhase = "";
