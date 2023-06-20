@@ -1,0 +1,5 @@
+[configuration]
+entry_symbol = "armory_library_init"
+
+[libraries]
+windows.x86_64 = "res://bin/win64/libarmory.windows.template_debug.x86_64.dll"

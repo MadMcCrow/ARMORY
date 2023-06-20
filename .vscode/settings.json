@@ -4,5 +4,9 @@
         "activityBar.activeBorder" : "#bfbd47",
         "statusBar.background": "#52511F",
         "statusBar.foreground": "#ffffff"
+        },
+        "files.associations": {
+            "xutility": "cpp",
+            "vector": "cpp"
         }
 }

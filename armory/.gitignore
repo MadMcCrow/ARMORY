@@ -9,9 +9,11 @@
 
 # Godot
 ## import data, will be generated again
-*/.import/*
-*/.godot/*
+*.import
+.godot/*
 
 ## no bin share object
 *.dll
 *.so
+*.exp
+*.lib
