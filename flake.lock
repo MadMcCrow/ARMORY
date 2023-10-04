@@ -3,11 +3,11 @@
     "godot": {
       "flake": false,
       "locked": {
-        "lastModified": 1687098831,
-        "narHash": "sha256-i1cFwvXVUwVpNIWp7WhkGpkw68HwDnXXbllqk1abC4c=",
+        "lastModified": 1695834644,
+        "narHash": "sha256-W7UsSPSOSbRQcBHnh0J+5hQlCWb1SsuH03g2t6CLMf4=",
         "owner": "godotengine",
         "repo": "godot",
-        "rev": "4a0bb80b18cb8aac107fa71c382e7077b858c744",
+        "rev": "4c3dc26367518e006f8555c12f5d2df0b8a28192",
         "type": "github"
       },
       "original": {
@@ -19,11 +19,11 @@
     "godot-cpp": {
       "flake": false,
       "locked": {
-        "lastModified": 1686904208,
-        "narHash": "sha256-lUNI/nJAp/cebZZVG8E9wkj+XqL6YpmGL+y8tdOITsc=",
+        "lastModified": 1695735492,
+        "narHash": "sha256-AsN1iIczIJ87vO1rnBu8/olcncw+Hi/cKvsVlV6HbCM=",
         "owner": "godotengine",
         "repo": "godot-cpp",
-        "rev": "f56f45156bb3c426c7f77c51cfda6edee27d66f8",
+        "rev": "bf2f9e2f554bd22d127c744ca3d1a077b7bb5a63",
         "type": "github"
       },
       "original": {
@@ -39,11 +39,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1687265690,
-        "narHash": "sha256-b0XKJq43rF2yhwMxSmGs7vPnWiVnH+LEKBovPig5OoE=",
+        "lastModified": 1696424214,
+        "narHash": "sha256-iI+vMexGN+NDVt/fefkUMnSiSP+stRy4RVHXM7dhk/4=",
         "owner": "MadMcCrow",
         "repo": "godot-flake",
-        "rev": "475f2829a3a521af7a61faa1e1c2b4f92538d9fb",
+        "rev": "779177eece7c6ef6337ce4a2f1d55e8729a5a62f",
         "type": "github"
       },
       "original": {
@@ -54,11 +54,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1686960236,
-        "narHash": "sha256-AYCC9rXNLpUWzD9hm+askOfpliLEC9kwAo7ITJc4HIw=",
+        "lastModified": 1695644571,
+        "narHash": "sha256-asS9dCCdlt1lPq0DLwkVBbVoEKuEuz+Zi3DG7pR/RxA=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "04af42f3b31dba0ef742d254456dc4c14eedac86",
+        "rev": "6500b4580c2a1f3d0f980d32d285739d8e156d92",
         "type": "github"
       },
       "original": {
@@ -70,10 +70,10 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1686960236,
-        "narHash": "sha256-AYCC9rXNLpUWzD9hm+askOfpliLEC9kwAo7ITJc4HIw=",
-        "path": "/nix/store/vby8c3909sglr03fxkclkly29vs49ncy-source",
-        "rev": "04af42f3b31dba0ef742d254456dc4c14eedac86",
+        "lastModified": 1696019113,
+        "narHash": "sha256-X3+DKYWJm93DRSdC5M6K5hLqzSya9BjibtBsuARoPco=",
+        "path": "/nix/store/r88zkfh22shcgj0c4zh9jj2q5r1z9wjn-source",
+        "rev": "f5892ddac112a1e9b3612c39af1b72987ee5783a",
         "type": "path"
       },
       "original": {

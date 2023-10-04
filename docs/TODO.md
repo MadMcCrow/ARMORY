@@ -2,12 +2,15 @@
 
 # Milestones :
 
-## 1) Level Generation
+## 0.1 Level Generation
 ARMORY is a RTS. As such we must be able to have random maps based on a unique seed and a few parameters
 
 ### Setup
 - [ ] NixOS setup
-- [ ] Windows setup
+  - [X] build extensions
+  - [ ] build and export game 
+- [X] Windows setup
+- [ ] Git Hooks
 
 ### Docs and design :
 - [ ] Write down level logic 
@@ -16,16 +19,23 @@ ARMORY is a RTS. As such we must be able to have random maps based on a unique s
   - [ ] tile set
 - [ ] Project management
   - [ ] find a better way to follow progress on milestone
+  - [ ] better organise docs (Wiki style)
 
 ### Godot :
-#### Level
+#### GDScript
 - [ ] Level (Maps) should be 
-- [ ] Map scripts as generational (ie. step-based) programming
-- [ ] Map Scripts step as GD Script
-- [ ] Steps are run Async to allow for UI/Wait logic
+  - [ ] Map scripts as generational (ie. step-based) programming
+  - [ ] Map Scripts step as GD Script
+  - [ ] Steps are run Async to allow for UI/Wait logic
 
-#### UI
+#### C++
+- [X] GridMap as a CPP class
+- [X] Tiles are Dict (for now)
+- [ ] Poisson distribution
+
+#### UI Design
 - [ ] Armory should display a progressbar-like when generating maps
 
 #### Rendering
 - [ ] Render tiles with 3D meshes
+  - [ ] cubes 

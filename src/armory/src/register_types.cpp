@@ -10,7 +10,8 @@
 
 #include "map/cell.hpp"
 #include "map/grid.hpp"
-
+#include "maths/random.hpp"
+#include "maths/poisson.hpp"
 
 using namespace godot;
 using namespace ARMORY;
@@ -19,8 +20,12 @@ void initialize_armory_module(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
+	// Map
     ClassDB::register_class<MapCell>();
 	ClassDB::register_class<MapGrid>();
+	// maths
+	ClassDB::register_class<Poisson>();
+	ClassDB::register_class<Random>();
 }
 
 void uninitialize_armory_module(ModuleInitializationLevel p_level) {

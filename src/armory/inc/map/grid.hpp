@@ -4,57 +4,66 @@
 #ifndef ARMORY_GRID_H
 #define ARMORY_GRID_H
 
-// Godot
-#include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/classes/ref_counted.hpp>
-
 // Armory
-#include "macros.hpp"
+#include "armory.hpp"
 #include "cell.hpp"
+#include "types/array2d.hpp"
 
 using namespace godot;
 
 namespace ARMORY {
 
     /**
-     *  Class to have a 2D grid
+     *  @class MapGrid
+     *  @brief 2D Grid to contain @see MapCell
+     * 
+     *  @todo  maybe change to inherit from Resource
+     *  @todo  maybe use Vector2i for position
+     *  @todo  maybe replace MapCell by Ref<MapCell>
      */
     class MapGrid : public RefCounted {
         GDCLASS(MapGrid, RefCounted);
 
     public:
 
-        MapGrid() {}
-        virtual ~MapGrid() {}
+        MapGrid(int x = 0, int y = 0);
+        ~MapGrid();
 
-        // Set grid size, and update cells
+        /** Set grid size, and update cells */
         void set_grid_size(int x, int y);
 
-    protected:
+        /** get cell element at position */
+        MapCell& elem_at(const int& x, const int& y);
 
-        // turn a 2d position into an index
-        int get_index(const int& x, const int& y);
+        /** get cell element at position, const version */
+        const MapCell& elem_at(const int& x, const int& y) const;
 
     private:
 
-        // size
+        /** size */
         int _size_x = 0;
         int _size_y = 0;
 
-        // whether the grid loops around
-        // maybe we'll switch to a ENUM 
-        // for readability.
-        bool _loop = false;
+        /**
+         * whether the grid loops around
+         * @todo maybe we'll switch to a ENUM  for readability.
+         */
+        bool _loops = true;
 
-        // Actual array
-        std::vector<MapCell> _cells;
+        /** Array of cells */
+        Array2D<MapCell> _cells;
 
     public:
 
         // Godot-API functions 
         static void _bind_methods();
-        inline Vector2i get_size() const               { return Vector2i(_size_x, _size_y); }
-        inline void     set_size(const Vector2i& size) { set_grid_size(size.x, size.y); }
+        inline Vector2i get_size() const { return Vector2i(_size_x, _size_y); }
+        inline void set_size(const Vector2i& size) { set_grid_size(size.x, size.y); }
+        inline void set_loops(const bool loops) { _loops = loops;}
+        inline void get_loops(const bool loops) { return _loops; }
+        inline void set_cell(const Vector2i& pos, const Ref<MapCell>& cell) { elem_at(pos.x, pos.y).set_data(cell->get_data()); }
+        // Godot can either accept raw pointers or refs
+        inline MapCell* get_cell(const Vector2i& pos) {return &(elem_at(pos.x, pos.y)); }
     };
 };
 

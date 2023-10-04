@@ -5,16 +5,12 @@ import sys
 extension="armory"
 src_folder = "src/"
 inc_folder = "inc/"
-build_folder = "build/"
-
+build_folder = "src/"
 
 # use variant to build outside of sources
 VariantDir(build_folder, src_folder, duplicate=False)
-
 # Godot-cpp gives us the base SConscript to include
-#env = SConscript("../godot-cpp/SConstruct", variant_dir="build", duplicate=True)
-env = SConscript("../godot-cpp/SConstruct")
-
+env = SConscript("../godot-cpp/SConstruct", variant_dir="build", duplicate=True)
 
 # add file paths
 env.Append(CPPPATH=[inc_folder])
@@ -35,7 +31,7 @@ shlib  = env["SHLIBSUFFIX"]
 # Linux Build
 if platform in ["linuxbsd", "linux"]:
     env.Append(CXXFLAGS=['-std=c++17','-Wpadded'])
-    env.Append(CCFLAGS=['-fPIC', '-O3' '-g'])
+    env.Append(CCFLAGS=['-fPIC', '-O3', '-g'])
     library = env.SharedLibrary( f"{out_path}/lib{extension}{suffix}{shlib}", source=builds)
 # MacOS
 elif platform  == "macos":
@@ -51,6 +47,9 @@ else: # platform  == "windows":
         env.Append(CCFLAGS = ['-O2', '-EHsc', '-DNDEBUG', '/MD', '-DOSC_HOST_LITTLE_ENDIAN'])\
     # add libraries :
     library = env.SharedLibrary( f"{out_path}/lib{extension}{suffix}{shlib}", source=builds )
+
+# disable warnings :
+env.Append(CCFLAGS=["-w"])
 
 # Just build !
 Default(library)

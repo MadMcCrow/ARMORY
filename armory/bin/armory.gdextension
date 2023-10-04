@@ -4,3 +4,4 @@ compatibility_minimum = "4.1.0"
 
 [libraries]
 windows.x86_64 = "res://bin/win64/libarmory.windows.template_debug.x86_64.dll"
+linux.x86_64 = "res://bin/x11/libarmory.so"

@@ -5,7 +5,7 @@
 ::
 :: Copyright © Noé Perard-Gayot 2023.
 :: Licensed under the MIT License. You may obtain a copy of the License at https://opensource.org/licenses/mit-license.php
-@CD src
+@CD ../src
 @RD /S /Q godot-cpp
 @git clone https://github.com/godotengine/godot-cpp --depth 1 -q
 @DEL /Q "godot-cpp/.git"

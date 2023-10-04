@@ -6,4 +6,5 @@
 using namespace ARMORY;
 
 void MapCell::_bind_methods() {
+       //BIND_GDPROPERTY(MapCell, Dictionary, data, Variant::DICTIONARY);
 }

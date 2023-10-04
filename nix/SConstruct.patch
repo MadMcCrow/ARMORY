@@ -1,0 +1,16 @@
+diff --git a/SConstruct b/SConstruct
+index 7079ed6..4bb8447 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -7,10 +7,8 @@ src_folder = "src/"
+ inc_folder = "inc/"
+ build_folder = "src/"
+ 
+-# use variant to build outside of sources
+-VariantDir(build_folder, src_folder, duplicate=False)
+ # Godot-cpp gives us the base SConscript to include
+-env = SConscript("../godot-cpp/SConstruct", variant_dir="build", duplicate=True)
++env = SConscript("./godot-cpp/SConstruct")
+ 
+ # add file paths
+ env.Append(CPPPATH=[inc_folder])

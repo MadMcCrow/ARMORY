@@ -4,7 +4,7 @@
 #ifndef ARMORY_REGISTER_TYPES_H
 #define ARMORY_REGISTER_TYPES_H
 
-#include <godot_cpp/core/class_db.hpp>
+#include "armory.hpp"
 
 using namespace godot;
 

@@ -4,13 +4,8 @@
 #ifndef ARMORY_CELL_H
 #define ARMORY_CELL_H
 
-
 // Godot
-#include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/classes/ref_counted.hpp>
-
-// Armory
-#include "macros.hpp"
+#include "armory.hpp"
 
 using namespace godot;
 
@@ -26,6 +21,9 @@ namespace ARMORY {
 
         // Godot-API functions 
         static void _bind_methods();
+        
+        GDPROPERTY(Dictionary, data);
+
     };
 };
 

@@ -1,12 +1,25 @@
-{
-    "workbench.colorCustomizations": {
-        "activityBarBadge.background": "#bfbd47",
-        "activityBar.activeBorder" : "#bfbd47",
-        "statusBar.background": "#52511F",
-        "statusBar.foreground": "#ffffff"
-        },
-        "files.associations": {
-            "xutility": "cpp",
-            "vector": "cpp"
-        }
+{ // big read :
+"editor.fontFamily": "'JetBrains Mono', 'Droid Sans Mono', monospace",
+"editor.fontLigatures": true,
+"editor.fontSize": 13,
+"editor.tabCompletion": "on",
+// make everything fitting :
+"workbench.colorTheme": "GitHub Dark",
+"workbench.iconTheme": "material-icon-theme",
+"workbench.colorCustomizations": {
+    "activityBarBadge.background": "#bfbd47",
+    "activityBar.activeBorder" : "#bfbd47",
+    "statusBar.background": "#52511F",
+    "statusBar.foreground": "#ffffff",
+    // Godot panel colors :
+    "panel.background": "#21262E",
+    "editor.background": "#252B34"
+},
+// debug tools :
+"anycode.language.features": {
+  "diagnostics": true,
+  "folding": true
+},
+// enable code lens
+"diffEditor.codeLens": true,
 }
