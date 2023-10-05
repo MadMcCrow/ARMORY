@@ -3,6 +3,7 @@
 
 // armory
 #include "maths/poisson.hpp"
+#include "maths/random.hpp"
 
 using namespace ARMORY;
 
@@ -16,7 +17,7 @@ static const float region_y = 1.f;
 // retries - maximum number of attempts to look around a sample point, reduce this value to speed up generation
 static const int retries = 10;
 
-void Poisson::Generate()
+void Poisson::generate()
 {
 	// spawn our random number generator
 	Random rand;
@@ -29,35 +30,34 @@ void Poisson::Generate()
 	);
 
 	const float cell_size = _radius / fsqrt(2);
-	int cols = max(std::floor(region_x / cell_size), 1);
-	int rows = max(std::floor(region_y / cell_size), 1);
+	int cols = std::max(std::floor(region_x / cell_size), 1.f);
+	int rows = std::max(std::floor(region_y / cell_size), 1.f);
 
 	// scale the cell size in each axis 
-	cell_size_scaled.x = region_x / cols;
-	cell_size_scaled.y = region_y / rows;
+	Vector2 cell_size_scaled(region_x / cols, region_y / rows);
 
 	Array2D<int> grid;
 	grid.resize(cols, rows, -1);
 	
-	std::vector<Vector2> spawn_points = [];
+	std::vector<Vector2> spawn_points;
 
-	spawn_points.push_back(_start_pos);
+	spawn_points.push_back(start_pos);
 	
 	const auto is_valid_sample = [&](Vector2 sample) -> bool {
-		if ( sample.x < region_x && sample.y < region_y;)
+		if ( sample.x < region_x && sample.y < region_y)
 		{
-		Vector2 cell(int((0 + sample.x) / cell_size_scaled.x), int((0 + sample.y) / cell_size_scaled.y));
-		Vector2 cell_start(std::max(0, cell.x - 2), std::max(0, cell.y - 2));
-		Vector2 cell_end(std::min(cell.x + 2, _cols - 1), std::min(cell.y + 2, _rows - 1));
+		Vector2 cell(int((sample.x) / cell_size_scaled.x), int(( sample.y) / cell_size_scaled.y));
+		Vector2 cell_start(std::max(0.f, cell.x - 2.f), std::max(0.f, cell.y - 2.f));
+		Vector2 cell_end(std::min(cell.x + 2.f, cols - 1.f), std::min(cell.y + 2.f, rows - 1.f));
 	
-		for (i = cell_start.x; x <= cell_end.x; i++)
+		for (auto i = cell_start.x; i <= cell_end.x; i++)
 		{
-			for (j = cell_start.y; j <= cell_end.y; i++)
+			for (auto j = cell_start.y; j <= cell_end.y; i++)
 			{
 				int search_index = grid.at(i,j);
 				if (search_index != -1)
 				{
-					float dist = points[search_index].distance_to(sample);
+					float dist = _points[search_index].distance_to(sample);
 					if (dist < _radius)
 					{
 						return false;
@@ -71,7 +71,7 @@ void Poisson::Generate()
 	};
 
 
-	while (spawn_points.size() > 0 && points.size() < _number )
+	while (spawn_points.size() > 0 && _points.size() < _number )
 	{
 		int spawn_index = rand.randi() % spawn_points.size();
 		Vector2 spawn_centre = spawn_points[spawn_index];
@@ -79,26 +79,26 @@ void Poisson::Generate()
 
 		for (int i = retries; i -->0;)
 		{
-			float angle = 2 * PI * rand.randf();
-			Vector2 Sample = spawn_centre +
+			float angle = 2 * F_PI * rand.randf();
+			Vector2 sample = spawn_centre +
 			 Vector2(cos(angle), sin(angle)) *
 			 (_radius + _radius * rand.randf());
 			 
 			if (is_valid_sample(sample))
 			{
 				grid.at(
-					int((0 + sample.x) / _cell_size_scaled.x),
-					int((0 + sample.y) / _cell_size_scaled.y))
-					= points.size();
-				points.push_back(sample)
+					int((0 + sample.x) / cell_size_scaled.x),
+					int((0 + sample.y) / cell_size_scaled.y))
+					= _points.size();
+				_points.push_back(sample);
 				spawn_points.push_back(sample);
 				sample_accepted = true;
-				break
+				break;
 			}
 		}
 		if (!sample_accepted)
 		{
-			spawn_points.erase(spawn_index)
+			spawn_points.erase(spawn_points.begin() + spawn_index);
 		}		
 	}
 	//return points;
@@ -130,7 +130,7 @@ TypedArray<Vector2i> Poisson::generate_points(int number, int seed , int radius,
 	Poisson poisson;
 	poisson._seed = seed;
 	poisson._number = number;
-	poisson._radius = static_cast<float>(radius) / min(size.x, size.y);
+	poisson._radius = static_cast<float>(radius) / std::min(size.x, size.y);
 	poisson.generate();
 	TypedArray<Vector2i> points;
 	for(const auto& vector: poisson._points)

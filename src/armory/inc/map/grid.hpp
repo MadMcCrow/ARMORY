@@ -60,7 +60,7 @@ namespace ARMORY {
         inline Vector2i get_size() const { return Vector2i(_size_x, _size_y); }
         inline void set_size(const Vector2i& size) { set_grid_size(size.x, size.y); }
         inline void set_loops(const bool loops) { _loops = loops;}
-        inline void get_loops(const bool loops) { return _loops; }
+        inline bool get_loops() const { return _loops; }
         inline void set_cell(const Vector2i& pos, const Ref<MapCell>& cell) { elem_at(pos.x, pos.y).set_data(cell->get_data()); }
         // Godot can either accept raw pointers or refs
         inline MapCell* get_cell(const Vector2i& pos) {return &(elem_at(pos.x, pos.y)); }

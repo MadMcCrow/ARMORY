@@ -20,6 +20,9 @@ namespace ARMORY {
 
      public: 
 
+        // aliasing
+        using  mersenne = std::mt19937_64;
+
         // CTR
         Random();
         ~Random();
@@ -28,10 +31,10 @@ namespace ARMORY {
         void init(size_t seed);
 
         // quick getter
-        inline unsigned int randn() const {return gen<unsigned int>();}
-        inline int randi() const     {return gen<int>();}
-        inline float randf() const   {return gen<float>();}
-        inline double randd() const  {return gen<double>();}
+        inline unsigned int randn() {return gen<unsigned int>();}
+        inline int randi()          {return gen<int>();}
+        inline float randf()        {return gen<float>();}
+        inline double randd()       {return gen<double>();}
 
     protected:
         
@@ -39,21 +42,23 @@ namespace ARMORY {
         // this might change meaning between 
         // little and big endian platforms
         template<typename T>
-        T gen() const;
+        T gen();
 
     private:
 
         // mersenne twister
-	    std::mt19937_64* _mt;
+	    mersenne* _mt;
         bool _ready;
         size_t _seed;
+        size_t _gen_count;
+        
 
         // Godot API :
         static void _bind_methods();
         inline void set_seed(int seed) {init(seed);}
         inline int get_seed() const    {return _seed;}
-        inline int get_integer() const {return randi();}
-        inline int get_float() const   {return randf();}
+        inline int get_integer() {return randi();}
+        inline int get_float()   {return randf();}
     };
 };
 

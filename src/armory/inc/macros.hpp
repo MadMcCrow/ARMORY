@@ -49,4 +49,7 @@
     ADD_PROPERTY(PropertyInfo(variant, STR(#name)), STR(set_##name), STR(get_##name));
 
 
+// pi with a floating point precision
+#define F_PI 3.1415926535897932384626433832795028841971693993751058209749445923078164062
+
 #endif // GDRMS_MACROS_H

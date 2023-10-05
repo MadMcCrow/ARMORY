@@ -5,40 +5,41 @@
 
 using namespace ARMORY;
 
-
 Random::Random()
 {
-    mt = nullptr;
+    _mt = nullptr;
     _ready = false;
 }
 
 Random::~Random()
 {
-    if (mt != nullptr)
+    if (_mt != nullptr)
     {
-        delete mt;
+        delete _mt;
     }
     _ready = false;
 }
 
 void Random::init(size_t seed)
 {
-    if (mt != nullptr)
+    if (_mt != nullptr)
     {
-        delete mt;
+        delete _mt;
     }
-    mt = new mt(seed);
-    _ready = (mt != nullptr);
+    _mt = new mersenne(seed);
+    _ready = (_mt != nullptr);
+    _gen_count = 0;
 }
 
 template<typename T>
-T Random::gen();
+T Random::gen()
 {
-    if (_ready && mt != nullptr)
+    if (_ready && _mt != nullptr)
     {
         // TODO : respect endianness to get same result on any platform
-		const int64_t v = (*mt)();
-        T r = *(reinterpret_cast<T>(&v));
+		int64_t v = (*_mt)();
+        T r = *(reinterpret_cast<T*>(&v));
+        _gen_count++;
         return r;
     }
     return 0;

@@ -20,6 +20,7 @@ let
     name = "armory";
     buildInputs = [ extension ];
   };
+  
 in {
  inherit extension game;
 }
