@@ -9,7 +9,10 @@ let
   extension = godot-lib.mkGdext {
     godot-cpp = godot-pkgs.godot-cpp;
     src = flake + "/src/armory";
-    name = "armory";
+    # todo : make the name of the extension be name :
+    # so that the derivation is libarmory
+    # also : make the output be in /lib, not bin
+    name = "armory-ext";
     patches = [ ./SConstruct.patch ];
   };
 
@@ -19,6 +22,12 @@ let
     src = flake + "/src/armory";
     name = "armory";
     buildInputs = [ extension ];
+    # todo : get lib name from the nix derivation
+    unpackPhase = ''
+      cp -r $src/* ./
+      mkdir -p ./bin/x11
+      cp    ${extension}/bin/libarmory.so ./bin/x11
+    '';
   };
   
 in {

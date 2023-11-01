@@ -6,8 +6,10 @@
 ARMORY is a RTS. As such we must be able to have random maps based on a unique seed and a few parameters
 
 ### Setup
+- [ ] rethink folder structure
 - [ ] NixOS setup
   - [X] build extensions
+  - [ ] enable `nix develop` for the game 
   - [ ] build and export game 
 - [X] Windows setup
 - [ ] Git Hooks
