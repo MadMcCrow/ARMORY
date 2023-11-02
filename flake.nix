@@ -30,7 +30,7 @@
             default = armory.extension;
           };
           devShell."${system}" = (import pkgs {inherit system;}).mkShell { 
-            inputsFrom = [ armory.game ];
+            inputsFrom = [ armory.extension ];
             buildInputs = armory.extension.nativeBuildInputs;
             };
         };

@@ -31,25 +31,11 @@ void MapGrid::set_grid_size(int x, int y) {
 }
 
 MapCell& MapGrid::elem_at(const int& x, const int& y) {
-    try
-    {
-        return _cells.at(_loops ? _repeat(x, _size_x) : x, _loops ? _repeat(y, _size_y) : y);
-    }
-    catch (std::out_of_range oor)
-    {
-        ERR_FAIL_V_MSG(_cells.back(), oor.what());
-    }
+    return _cells.at(_loops ? _repeat(x, _size_x) : x, _loops ? _repeat(y, _size_y) : y);
 }
 
 const MapCell& MapGrid::elem_at(const int& x, const int& y) const {
-    try
-    {
-        return _cells.at(_loops ? _repeat(x, _size_x) : x, _loops ? _repeat(y, _size_y) : y);
-    }
-   catch (std::out_of_range oor)
-    {
-        ERR_FAIL_V_MSG(_cells.back(), oor.what());
-    }
+    return _cells.at(_loops ? _repeat(x, _size_x) : x, _loops ? _repeat(y, _size_y) : y);
 }
 
 void MapGrid::_bind_methods() {

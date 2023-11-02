@@ -7,29 +7,26 @@ let
 
   # the extension
   extension = godot-lib.mkGdext {
-    godot-cpp = godot-pkgs.godot-cpp;
+    name = "armory";
     src = flake + "/src/armory";
-    # todo : make the name of the extension be name :
-    # so that the derivation is libarmory
-    # also : make the output be in /lib, not bin
-    name = "armory-ext";
+    godot-cpp = godot-pkgs.godot-cpp;
     patches = [ ./SConstruct.patch ];
   };
 
   # the game
-  game = godot-lib.mkExport {
-    godot = godot-pkgs.godot;
-    src = flake + "/src/armory";
-    name = "armory";
-    buildInputs = [ extension ];
-    # todo : get lib name from the nix derivation
-    unpackPhase = ''
-      cp -r $src/* ./
-      mkdir -p ./bin/x11
-      cp    ${extension}/bin/libarmory.so ./bin/x11
-    '';
-  };
+  # game = godot-lib.mkExport {
+  #   godot = godot-pkgs.godot;
+  #   src = flake + "/src/armory";
+  #   name = "armory-game";
+  #   buildInputs = [ extension ];
+  #   # todo : get lib name from the nix derivation
+  #   unpackPhase = ''
+  #     cp -r $src/* ./
+  #     mkdir -p ./bin/x11
+  #     cp    ${extension}/bin/libarmory.so ./bin/x11
+  #   '';
+  # };
   
 in {
- inherit extension game;
+ inherit extension;
 }

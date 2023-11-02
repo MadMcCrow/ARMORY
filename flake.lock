@@ -39,11 +39,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1698869246,
-        "narHash": "sha256-ZRGOwDqzna302oM6knx4vOtkn1gJY3Ub4v8Govi3V5c=",
+        "lastModified": 1698877021,
+        "narHash": "sha256-fc2iOVFCTOBTZJyLPSPbkdVyliJNKtI4cuEtmErY4Uo=",
         "owner": "MadMcCrow",
         "repo": "godot-flake",
-        "rev": "7adeeeb016bf49b76aed169ba3d85f8dde5ef12b",
+        "rev": "b946f892f0c8d097c98df75faf38f1abdb3aa9fc",
         "type": "github"
       },
       "original": {
